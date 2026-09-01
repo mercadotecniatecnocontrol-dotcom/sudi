@@ -1,0 +1,212 @@
+/*
+  Estilos y Animaciones Épicas para el Dashboard
+  Complementa a Tailwind CSS
+*/
+
+/* Evita doble scrollbar lateral (html+main): solo <main> hace scroll */
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Animaciones Base */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulseSubtle {
+    0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+}
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Clases de utilidad para animar */
+.fade-in {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+/* Estilos de las tarjetas (Cards) */
+.stat-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+/* Efecto de resplandor radial en hover (Glow Effect) */
+.glow-effect {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    filter: blur(60px);
+    top: -75px;
+    right: -75px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.stat-card:hover .glow-effect {
+    opacity: 0.8;
+}
+
+/* Efectos de Logo */
+.logo-container:hover .logo-icon {
+    transform: rotate(-15deg) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Botones */
+.btn-hover {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.05);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.4s ease-out;
+}
+
+.btn-hover:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    transition: 0s;
+}
+
+.pulse-btn:hover {
+    animation: pulseSubtle 1.5s infinite;
+}
+
+/* SVG Line Animations for placeholders */
+.chart-line-animate {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.chart-container:hover .chart-line-animate {
+    stroke-width: 3;
+    filter: drop-shadow(0 0 8px currentColor);
+    transition: all 0.3s ease;
+}
+
+/* Navegación Activa */
+.nav-item.active {
+    position: relative;
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -1rem; /* Fuera del padding de aside */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background-color: #F97316;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 10px #F97316;
+}
+
+/* Scrollbar Personalizado y moderno (global, no solo .custom-scrollbar) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #232736 transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #232736;
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #3b425b;
+}
+
+/* Efecto contador (opcional: se veria mejor con JS, pero añadimos estilos listos para él) */
+.number-counter {
+    background: linear-gradient(to right, #ffffff, #a1a1aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Modales (usados por JS/app.js: openModal/closeModal) */
+[data-modal] .modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+[data-modal] .modal-panel {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-modal].modal-open .modal-backdrop {
+    opacity: 1;
+}
+
+[data-modal].modal-open .modal-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Sidebar responsive (colapsable en móvil, usado por JS/app.js: initSidebarToggle) */
+@media (max-width: 1023px) {
+    aside {
+        position: fixed;
+        inset: 0 auto 0 0;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+}

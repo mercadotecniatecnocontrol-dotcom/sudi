@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUDI · Iniciar sesión</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Inter',sans-serif}
+  .wave-bg{
+    background:
+      radial-gradient(circle at 15% 30%, rgba(234,88,12,.25), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(234,88,12,.2), transparent 45%),
+      #050505;
+  }
+  .glow{box-shadow:0 0 60px -10px rgba(249,115,22,.35)}
+
+  @keyframes fadeInUp{
+    from{opacity:0; transform:translateY(24px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+  @keyframes popIn{
+    0%{opacity:0; transform:scale(.7) rotate(-15deg)}
+    100%{opacity:1; transform:scale(1) rotate(0)}
+  }
+  @keyframes drift{
+    0%,100%{transform:translate(0,0)}
+    50%{transform:translate(15px,-10px)}
+  }
+  @keyframes pulseGlow{
+    0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,.4)}
+    50%{box-shadow:0 0 0 8px rgba(249,115,22,0)}
+  }
+
+  .card-anim{opacity:0; animation:fadeInUp .7s ease-out forwards}
+  .badge-anim{animation:popIn .6s .2s cubic-bezier(.34,1.56,.64,1) both}
+  .wave-1{animation:drift 10s ease-in-out infinite}
+  .wave-2{animation:drift 14s ease-in-out infinite reverse}
+  .wave-3{animation:drift 18s ease-in-out infinite}
+
+  input:focus{animation:pulseGlow 1.4s ease-out}
+  .btn-anim{transition:transform .15s ease, box-shadow .2s ease}
+  .btn-anim:hover{transform:translateY(-2px)}
+  .btn-anim:active{transform:scale(.96)}
+
+  @keyframes shake{
+    10%,90%{transform:translateX(-1px)}
+    20%,80%{transform:translateX(2px)}
+    30%,50%,70%{transform:translateX(-4px)}
+    40%,60%{transform:translateX(4px)}
+  }
+  .shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}
+
+  input.input-error{border-color:#ef4444 !important}
+  @keyframes toastIn{from{opacity:0; transform:translateY(-12px) translateX(-50%)} to{opacity:1; transform:translateY(0) translateX(-50%)}}
+  #toast-container{position:fixed; top:1.25rem; left:50%; z-index:100; display:flex; flex-direction:column; gap:.5rem; width:100%; max-width:22rem; padding:0 1rem;}
+  .toast{animation:toastIn .25s ease-out both; transform:translateX(-50%);}
+</style>
+</head>
+<body class="wave-bg min-h-screen flex items-center justify-center p-4 overflow-hidden">
+
+  <svg class="fixed inset-0 w-full h-full -z-0 opacity-40" viewBox="0 0 1024 683" preserveAspectRatio="xMidYMid slice">
+    <path class="wave-1" d="M-50 400 C 200 250, 400 550, 650 350 S 1100 250, 1300 450" stroke="#ea580c" stroke-width="1.5" fill="none" opacity=".5"/>
+    <path class="wave-2" d="M-50 300 C 250 150, 450 480, 700 280 S 1150 150, 1350 380" stroke="#f97316" stroke-width="1" fill="none" opacity=".35"/>
+    <path class="wave-3" d="M-50 500 C 200 400, 500 650, 750 430 S 1100 380, 1350 550" stroke="#fb923c" stroke-width="1" fill="none" opacity=".25"/>
+  </svg>
+
+  <main class="relative z-10 w-full max-w-sm">
+    <form id="loginForm" class="card-anim glow rounded-2xl border border-orange-500/30 bg-neutral-900/80 backdrop-blur-xl p-8 flex flex-col gap-5">
+
+      <div class="flex flex-col items-center gap-1 mb-1">
+        <div class="flex items-center gap-2">
+          <i class="ph-fill ph-check-circle text-orange-500 text-2xl"></i>
+          <span class="text-white font-extrabold tracking-wide text-xl">JOMAR</span>
+        </div>
+        <span class="text-[10px] tracking-[0.3em] text-orange-500/80 font-medium">VERIFICACIONES</span>
+      </div>
+
+      <div class="flex justify-center my-2">
+        <div class="badge-anim w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/50">
+          <i class="ph-fill ph-shield-check text-white text-3xl"></i>
+        </div>
+      </div>
+
+      <p class="text-center text-neutral-300 text-sm">Bienvenido a la plataforma SUDI.</p>
+      <h1 class="text-center text-white text-lg font-semibold -mt-2">Iniciar sesión</h1>
+
+      <label class="relative">
+        <i class="ph ph-user absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500"></i>
+        <input id="email" type="email" required placeholder="Correo electrónico"
+          class="w-full bg-black/40 border border-neutral-700 focus:border-orange-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
+      </label>
+
+      <label class="relative">
+        <i class="ph ph-lock-key absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500"></i>
+        <input id="password" type="password" required placeholder="Contraseña"
+          class="w-full bg-black/40 border border-neutral-700 focus:border-orange-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
+      </label>
+
+      <button type="submit"
+        class="btn-anim w-full bg-orange-500 hover:bg-orange-600 transition text-black font-bold text-sm tracking-wide rounded-lg py-3 shadow-lg shadow-orange-900/40">
+        INGRESAR
+      </button>
+
+      <div class="flex items-center justify-between text-xs text-neutral-400">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="accent-orange-500 w-3.5 h-3.5">
+          Mantener la sesión
+        </label>
+        <a href="#" class="text-neutral-300 hover:text-orange-500 transition">Recuperar acceso</a>
+      </div>
+    </form>
+  </main>
+
+  <div id="toast-container"></div>
+
+  <script>
+    function showToast(message, type = 'error') {
+      const colors = { error: 'border-red-500/40 text-red-400', success: 'border-emerald-500/40 text-emerald-400' };
+      const icons = { error: 'ph-x-circle', success: 'ph-check-circle' };
+      const el = document.createElement('div');
+      el.className = `toast flex items-start gap-3 bg-neutral-900 border ${colors[type]} rounded-xl shadow-2xl px-4 py-3`;
+      el.innerHTML = `<i class="ph ${icons[type]} text-xl mt-0.5"></i><p class="text-sm text-neutral-100 flex-1">${message}</p>
+        <button class="text-neutral-500 hover:text-white transition-colors"><i class="ph ph-x"></i></button>`;
+      el.querySelector('button').onclick = () => el.remove();
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passInput = document.getElementById('password');
+
+    [emailInput, passInput].forEach((input) => {
+      input.addEventListener('input', () => input.classList.remove('input-error'));
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passInput.value.trim();
+
+      if (!email || !password) {
+        [emailInput, passInput].forEach((input) => {
+          if (!input.value.trim()) input.classList.add('input-error');
+        });
+        form.classList.remove('shake');
+        void form.offsetWidth;
+        form.classList.add('shake');
+        showToast('Completa correo y contraseña.', 'error');
+        return;
+      }
+
+      // Mock de autenticación (sin backend real)
+      const VALID_EMAIL = 'admin@jomar.com';
+      const VALID_PASSWORD = 'admin123';
+      if (email !== VALID_EMAIL || password !== VALID_PASSWORD) {
+        emailInput.classList.add('input-error');
+        passInput.classList.add('input-error');
+        form.classList.remove('shake');
+        void form.offsetWidth;
+        form.classList.add('shake');
+        showToast('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
+        return;
+      }
+
+      sessionStorage.setItem('sudi_session', JSON.stringify({ email, ts: Date.now() }));
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

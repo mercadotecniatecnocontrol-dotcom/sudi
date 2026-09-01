@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ASEA - Jomar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <!-- Chart.js (gráficas reales y animadas) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0F111A',
+                            800: '#161925',
+                            700: '#232736',
+                            600: '#32384e'
+                        },
+                        brand: {
+                            orange: '#F97316',
+                            yellow: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+    <!-- Overlay móvil del sidebar -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
+
+    <!-- Sidebar Lateral -->
+    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 shrink-0 -translate-x-full lg:translate-x-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="Dash_ASEA.html" class="relative flex items-center px-4 py-3 rounded-xl bg-brand-orange/10 text-brand-orange font-medium transition-all group overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
+                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inicio
+                </a>
+                <a href="clientes_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Clientes
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Equipos
+                </a>
+                <a href="inspecciones_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inspecciones
+                </a>
+                <div class="pt-2 pb-2">
+                    <div class="border-t border-dark-700 my-2"></div>
+                </div>
+
+                <!-- Menú Hologramas -->
+                <div class="relative">
+                    <button data-dropdown-toggle="dash-asea-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                            Hologramas
+                        </div>
+                        <i class="ph ph-caret-down text-sm"></i>
+                    </button>
+                    <div id="dash-asea-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="../SCFI/hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Distintivos
+                        </a>
+                        <a href="../SCFI/hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Flexogramas
+                        </a>
+                        <a href="../SCFI/hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Precintos
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Menú Catálogos -->
+                <div class="relative">
+                    <button data-dropdown-toggle="dash-asea-catalogos-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                            Catálogos
+                        </div>
+                        <i class="ph ph-caret-down text-sm"></i>
+                    </button>
+                    <div id="dash-asea-catalogos-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
+                        <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
+                        <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
+                        <a href="gerentes.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Gerentes</a>
+                        <a href="orden_servicio.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Orden de servicio</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700">
+            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
+                    LR
+                </div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
+                    <p class="text-xs text-gray-500">Administrador</p>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
+        
+        <!-- Header -->
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                    <i class="ph ph-list text-lg"></i>
+                </button>
+                <div class="min-w-0">
+                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Dashboard ASEA</h1>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Resumen del mes actual y estatus de ordenes</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden md:block">
+                    <button data-dropdown-toggle="dash-asea-periodo-menu" class="flex bg-dark-800 rounded-lg p-1 border border-dark-700 items-center">
+                        <span class="px-4 py-1.5 text-sm rounded-md bg-dark-700 text-white shadow-sm flex items-center gap-1">Agosto <i class="ph ph-caret-down"></i></span>
+                        <span class="px-4 py-1.5 text-sm rounded-md text-gray-400 flex items-center gap-1">2026</span>
+                    </button>
+                    <div id="dash-asea-periodo-menu" data-dropdown class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
+                        <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Mes</p>
+                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-white bg-dark-700">Agosto 2026</button>
+                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Julio 2026</button>
+                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Junio 2026</button>
+                    </div>
+                </div>
+                <button id="btn-ver-periodo" class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-dark-700 rounded-lg hover:bg-dark-800 transition-colors">
+                    <i class="ph ph-calendar-blank"></i> Ver periodo
+                </button>
+                <button id="btn-actualizar" class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                    <i class="ph ph-arrows-clockwise"></i> Actualizar
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 space-y-8">
+            
+            <!-- SECCIÓN: INDICADORES DEL MES -->
+            <section>
+                <div class="mb-4 fade-in" style="animation-delay: 0.1s;">
+                    <h2 class="text-xl font-bold text-white tracking-tight">Indicadores del mes (agosto 2026)</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in" style="animation-delay: 0.2s;">
+                    
+                    <!-- Tarjeta 1: Ordenes de servicio -->
+                    <div class="bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-5 shadow-lg group hover:-translate-y-1 transition-transform">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500"></div>
+                        <div class="flex justify-between items-start mb-2 pl-3">
+                            <div>
+                                <h3 class="text-white font-bold text-base">Ordenes de servicio</h3>
+                                <p class="text-xs text-gray-500 mt-1">Total del mes actual.</p>
+                            </div>
+                            <i class="ph ph-clipboard-text text-gray-500 text-xl"></i>
+                        </div>
+                        <div class="mt-2 mb-4 pl-3 flex items-baseline gap-2">
+                            <span class="text-4xl font-extrabold text-white">4</span>
+                            <span class="text-sm text-gray-400 font-medium">Total</span>
+                        </div>
+                        <div class="flex gap-2 pl-3 mt-auto">
+                            <div class="bg-dark-900 rounded-lg py-2.5 px-2 flex-1 text-center border border-dark-700/50">
+                                <span class="block text-white font-bold text-lg">0</span>
+                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Pend./Asign.</span>
+                            </div>
+                            <div class="bg-dark-900 rounded-lg py-2.5 px-2 flex-1 text-center border border-dark-700/50">
+                                <span class="block text-white font-bold text-lg">4</span>
+                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Realizadas</span>
+                            </div>
+                            <div class="bg-dark-900 rounded-lg py-2.5 px-2 flex-1 text-center border border-dark-700/50">
+                                <span class="block text-white font-bold text-lg">0</span>
+                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Canceladas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 2: Zonas con inspección -->
+                    <div class="bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-5 shadow-lg group hover:-translate-y-1 transition-transform">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-600"></div>
+                        <div class="flex justify-between items-start mb-2 pl-3">
+                            <div>
+                                <h3 class="text-white font-bold text-base">Zonas con inspección</h3>
+                                <p class="text-xs text-gray-500 mt-1">Zonas con ordenes realizadas en el periodo.</p>
+                            </div>
+                            <i class="ph ph-map-pin text-gray-500 text-xl"></i>
+                        </div>
+                        <div class="mt-4 pl-3 flex items-baseline gap-2">
+                            <span class="text-4xl font-extrabold text-white">1</span>
+                            <span class="text-sm text-gray-400 font-medium">Zonas</span>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta 3: Zona líder -->
+                    <div class="bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-5 shadow-lg group hover:-translate-y-1 transition-transform">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-yellow"></div>
+                        <div class="flex justify-between items-start mb-2 pl-3">
+                            <div>
+                                <h3 class="text-white font-bold text-base">Zona líder</h3>
+                                <p class="text-xs text-gray-500 mt-1">Zona con más inspecciones realizadas.</p>
+                            </div>
+                            <i class="ph ph-trophy text-gray-500 text-xl"></i>
+                        </div>
+                        <div class="mt-4 pl-3 flex items-baseline gap-2 mb-2">
+                            <span class="text-4xl font-extrabold text-white">4</span>
+                            <span class="text-sm text-gray-400 font-medium">Realizadas</span>
+                        </div>
+                        <p class="text-sm text-gray-400 pl-3">03-Local</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECCIÓN: GRÁFICAS DEL MES -->
+            <section>
+                <div class="mb-4 fade-in" style="animation-delay: 0.3s;">
+                    <h2 class="text-xl font-bold text-white tracking-tight">Graficas del mes (agosto 2026)</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 fade-in" style="animation-delay: 0.4s;">
+                    
+                    <!-- Grafica 1: Ordenes realizadas por día -->
+                    <div class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[380px] shadow-lg relative">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-white font-bold text-base">Ordenes realizadas por día</h3>
+                                <p class="text-xs text-gray-500 mt-1">Estatus realizada</p>
+                            </div>
+                            <div class="flex items-center gap-2 border border-blue-500/50 bg-blue-500/10 px-3 py-1 rounded-md">
+                                <div class="w-4 h-1.5 bg-blue-500 rounded-sm"></div>
+                                <span class="text-xs text-blue-400 font-medium">Realizadas</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full relative">
+                            <canvas id="chart-ordenes-dia"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Grafica 2: Estatus del mes -->
+                    <div class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[380px] shadow-lg">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-white font-bold text-base">Estatus del mes</h3>
+                                <p class="text-xs text-gray-500 mt-1">Pendiente, asignada, realizada, cancelada</p>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full relative">
+                            <canvas id="chart-estatus-mes"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECCIÓN: INSPECCIONES REALIZADAS POR ZONA -->
+            <section>
+                <div class="mb-4 fade-in" style="animation-delay: 0.5s;">
+                    <h2 class="text-xl font-bold text-white tracking-tight">Inspecciones realizadas por zona (agosto 2026)</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 fade-in" style="animation-delay: 0.6s;">
+                    
+                    <!-- Grafica 3: Desglose por zona y tipo -->
+                    <div class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col shadow-lg h-[340px]">
+                        <div class="mb-4">
+                            <h3 class="text-white font-bold text-base">Desglose por zona y tipo</h3>
+                            <p class="text-xs text-gray-500 mt-1">Solo inspecciones realizadas</p>
+                        </div>
+                        <div class="flex-1 w-full relative">
+                            <canvas id="chart-zona-tipo"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tabla: Matriz por zona -->
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg flex flex-col h-[340px]">
+                        <div class="mb-4">
+                            <h3 class="text-white font-bold text-base">Matriz por zona</h3>
+                            <p class="text-xs text-gray-500 mt-1">Conteo de inspecciones por tipo</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-dark-700 text-[10px] text-gray-500 uppercase tracking-wider font-semibold bg-dark-900/50">
+                                        <th class="py-3 px-4">Zona</th>
+                                        <th class="py-3 px-3 text-center">Diseño</th>
+                                        <th class="py-3 px-3 text-center">Construcción</th>
+                                        <th class="py-3 px-3 text-center">Operación</th>
+                                        <th class="py-3 px-3 text-center">D-Remod.</th>
+                                        <th class="py-3 px-3 text-center">C-Remod.</th>
+                                        <th class="py-3 px-4 text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr class="hover:bg-dark-700/50 transition-colors">
+                                        <td class="py-4 px-4 text-gray-300">03-Local</td>
+                                        <td class="py-4 px-3 text-center text-gray-400">1</td>
+                                        <td class="py-4 px-3 text-center text-gray-400">2</td>
+                                        <td class="py-4 px-3 text-center text-gray-400">1</td>
+                                        <td class="py-4 px-3 text-center text-gray-400">0</td>
+                                        <td class="py-4 px-3 text-center text-gray-400">0</td>
+                                        <td class="py-4 px-4 text-right font-bold text-white">4</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECCIÓN: INSPECTORES DEL MES -->
+            <section>
+                <div class="mb-4 fade-in" style="animation-delay: 0.7s;">
+                    <h2 class="text-xl font-bold text-white tracking-tight">Inspectores del mes (agosto 2026)</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 fade-in" style="animation-delay: 0.8s;">
+                    
+                    <!-- Tabla: Ordenes realizadas por inspector -->
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg">
+                        <div class="mb-4">
+                            <h3 class="text-white font-bold text-base">Ordenes realizadas por inspector</h3>
+                            <p class="text-xs text-gray-500 mt-1">ASEA</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-dark-700 text-[10px] text-gray-500 uppercase tracking-wider font-semibold bg-dark-900/50">
+                                        <th class="py-3 px-4 w-full">Inspector</th>
+                                        <th class="py-3 px-4 text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-dark-700/50">
+                                    <tr class="hover:bg-dark-700/50 transition-colors">
+                                        <td class="py-3.5 px-4 text-gray-300 uppercase">IVAN ARGENIS ACEVES MOLINA</td>
+                                        <td class="py-3.5 px-4 text-right font-bold text-white">3</td>
+                                    </tr>
+                                    <tr class="hover:bg-dark-700/50 transition-colors">
+                                        <td class="py-3.5 px-4 text-gray-300 uppercase">SERGIO MENDOZA BECERRA</td>
+                                        <td class="py-3.5 px-4 text-right font-bold text-white">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tabla: Usuarios con más verificaciones -->
+                    <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg">
+                        <div class="mb-4">
+                            <h3 class="text-white font-bold text-base">Usuarios con más verificaciones capturadas</h3>
+                            <p class="text-xs text-gray-500 mt-1">verification_asea_tb por veri_user_add</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-dark-700 text-[10px] text-gray-500 uppercase tracking-wider font-semibold bg-dark-900/50">
+                                        <th class="py-3 px-4 w-full">Usuario</th>
+                                        <th class="py-3 px-4 text-right">Registros</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-dark-700/50">
+                                    <tr class="hover:bg-dark-700/50 transition-colors">
+                                        <td class="py-3.5 px-4 text-gray-300 uppercase">Gestoria GESTORIA</td>
+                                        <td class="py-3.5 px-4 text-right font-bold text-white">17</td>
+                                    </tr>
+                                    <tr class="hover:bg-dark-700/50 transition-colors">
+                                        <td class="py-3.5 px-4 text-gray-300 uppercase">IDALY RUIZ</td>
+                                        <td class="py-3.5 px-4 text-right font-bold text-white">2</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            
+            <div class="mt-4 fade-in" style="animation-delay: 0.9s;">
+                <p class="text-xs text-gray-500">Tip: usa los filtros de reportes para validar detalles por rango de fechas.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../JS/app.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Botón "Actualizar" ---
+            const btnActualizar = document.getElementById('btn-actualizar');
+            btnActualizar?.addEventListener('click', () => {
+                App.withLoading(btnActualizar, {
+                    loadingText: 'Actualizando...',
+                    task: () => App.fakeRequest(900).then(() => {
+                        App.toast('Dashboard ASEA actualizado con los datos más recientes.', 'success');
+                    }),
+                });
+            });
+
+            // --- Botón "Ver periodo" ---
+            document.getElementById('btn-ver-periodo')?.addEventListener('click', () => {
+                App.toast('Mostrando el periodo Agosto 2026.', 'info');
+            });
+
+            // --- Gráficas (Chart.js) ---
+            Chart.defaults.color = '#9CA3AF';
+            Chart.defaults.font.family = 'Inter, sans-serif';
+
+            const tooltipStyle = {
+                backgroundColor: '#161925',
+                borderColor: '#232736',
+                borderWidth: 1,
+                padding: 10,
+                titleColor: '#fff',
+            };
+
+            const dias = Array.from({ length: 31 }, (_, i) => String(i + 1));
+            const ordenesPorDia = new Array(31).fill(0);
+            [7, 19, 20, 21].forEach((d) => { ordenesPorDia[d - 1] = 1; });
+
+            new Chart(document.getElementById('chart-ordenes-dia'), {
+                type: 'line',
+                data: {
+                    labels: dias,
+                    datasets: [{
+                        label: 'Realizadas',
+                        data: ordenesPorDia,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#3b82f6',
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: tooltipStyle,
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true, ticks: { stepSize: 1 } },
+                    },
+                },
+            });
+
+            new Chart(document.getElementById('chart-estatus-mes'), {
+                type: 'bar',
+                data: {
+                    labels: ['Pendiente', 'Asignada', 'Realizada', 'Cancelada'],
+                    datasets: [{
+                        label: 'Órdenes',
+                        data: [0, 0, 4, 0],
+                        backgroundColor: ['#F97316', '#EAB308', '#10b981', '#ef4444'],
+                        borderRadius: 6,
+                        maxBarThickness: 56,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: tooltipStyle,
+                    },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true, ticks: { stepSize: 1 } },
+                    },
+                },
+            });
+
+            new Chart(document.getElementById('chart-zona-tipo'), {
+                type: 'bar',
+                data: {
+                    labels: ['03-Local'],
+                    datasets: [
+                        { label: 'Diseño', data: [1], backgroundColor: '#2563eb' },
+                        { label: 'Construcción', data: [2], backgroundColor: '#0d9488' },
+                        { label: 'Operación', data: [1], backgroundColor: '#f97316' },
+                        { label: 'Diseño-Remod.', data: [0], backgroundColor: '#a855f7' },
+                        { label: 'Construcción-Remod.', data: [0], backgroundColor: '#e11d48' },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 10 } } },
+                        tooltip: tooltipStyle,
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { display: false } },
+                        y: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true, ticks: { stepSize: 1 } },
+                    },
+                },
+            });
+        });
+    </script>
+</body>
+</html>

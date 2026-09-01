@@ -1,0 +1,106 @@
+<!-- index.html (antes dashboard.html — menú de módulos) -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUDI · Inicio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Inter',sans-serif}
+  .wave-bg{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(234,88,12,.18), transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(234,88,12,.15), transparent 45%),
+      #050505;
+  }
+  @keyframes fadeInUp{
+    from{opacity:0; transform:translateY(24px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+  @keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+  }
+  @keyframes iconFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-4px)}
+  }
+  header{animation:fadeIn .5s ease-out both}
+  .card-anim{opacity:0; animation:fadeInUp .6s ease-out forwards}
+  .card-anim:nth-child(1){animation-delay:.05s}
+  .card-anim:nth-child(2){animation-delay:.15s}
+  .card-anim:nth-child(3){animation-delay:.25s}
+  .card-anim{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
+  .card-anim:hover{transform:translateY(-6px); box-shadow:0 20px 40px -20px rgba(249,115,22,.35)}
+  .card-anim:hover .icon-box{animation:iconFloat 1.2s ease-in-out infinite}
+  .arrow-move{transition:transform .2s ease}
+  .card-anim:hover .arrow-move{transform:translateX(4px)}
+</style>
+</head>
+<body class="wave-bg min-h-screen text-white">
+
+  <header class="border-b border-neutral-800/80 bg-black/40 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-orange-500 text-xl"></i>
+        <span class="font-extrabold tracking-wide">JOMAR <span class="font-normal text-neutral-400 text-sm">SUDI</span></span>
+      </div>
+      <a href="login.html" class="text-xs text-neutral-400 hover:text-orange-500 transition flex items-center gap-1">
+        <i class="ph ph-sign-out"></i> Cerrar sesión
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-14">
+    <h1 class="text-2xl font-bold mb-1">Selecciona un módulo</h1>
+    <p class="text-neutral-400 text-sm mb-10">Elige la sección con la que deseas trabajar.</p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <a href="SCFI/dashboard.html" onclick="sessionStorage.setItem('sudi_entry_anim','1')" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
+        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
+          <i class="ph-fill ph-certificate text-white text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold">SCFI</h2>
+          <p class="text-neutral-400 text-sm mt-1">Verificaciones y normatividad SCFI.</p>
+        </div>
+        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+          Ingresar <i class="ph ph-arrow-right arrow-move"></i>
+        </span>
+      </a>
+
+      <a href="ASEA/Dash_ASEA.html" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
+        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
+          <i class="ph-fill ph-gas-pump text-white text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold">ASEA</h2>
+          <p class="text-neutral-400 text-sm mt-1">Verificaciones y normatividad ASEA.</p>
+        </div>
+        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+          Ingresar <i class="ph ph-arrow-right arrow-move"></i>
+        </span>
+      </a>
+
+      <a href="dashboard.html?modulo=Reportes" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
+        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
+          <i class="ph-fill ph-chart-bar text-white text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold">Reportes</h2>
+          <p class="text-neutral-400 text-sm mt-1">Estadísticas y reportes generales.</p>
+        </div>
+        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+          Ingresar <i class="ph ph-arrow-right arrow-move"></i>
+        </span>
+      </a>
+
+    </div>
+  </main>
+</body>
+</html>

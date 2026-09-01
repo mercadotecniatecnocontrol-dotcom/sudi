@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Flexogramas - Jomar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../CSS/styles.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0F111A',
+                            800: '#161925',
+                            700: '#232736',
+                            600: '#32384e'
+                        },
+                        brand: {
+                            orange: '#F97316',
+                            yellow: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+    <!-- Overlay móvil del sidebar -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
+
+    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 -translate-x-full lg:translate-x-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="../dashboard.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inicio
+                </a>
+                <a href="../clientes.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Clientes
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Equipos
+                </a>
+                <a href="../inspecciones.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inspecciones
+                </a>
+                <div class="pt-2 pb-2">
+                    <div class="border-t border-dark-700 my-2"></div>
+                </div>
+                
+                <div class="relative">
+                    <a href="#" class="relative flex items-center px-4 py-3 rounded-xl bg-dark-700 text-white font-medium transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-files text-xl mr-3 text-brand-orange group-hover:scale-110 transition-transform"></i>
+                            Hologramas
+                        </div>
+                        <i class="ph ph-caret-up text-sm text-gray-400"></i>
+                    </a>
+                    <div class="pl-12 pr-4 py-2 space-y-1">
+                        <a href="distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Distintivos
+                        </a>
+                        <a href="flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Flexogramas
+                        </a>
+                        <a href="precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Precintos
+                        </a>
+                        <a href="asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
+                        </a>
+                        <a href="asignar_flexogramas.html" class="relative flex items-center gap-2 py-2 text-sm text-white font-medium hover:text-brand-orange transition-colors before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-brand-orange">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
+                        </a>
+                        <a href="asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <button data-dropdown-toggle="cat-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                            Catálogos
+                        </div>
+                        <i class="ph ph-caret-down text-sm"></i>
+                    </button>
+                    <div id="cat-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="../catalogo_scfi/productos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Productos</a>
+                        <a href="../catalogo_scfi/marcas.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Marcas</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700">
+            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
+                    LR
+                </div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
+                    <p class="text-xs text-gray-500">Administrador</p>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900">
+        
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                    <i class="ph ph-list text-lg"></i>
+                </button>
+                <a href="flexogramas.html" class="w-10 h-10 rounded-lg flex items-center justify-center border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-800 transition-colors mr-2 shrink-0">
+                    <i class="ph ph-arrow-left text-lg"></i>
+                </a>
+                <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3 truncate">
+                    <i class="ph ph-user-plus text-brand-orange text-3xl"></i>
+                    ASIGNAR FLEXOGRAMAS
+                </h1>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap justify-end">
+                <button id="btn-asignar-individual" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-plus"></i> Asignar individual
+                </button>
+                <button id="btn-asignar-rango" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-upload-simple"></i> Asignar por rango
+                </button>
+                <button id="btn-reporte" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-list-bullets"></i> Reporte
+                </button>
+                <div class="relative ml-2">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                    <input type="text" id="buscador-inspectores" placeholder="Buscar inspector..." class="w-40 sm:w-64 pl-9 pr-3 py-2 text-sm bg-dark-800 border border-dark-700 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors">
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 fade-in" style="animation-delay: 0.1s;">
+                
+                <!-- Tarjeta 1 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">CYNTHIA PALOMA PINEDO REYES</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">12</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">12</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-500/20 text-gray-400 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">HORACIO PORRAS ADAME</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">22</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">22</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">ALAN ALBERTO ESTRADA GOMEZ</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">1782</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">26</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">1744</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">JORGE URIBE</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">361</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">4</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">343</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 5 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-500/20 text-gray-400 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">FILIBERTO ISAI SALCEDO GARDEA</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">666</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">666</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 6 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">AUX JOMAR</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">161</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">28</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">133</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 7 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">JORGE GUERRERO GOMEZ</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">164</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">1</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">163</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 8 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-gray-500/20 text-gray-400 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">IVAN ARGENIS ACEVES MOLINA</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">1617</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">41</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">1576</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 9 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">ROBERTO MUÑOZ AVILA</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">1785</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">33</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">1752</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 10 -->
+                <div class="inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div class="flex items-center justify-between border-b border-dark-700/50 pb-4 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center shrink-0">
+                            <i class="ph ph-identification-card text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-sm tracking-wide text-center flex-1 mx-4 truncate">OXXO GAS</h3>
+                        <button class="text-gray-500 hover:text-brand-orange transition-colors shrink-0">
+                            <i class="ph ph-eye text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-2 text-[13px]">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Asignados:</span>
+                            <span class="text-blue-400 font-medium">350</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Disponibles:</span>
+                            <span class="text-blue-400 font-medium">2</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Usados:</span>
+                            <span class="text-blue-400 font-medium">348</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-gray-400">Dañados:</span>
+                            <span class="text-blue-400 font-medium">0</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: detalle de inspector -->
+    <div id="modal-detalle-inspector" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="detalle-inspector-nombre" class="text-white font-bold text-lg truncate pr-4"></h3>
+                <button data-modal-close class="text-gray-500 hover:text-white transition-colors shrink-0"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div id="detalle-inspector-metrics" class="space-y-2 text-sm"></div>
+        </div>
+    </div>
+
+    <!-- Modal: asignar (individual / por rango) -->
+    <div id="modal-asignar" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="modal-asignar-titulo" class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-user-plus text-brand-orange"></i> Asignar flexogramas</h3>
+                <button data-modal-close class="text-gray-500 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <form id="form-asignar" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Inspector</label>
+                    <select id="asignar-inspector" required class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-brand-orange transition-colors">
+                        <option value="">Selecciona un inspector...</option>
+                        <option>CYNTHIA PALOMA PINEDO REYES</option>
+                        <option>HORACIO PORRAS ADAME</option>
+                        <option>ALAN ALBERTO ESTRADA GOMEZ</option>
+                        <option>JORGE URIBE</option>
+                        <option>FILIBERTO ISAI SALCEDO GARDEA</option>
+                        <option>AUX JOMAR</option>
+                        <option>JORGE GUERRERO GOMEZ</option>
+                        <option>IVAN ARGENIS ACEVES MOLINA</option>
+                        <option>ROBERTO MUÑOZ AVILA</option>
+                        <option>OXXO GAS</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">Cantidad a asignar</label>
+                    <input type="number" id="asignar-cantidad" min="1" required class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-brand-orange transition-colors" placeholder="Ej. 50">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" data-modal-close class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
+                    <button type="submit" id="btn-asignar-guardar" class="px-4 py-2 text-sm rounded-lg font-medium text-white bg-brand-orange hover:bg-orange-600 transition-colors">Asignar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../JS/app.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Buscador en vivo ---
+            App.initSearch(document.getElementById('buscador-inspectores'), '.inspector-card');
+
+            // --- Detalle de inspector (botón ojo) ---
+            document.querySelectorAll('.inspector-card').forEach((card) => {
+                const eyeBtn = card.querySelector('button');
+                eyeBtn?.addEventListener('click', () => {
+                    const nombre = card.querySelector('h3')?.textContent.trim() || '';
+                    const filas = Array.from(card.querySelectorAll('.grid.grid-cols-2 > div')).map((row) => {
+                        const spans = row.querySelectorAll('span');
+                        return {
+                            label: spans[0]?.textContent.replace(':', '').trim() || '',
+                            valor: spans[1]?.textContent.trim() || '',
+                        };
+                    });
+                    document.getElementById('detalle-inspector-nombre').textContent = nombre;
+                    document.getElementById('detalle-inspector-metrics').innerHTML = filas.map((f) => `
+                        <div class="flex justify-between items-center bg-dark-900 border border-dark-700 rounded-lg px-4 py-3">
+                            <span class="text-gray-400">${f.label}</span>
+                            <span class="text-white font-bold">${f.valor}</span>
+                        </div>
+                    `).join('');
+                    App.openModal('modal-detalle-inspector');
+                });
+            });
+
+            // --- Asignar individual / por rango ---
+            document.getElementById('btn-asignar-individual')?.addEventListener('click', () => {
+                document.getElementById('modal-asignar-titulo').innerHTML = '<i class="ph ph-plus text-brand-orange"></i> Asignar individual';
+                App.openModal('modal-asignar');
+            });
+            document.getElementById('btn-asignar-rango')?.addEventListener('click', () => {
+                document.getElementById('modal-asignar-titulo').innerHTML = '<i class="ph ph-upload-simple text-brand-orange"></i> Asignar por rango';
+                App.openModal('modal-asignar');
+            });
+            document.getElementById('form-asignar')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const inspector = document.getElementById('asignar-inspector').value;
+                const cantidad = document.getElementById('asignar-cantidad').value;
+                if (!inspector || !cantidad) return;
+                const btn = document.getElementById('btn-asignar-guardar');
+                App.withLoading(btn, {
+                    loadingText: 'Asignando...',
+                    task: () => App.fakeRequest(800).then(() => {
+                        App.closeModal('modal-asignar');
+                        App.toast(`Se asignaron ${cantidad} flexogramas a ${inspector}.`, 'success');
+                        e.target.reset();
+                    }),
+                });
+            });
+
+            // --- Reporte ---
+            document.getElementById('btn-reporte')?.addEventListener('click', () => {
+                const btn = document.getElementById('btn-reporte');
+                App.withLoading(btn, {
+                    loadingText: 'Generando...',
+                    task: () => App.fakeRequest(800).then(() => {
+                        App.toast('Reporte generado correctamente.', 'success');
+                    }),
+                });
+            });
+        });
+    </script>
+</body>
+</html>

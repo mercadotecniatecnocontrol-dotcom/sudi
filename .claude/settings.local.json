@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where python *)",
+      "Bash(where py *)",
+      "Bash(where node *)",
+      "Bash(node -e ' *)",
+      "Bash(node)",
+      "Bash(sed -i 's/<div class=\"bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group\">/<div class=\"inspector-card bg-dark-800 rounded-2xl border border-dark-700 p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group\">/g' asignar_precintos.html)",
+      "Bash(sed -i 's/<div class=\"grid grid-cols-1 xl:grid-cols-2 gap-6 fade-in\" style=\"animation-delay: 0.1s;\">/<div id=\"grid-inspectores\" class=\"grid grid-cols-1 xl:grid-cols-2 gap-6 fade-in\" style=\"animation-delay: 0.1s;\">/' asignar_precintos.html)",
+      "Bash(python3 -)",
+      "Bash(sed -i 's|<tr class=\"hover:bg-dark-700/30 transition-colors group\">|<tr class=\"os-row hover:bg-dark-700/30 transition-colors group\">|g' orden_servicio.html)",
+      "Bash(sed -i 's|<td class=\"py-3 px-4 border-r border-dark-700/50 text-gray-400\">Realizada</td>|<td class=\"py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus\">Realizada</td>|g' orden_servicio.html)",
+      "Bash(sed -i 's|<td class=\"py-3 px-4 border-r border-dark-700/50 text-gray-400\">Asignado</td>|<td class=\"py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus\">Asignado</td>|g' orden_servicio.html)",
+      "Bash(sed -i 's|<button class=\"w-full bg-\\\\[#004b93\\\\] hover:bg-\\\\[#003870\\\\] text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-\\\\[46px\\\\]\">|<button class=\"os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]\">|g' orden_servicio.html)",
+      "Bash(sed -i 's|<button class=\"w-full bg-brand-yellow/90 hover:bg-brand-yellow text-dark-900 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-\\\\[46px\\\\]\">|<button class=\"os-pendiente-btn w-full bg-brand-yellow/90 hover:bg-brand-yellow text-dark-900 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]\">|g' orden_servicio.html)",
+      "Bash(echo \"exit:$?\")"
+    ]
+  }
+}

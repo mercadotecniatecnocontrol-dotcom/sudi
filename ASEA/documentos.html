@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos - Jomar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/styles.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0F111A',
+                            800: '#161925',
+                            700: '#232736',
+                            600: '#32384e'
+                        },
+                        brand: {
+                            orange: '#F97316',
+                            yellow: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+    <!-- Overlay móvil del sidebar -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
+
+    <!-- Sidebar Lateral -->
+    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 -translate-x-full lg:translate-x-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <span class="text-xl font-bold text-white tracking-wider mr-3">ASEA</span>
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Módulo</span>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="Dash_ASEA.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inicio
+                </a>
+                <a href="clientes_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Clientes
+                </a>
+                <a href="orden_servicio.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-file-plus text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Orden de servicio
+                </a>
+                <a href="inspecciones_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inspecciones
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-list-checks text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Requerimientos
+                </a>
+                <a href="gerentes.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-user-tie text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Gerentes
+                </a>
+
+                <div class="pt-2 pb-2">
+                    <div class="border-t border-dark-700 my-2"></div>
+                </div>
+
+                <div class="relative">
+                    <button data-dropdown-toggle="documentos-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                            Hologramas
+                        </div>
+                        <i class="ph ph-caret-down text-sm"></i>
+                    </button>
+                    <div id="documentos-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="../SCFI/hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Distintivos
+                        </a>
+                        <a href="../SCFI/hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Flexogramas
+                        </a>
+                        <a href="../SCFI/hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Precintos
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
+                        </a>
+                        <a href="../SCFI/hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <a href="#" class="relative flex items-center px-4 py-3 rounded-xl bg-dark-700 text-white font-medium transition-all group overflow-hidden justify-between">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
+                        <div class="flex items-center">
+                            <i class="ph ph-list-dashes text-xl mr-3 text-brand-orange group-hover:scale-110 transition-transform"></i>
+                            Catálogos
+                        </div>
+                        <i class="ph ph-caret-up text-sm text-gray-400"></i>
+                    </a>
+                    <div class="pl-12 pr-4 py-2 space-y-1">
+                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            Check List Operación
+                        </a>
+                        <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+                            Petrolífero
+                        </a>
+                        <a href="documentos.html" class="block py-2 text-sm text-white font-medium hover:text-brand-orange transition-colors flex items-center gap-2 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-brand-orange">
+                            Documentos
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700">
+            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
+                    LR
+                </div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
+                    <p class="text-xs text-gray-500">Administrador</p>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+        
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                    <i class="ph ph-list text-lg"></i>
+                </button>
+                <div class="min-w-0">
+                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Catálogo de Documentos</h1>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Gestión de dictámenes, estudios y reportes normativos</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="documentos-search" placeholder="Buscar documento..."
+                           class="w-56 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <button data-modal-open="modal-nuevo-documento" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                    <i class="ph ph-plus"></i> Nuevo documento
+                </button>
+            </div>
+        </header>
+
+        <div class="p-8 max-w-7xl mx-auto w-full">
+
+            <!-- Barra superior: Título -->
+            <div class="flex items-center gap-3 mb-8 fade-in">
+                <div class="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center border border-brand-orange/20">
+                    <i class="ph ph-file-text text-2xl text-brand-orange"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">DOCUMENTOS</h2>
+            </div>
+
+            <!-- Tabla de Documentos -->
+            <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden fade-in" style="animation-delay: 0.1s;">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center border-collapse">
+                        <thead>
+                            <tr class="bg-dark-900/80 border-b border-dark-700 text-sm text-gray-400 uppercase tracking-wider font-semibold">
+                                <th class="py-5 px-6">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <i class="ph ph-file-text text-lg text-brand-orange"></i> Documento
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentos-tbody" class="text-[15px] font-medium divide-y divide-dark-700/50">
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white uppercase">ANALISIS DE RIESGO</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Bitácora</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Certificados UL</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Dictamen SASISOPA</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Dictamen UVA</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Dictamen UVIE</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Estudio de energía eléctrica</td>
+                            </tr>
+                            <tr class="documento-row hover:bg-dark-700/30 transition-colors group">
+                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Estudio de Riesgo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="documentos-empty" class="hidden text-center text-gray-500 text-sm py-8">No se encontraron documentos con ese criterio de búsqueda.</p>
+            </div>
+
+            <!-- Paginación -->
+            <div class="flex flex-col md:flex-row justify-end items-center gap-4 mt-6 fade-in" style="animation-delay: 0.2s;">
+                <div class="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-xl p-2 shadow-sm">
+                    <button id="documentos-prev" class="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-left text-lg"></i>
+                    </button>
+                    <button id="documentos-next" class="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-right text-lg"></i>
+                    </button>
+                    <div class="h-5 w-px bg-dark-700 mx-1"></div>
+                    <span id="documentos-pag-label" class="text-sm text-gray-400 px-2">Pág. 1 de 1</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal: Nuevo Documento -->
+    <div id="modal-nuevo-documento" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-bold text-lg">Nuevo documento</h3>
+                <button data-modal-close class="text-gray-500 hover:text-white transition-colors">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+            <form id="form-nuevo-documento" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Nombre del documento</label>
+                    <input type="text" required name="nombre" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" data-modal-close class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
+                    <button type="submit" id="btn-guardar-documento" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 hover:shadow-orange-500/25 shadow-lg transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../JS/app.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.initSearch(document.getElementById('documentos-search'), '.documento-row', {
+                emptyStateSelector: '#documentos-empty',
+            });
+
+            App.initPagination({
+                itemsSelector: '.documento-row',
+                pageSize: 8,
+                container: document.getElementById('documentos-tbody'),
+                prevBtn: document.getElementById('documentos-prev'),
+                nextBtn: document.getElementById('documentos-next'),
+                labelEl: document.getElementById('documentos-pag-label'),
+            });
+
+            const form = document.getElementById('form-nuevo-documento');
+            form?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = Object.fromEntries(new FormData(form).entries());
+                const btn = document.getElementById('btn-guardar-documento');
+                App.withLoading(btn, {
+                    loadingText: 'Guardando...',
+                    task: () => App.fakeRequest(600).then(() => {
+                        const tbody = document.getElementById('documentos-tbody');
+                        const row = document.createElement('tr');
+                        row.className = 'documento-row hover:bg-dark-700/30 transition-colors group';
+                        row.innerHTML = `<td class="py-4 px-6 text-gray-300 group-hover:text-white">${data.nombre}</td>`;
+                        tbody.appendChild(row);
+                        form.reset();
+                        App.closeModal('modal-nuevo-documento');
+                        App.toast('Documento agregado correctamente.', 'success');
+                    }),
+                });
+            });
+        });
+    </script>
+</body>
+</html>

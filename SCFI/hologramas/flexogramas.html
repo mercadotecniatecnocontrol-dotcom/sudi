@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexogramas - Jomar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../CSS/styles.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0F111A',
+                            800: '#161925',
+                            700: '#232736',
+                            600: '#32384e'
+                        },
+                        brand: {
+                            orange: '#F97316',
+                            yellow: '#EAB308'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+    <!-- Overlay móvil del sidebar -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
+
+    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 -translate-x-full lg:translate-x-0">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="../dashboard.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inicio
+                </a>
+                <a href="../clientes.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Clientes
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Equipos
+                </a>
+                <a href="../inspecciones.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
+                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                    Inspecciones
+                </a>
+                <div class="pt-2 pb-2">
+                    <div class="border-t border-dark-700 my-2"></div>
+                </div>
+                
+                <div class="relative">
+                    <a href="#" class="relative flex items-center px-4 py-3 rounded-xl bg-dark-700 text-white font-medium transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-files text-xl mr-3 text-brand-orange group-hover:scale-110 transition-transform"></i>
+                            Hologramas
+                        </div>
+                        <i class="ph ph-caret-up text-sm text-gray-400"></i>
+                    </a>
+                    <div class="pl-12 pr-4 py-2 space-y-1">
+                        <a href="distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Distintivos
+                        </a>
+                        <a href="flexogramas.html" class="relative flex items-center gap-2 py-2 text-sm text-white font-medium hover:text-brand-orange transition-colors before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-brand-orange">
+                            <i class="ph ph-hash text-xs"></i> Flexogramas
+                        </a>
+                        <a href="precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-hash text-xs"></i> Precintos
+                        </a>
+                        <a href="asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
+                        </a>
+                        <a href="asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
+                        </a>
+                        <a href="asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <button data-dropdown-toggle="cat-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
+                        <div class="flex items-center">
+                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
+                            Catálogos
+                        </div>
+                        <i class="ph ph-caret-down text-sm"></i>
+                    </button>
+                    <div id="cat-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="../catalogo_scfi/productos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Productos</a>
+                        <a href="../catalogo_scfi/marcas.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Marcas</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700">
+            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
+                    LR
+                </div>
+                <div class="flex-1 overflow-hidden">
+                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
+                    <p class="text-xs text-gray-500">Administrador</p>
+                </div>
+            </div>
+            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
+                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900">
+        
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                    <i class="ph ph-list text-lg"></i>
+                </button>
+                <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3 truncate">
+                    <i class="ph ph-barcode text-brand-orange text-3xl"></i>
+                    FLEXOGRAMAS
+                </h1>
+            </div>
+            <div class="flex items-center gap-3 flex-wrap justify-end">
+                <a href="asignar_flexogramas.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-plus"></i> Individual
+                </a>
+                <a href="asignar_flexogramas.html" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-upload-simple"></i> Por rango
+                </a>
+                <button id="btn-eliminar-rango" data-modal-open="modal-eliminar-rango" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-400 bg-dark-800 border border-dark-700 rounded-lg hover:bg-red-500/10 hover:border-red-500/50 transition-colors">
+                    <i class="ph ph-trash"></i> Eliminar por rango
+                </button>
+                <button id="btn-reporte" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 hover:text-white transition-colors">
+                    <i class="ph ph-list-bullets"></i> Reporte
+                </button>
+                <div class="relative ml-2">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                    <input type="text" id="buscador-folios" placeholder="Buscar folio o nombre..." class="w-40 sm:w-64 pl-9 pr-3 py-2 text-sm bg-dark-800 border border-dark-700 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-orange transition-colors">
+                </div>
+            </div>
+        </header>
+
+        <div class="p-8">
+            
+            <div class="mb-8 fade-in">
+                <h2 class="text-xl text-gray-300 font-medium">Catálogo de flexogramas con <span class="text-white font-bold">8469</span> registros</h2>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-6 mb-8 fade-in" style="animation-delay: 0.1s;">
+                <div class="flex items-center gap-2 cursor-default group">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-emerald-500 bg-emerald-500/20 group-hover:bg-emerald-500 transition-colors"></div>
+                    <span class="text-sm font-medium text-white">Disponible <span class="text-gray-500 text-xs ml-1">(715)</span></span>
+                </div>
+                <div class="flex items-center gap-2 cursor-default group">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-yellow-500 bg-yellow-500/20 group-hover:bg-yellow-500 transition-colors"></div>
+                    <span class="text-sm font-medium text-white">Asignado <span class="text-gray-500 text-xs ml-1">(442)</span></span>
+                </div>
+                <div class="flex items-center gap-2 cursor-default group">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-blue-500 bg-blue-500/20 group-hover:bg-blue-500 transition-colors"></div>
+                    <span class="text-sm font-medium text-white">Usado <span class="text-gray-500 text-xs ml-1">(7312)</span></span>
+                </div>
+                <div class="flex items-center gap-2 cursor-default group">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-purple-400 bg-purple-400/20 group-hover:bg-purple-400 transition-colors"></div>
+                    <span class="text-sm font-medium text-white">Alto flujo <span class="text-gray-500 text-xs ml-1">(0)</span></span>
+                </div>
+                <div class="flex items-center gap-2 cursor-default group">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-red-500 bg-red-500/20 group-hover:bg-red-500 transition-colors"></div>
+                    <span class="text-sm font-medium text-white">Dañado <span class="text-gray-500 text-xs ml-1">(0)</span></span>
+                </div>
+            </div>
+
+            <div id="grid-folios" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00100</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00101</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00102</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00103</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00104</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-emerald-500/50 bg-emerald-500/5 hover:bg-emerald-500/10 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00105</span>
+                    <span class="text-emerald-500 font-bold text-[10px] uppercase tracking-wider">Disponible</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00106</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="CYNTHIA PALOMA PINEDO REYES">CYNTHIA PALOMA PINEDO REYES</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00107</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="HORACIO PORRAS ADAME">HORACIO PORRAS ADAME</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00108</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ALAN ALBERTO ESTRADA GOMEZ">ALAN ALBERTO ESTRADA GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00109</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE URIBE">JORGE URIBE</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00110</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="FILIBERTO ISAI SALCEDO GARDEA">FILIBERTO ISAI SALCEDO GARDEA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 hover:bg-yellow-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00111</span>
+                    <span class="text-yellow-500 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="AUX JOMAR">AUX JOMAR</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00112</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="CYNTHIA PALOMA PINEDO REYES">CYNTHIA PALOMA PINEDO REYES</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00113</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="HORACIO PORRAS ADAME">HORACIO PORRAS ADAME</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00114</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ALAN ALBERTO ESTRADA GOMEZ">ALAN ALBERTO ESTRADA GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00115</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE URIBE">JORGE URIBE</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00116</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="FILIBERTO ISAI SALCEDO GARDEA">FILIBERTO ISAI SALCEDO GARDEA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00117</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="AUX JOMAR">AUX JOMAR</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00118</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE GUERRERO GOMEZ">JORGE GUERRERO GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00119</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="IVAN ARGENIS ACEVES MOLINA">IVAN ARGENIS ACEVES MOLINA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00120</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ROBERTO MUÑOZ AVILA">ROBERTO MUÑOZ AVILA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00121</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="OXXO GAS">OXXO GAS</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00122</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="CYNTHIA PALOMA PINEDO REYES">CYNTHIA PALOMA PINEDO REYES</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00123</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="HORACIO PORRAS ADAME">HORACIO PORRAS ADAME</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00124</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ALAN ALBERTO ESTRADA GOMEZ">ALAN ALBERTO ESTRADA GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00125</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE URIBE">JORGE URIBE</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00126</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="FILIBERTO ISAI SALCEDO GARDEA">FILIBERTO ISAI SALCEDO GARDEA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00127</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="AUX JOMAR">AUX JOMAR</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00128</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE GUERRERO GOMEZ">JORGE GUERRERO GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00129</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="IVAN ARGENIS ACEVES MOLINA">IVAN ARGENIS ACEVES MOLINA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00130</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ROBERTO MUÑOZ AVILA">ROBERTO MUÑOZ AVILA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00131</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="OXXO GAS">OXXO GAS</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00132</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="CYNTHIA PALOMA PINEDO REYES">CYNTHIA PALOMA PINEDO REYES</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00133</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="HORACIO PORRAS ADAME">HORACIO PORRAS ADAME</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00134</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ALAN ALBERTO ESTRADA GOMEZ">ALAN ALBERTO ESTRADA GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00135</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE URIBE">JORGE URIBE</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00136</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="FILIBERTO ISAI SALCEDO GARDEA">FILIBERTO ISAI SALCEDO GARDEA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00137</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="AUX JOMAR">AUX JOMAR</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00138</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="JORGE GUERRERO GOMEZ">JORGE GUERRERO GOMEZ</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00139</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="IVAN ARGENIS ACEVES MOLINA">IVAN ARGENIS ACEVES MOLINA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00140</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="ROBERTO MUÑOZ AVILA">ROBERTO MUÑOZ AVILA</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00141</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="OXXO GAS">OXXO GAS</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00142</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="CYNTHIA PALOMA PINEDO REYES">CYNTHIA PALOMA PINEDO REYES</span>
+                </div>
+                <div class="folio-card flex flex-col justify-center px-4 py-3 rounded-xl border border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/20 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-[80px]">
+                    <span class="text-gray-400 font-mono text-[13px] mb-1 group-hover:text-gray-300 transition-colors">00143</span>
+                    <span class="text-blue-400 font-bold text-[10px] uppercase leading-tight line-clamp-2" title="HORACIO PORRAS ADAME">HORACIO PORRAS ADAME</span>
+                </div>
+
+            </div>
+
+            <div class="flex justify-end items-center gap-4 mt-10 fade-in" style="animation-delay: 0.3s;">
+                <div class="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-xl p-1 shadow-sm">
+                    <button id="btn-page-first" class="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-double-left text-lg"></i>
+                    </button>
+                    <button id="btn-page-prev" class="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-left text-lg"></i>
+                    </button>
+
+                    <div class="h-6 w-px bg-dark-700 mx-2"></div>
+                    <button id="btn-page-next" class="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-right text-lg"></i>
+                    </button>
+                    <button id="btn-page-last" class="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
+                        <i class="ph ph-caret-double-right text-lg"></i>
+                    </button>
+
+                    <div class="h-6 w-px bg-dark-700 mx-2"></div>
+                    <span id="page-label" class="text-sm text-gray-400 px-3 py-1.5">Pág. <span class="text-white font-medium">1</span> de 1</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal: detalle de folio -->
+    <div id="modal-detalle-folio" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-barcode text-brand-orange"></i> Detalle de folio</h3>
+                <button data-modal-close class="text-gray-500 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div class="flex justify-between items-center bg-dark-900 border border-dark-700 rounded-lg px-4 py-3">
+                    <span class="text-gray-400">Folio</span>
+                    <span id="detalle-folio-valor" class="text-white font-mono font-bold"></span>
+                </div>
+                <div class="flex justify-between items-center bg-dark-900 border border-dark-700 rounded-lg px-4 py-3">
+                    <span class="text-gray-400">Estado</span>
+                    <span id="detalle-estado-valor" class="font-bold text-right"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: eliminar por rango -->
+    <div id="modal-eliminar-rango" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-trash text-red-400"></i> Eliminar por rango</h3>
+                <button data-modal-close class="text-gray-500 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <form id="form-eliminar-rango" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Folio inicial</label>
+                        <input type="text" id="rango-folio-inicial" required class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="00100">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Folio final</label>
+                        <input type="text" id="rango-folio-final" required class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="00143">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" data-modal-close class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 text-sm rounded-lg font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../JS/app.js" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Buscador en vivo ---
+            App.initSearch(document.getElementById('buscador-folios'), '#grid-folios .folio-card');
+
+            // --- Paginación ---
+            const pag = App.initPagination({
+                itemsSelector: '.folio-card',
+                pageSize: 12,
+                prevBtn: document.getElementById('btn-page-prev'),
+                nextBtn: document.getElementById('btn-page-next'),
+                labelEl: document.getElementById('page-label'),
+                container: document.getElementById('grid-folios'),
+            });
+            document.getElementById('btn-page-first')?.addEventListener('click', () => pag?.goTo(1));
+            document.getElementById('btn-page-last')?.addEventListener('click', () => pag?.goTo(9999));
+
+            // --- Detalle de folio al hacer click en una tarjeta ---
+            document.querySelectorAll('#grid-folios .folio-card').forEach((card) => {
+                card.addEventListener('click', () => {
+                    const spans = card.querySelectorAll('span');
+                    document.getElementById('detalle-folio-valor').textContent = spans[0]?.textContent.trim() || '';
+                    document.getElementById('detalle-estado-valor').textContent = spans[1]?.textContent.trim() || '';
+                    App.openModal('modal-detalle-folio');
+                });
+            });
+
+            // --- Eliminar por rango ---
+            document.getElementById('form-eliminar-rango')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const inicial = document.getElementById('rango-folio-inicial').value.trim();
+                const final = document.getElementById('rango-folio-final').value.trim();
+                App.closeModal('modal-eliminar-rango');
+                App.confirmAction({
+                    title: 'Eliminar folios por rango',
+                    message: `¿Eliminar los folios del ${inicial} al ${final}? Esta acción no se puede deshacer.`,
+                    confirmLabel: 'Eliminar',
+                    danger: true,
+                    onConfirm: () => {
+                        App.toast(`Folios del ${inicial} al ${final} eliminados correctamente.`, 'success');
+                        e.target.reset();
+                    },
+                });
+            });
+
+            // --- Reporte ---
+            document.getElementById('btn-reporte')?.addEventListener('click', () => {
+                const btn = document.getElementById('btn-reporte');
+                App.withLoading(btn, {
+                    loadingText: 'Generando...',
+                    task: () => App.fakeRequest(800).then(() => {
+                        App.toast('Reporte generado correctamente.', 'success');
+                    }),
+                });
+            });
+        });
+    </script>
+</body>
+</html>

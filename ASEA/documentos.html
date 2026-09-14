@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
+<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://unpkg.com">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Documentos - Jomar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
 
     <script>
@@ -25,7 +28,7 @@
                             600: '#32384e'
                         },
                         brand: {
-                            orange: '#F97316',
+                            orange: '#EAB308',
                             yellow: '#EAB308'
                         }
                     }
@@ -33,14 +36,14 @@
             }
         }
     </script>
-</head>
-<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+
 
     <!-- Overlay móvil del sidebar -->
     <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
     <!-- Sidebar Lateral -->
-    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 -translate-x-full lg:translate-x-0">
+    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
                 <span class="text-xl font-bold text-white tracking-wider mr-3">ASEA</span>
@@ -50,104 +53,82 @@
             </div>
 
             <nav class="p-4 space-y-2 mt-2">
-                <a href="Dash_ASEA.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inicio
-                </a>
-                <a href="clientes_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Clientes
-                </a>
-                <a href="orden_servicio.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-file-plus text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Orden de servicio
-                </a>
-                <a href="inspecciones_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inspecciones
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-list-checks text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Requerimientos
-                </a>
-                <a href="gerentes.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-user-tie text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Gerentes
-                </a>
+                <a href="../../index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
+                <a href="Dash_ASEA.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-house text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inicio</span></a>
+                <a href="clientes_asea.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
+                <a href="orden_servicio.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-file-plus text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Orden de servicio</span></a>
+                <a href="inspecciones_asea.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
+                <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-list-checks text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Requerimientos</span></a>
+                <a href="gerentes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-user-list text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Gerentes</span></a>
 
                 <div class="pt-2 pb-2">
                     <div class="border-t border-dark-700 my-2"></div>
                 </div>
 
                 <div class="relative">
-                    <button data-dropdown-toggle="documentos-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Hologramas
-                        </div>
-                        <i class="ph ph-caret-down text-sm"></i>
-                    </button>
-                    <div id="documentos-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="../SCFI/hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Precintos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
-                        </a>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <a href="#" class="relative flex items-center px-4 py-3 rounded-xl bg-dark-700 text-white font-medium transition-all group overflow-hidden justify-between">
-                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
-                        <div class="flex items-center">
-                            <i class="ph ph-list-dashes text-xl mr-3 text-brand-orange group-hover:scale-110 transition-transform"></i>
-                            Catálogos
-                        </div>
-                        <i class="ph ph-caret-up text-sm text-gray-400"></i>
-                    </a>
-                    <div class="pl-12 pr-4 py-2 space-y-1">
-                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            Check List Operación
-                        </a>
-                        <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors flex items-center gap-2">
-                            Petrolífero
-                        </a>
-                        <a href="documentos.html" class="block py-2 text-sm text-white font-medium hover:text-brand-orange transition-colors flex items-center gap-2 before:content-[''] before:w-1.5 before:h-1.5 before:rounded-full before:bg-brand-orange">
-                            Documentos
-                        </a>
+                    <button data-dropdown-toggle="gerentes-catalogos-menu" class="w-full flex items-center justify-between px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+            <div class="flex items-center gap-4">
+                <i class="ph ph-list-dashes text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                <span>Catálogos</span>
+            </div>
+            <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
+        </button>
+                    <div id="gerentes-catalogos-menu" data-dropdown="" class="hidden pl-12 pr-4 py-2 space-y-1">
+                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
+                        <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
+                        <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <div class="p-4 border-t border-dark-700">
-            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
-                    LR
+                
+    
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger="" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50" title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
-                    <p class="text-xs text-gray-500">Administrador</p>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
                 </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0" title="Opciones de perfil"></i>
             </div>
-            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            <a href="../login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
             </a>
         </div>
-    </aside>
+</aside>
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
@@ -165,11 +146,10 @@
 
             <div class="flex items-center gap-4">
                 <div class="relative hidden sm:block">
-                    <input type="text" id="documentos-search" placeholder="Buscar documento..."
-                           class="w-56 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="text" id="documentos-search" placeholder="Buscar documento..." class="w-56 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                     <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
                 </div>
-                <button data-modal-open="modal-nuevo-documento" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                <button data-modal-open="modal-nuevo-documento" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
                     <i class="ph ph-plus"></i> Nuevo documento
                 </button>
             </div>
@@ -179,8 +159,8 @@
 
             <!-- Barra superior: Título -->
             <div class="flex items-center gap-3 mb-8 fade-in">
-                <div class="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center border border-brand-orange/20">
-                    <i class="ph ph-file-text text-2xl text-brand-orange"></i>
+                <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
+                    <i class="ph ph-file-text text-2xl text-brand-yellow"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-white tracking-tight">DOCUMENTOS</h2>
             </div>
@@ -193,7 +173,7 @@
                             <tr class="bg-dark-900/80 border-b border-dark-700 text-sm text-gray-400 uppercase tracking-wider font-semibold">
                                 <th class="py-5 px-6">
                                     <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-file-text text-lg text-brand-orange"></i> Documento
+                                        <i class="ph ph-file-text text-lg text-brand-yellow"></i> Documento
                                     </div>
                                 </th>
                             </tr>
@@ -247,30 +227,31 @@
     </main>
 
     <!-- Modal: Nuevo Documento -->
-    <div id="modal-nuevo-documento" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div id="modal-nuevo-documento" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-white font-bold text-lg">Nuevo documento</h3>
-                <button data-modal-close class="text-gray-500 hover:text-white transition-colors">
+                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors">
                     <i class="ph ph-x text-xl"></i>
                 </button>
             </div>
             <form id="form-nuevo-documento" class="space-y-4">
                 <div>
                     <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Nombre del documento</label>
-                    <input type="text" required name="nombre" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="text" required="" name="nombre" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 </div>
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" id="btn-guardar-documento" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 hover:shadow-orange-500/25 shadow-lg transition-all">Guardar</button>
+                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
+                    <button type="submit" id="btn-guardar-documento" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 hover:shadow-yellow-500/25 shadow-lg transition-all">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="../JS/app.js" defer></script>
-    <script defer>
+    <script src="../JS/app.js" defer=""></script>
+    <script src="../JS/table-actions.js" defer=""></script>
+    <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
             App.initSearch(document.getElementById('documentos-search'), '.documento-row', {
                 emptyStateSelector: '#documentos-empty',
@@ -306,5 +287,5 @@
             });
         });
     </script>
-</body>
-</html>
+
+</body></html>

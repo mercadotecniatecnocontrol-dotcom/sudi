@@ -7,6 +7,23 @@
 html {
     height: 100%;
     overflow: hidden;
+    color-scheme: dark;
+}
+
+/* Animación global de entrada de página */
+@keyframes pageEntry {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+main {
+    animation: pageEntry 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Animaciones Base */
@@ -145,9 +162,9 @@ html {
     transform: translateY(-50%);
     width: 4px;
     height: 70%;
-    background-color: #F97316;
+    background-color: #EAB308;
     border-radius: 0 4px 4px 0;
-    box-shadow: 0 0 10px #F97316;
+    box-shadow: 0 0 10px #EAB308;
 }
 
 /* Scrollbar Personalizado y moderno (global, no solo .custom-scrollbar) */
@@ -209,4 +226,21 @@ html {
         inset: 0 auto 0 0;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+}
+
+/* Interacción de tablas y apartado (table-actions.js) */
+table tbody tr:not(.no-clickable):not(.empty-state-row) {
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+table tbody tr:not(.no-clickable):not(.empty-state-row):hover {
+    background-color: rgba(35, 39, 54, 0.6) !important;
+}
+
+.table-row-selected {
+    background-color: rgba(234, 179, 8, 0.12) !important;
+    box-shadow: inset 0 0 0 1.5px rgba(234, 179, 8, 0.6) !important;
+    position: relative;
+    z-index: 5;
 }

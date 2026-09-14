@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
+<!DOCTYPE html><html lang="es" class="dark"><head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://unpkg.com">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard ASEA - Jomar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
     <!-- Chart.js (gráficas reales y animadas) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
@@ -27,7 +28,7 @@
                             600: '#32384e'
                         },
                         brand: {
-                            orange: '#F97316',
+                            orange: '#EAB308',
                             yellow: '#EAB308'
                         }
                     }
@@ -42,104 +43,89 @@
     <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
     <!-- Sidebar Lateral -->
-    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 shrink-0 -translate-x-full lg:translate-x-0">
+    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
-                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
-                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
-                </div>
+                <img src="..\img\JOMARLOGO.png" alt="Jomar Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.3)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
             </div>
 
             <nav class="p-4 space-y-2 mt-2">
-                <a href="Dash_ASEA.html" class="relative flex items-center px-4 py-3 rounded-xl bg-brand-orange/10 text-brand-orange font-medium transition-all group overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
-                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inicio
-                </a>
-                <a href="clientes_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Clientes
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Equipos
-                </a>
-                <a href="inspecciones_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inspecciones
-                </a>
+                <a href="../../index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
+                <a href="Dash_ASEA.html" class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow"><i class="ph ph-house text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i><span>Inicio</span></a>
+                <a href="clientes_asea.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
+                <a href="orden_servicio.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-file-plus text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Orden de servicio</span></a>
+                <a href="inspecciones_asea.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
+                <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-list-checks text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Requerimientos</span></a>
+                <a href="gerentes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-user-list text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Gerentes</span></a>
+
                 <div class="pt-2 pb-2">
                     <div class="border-t border-dark-700 my-2"></div>
                 </div>
 
-                <!-- Menú Hologramas -->
                 <div class="relative">
-                    <button data-dropdown-toggle="dash-asea-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Hologramas
-                        </div>
-                        <i class="ph ph-caret-down text-sm"></i>
-                    </button>
-                    <div id="dash-asea-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="../SCFI/hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Precintos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Menú Catálogos -->
-                <div class="relative">
-                    <button data-dropdown-toggle="dash-asea-catalogos-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Catálogos
-                        </div>
-                        <i class="ph ph-caret-down text-sm"></i>
-                    </button>
-                    <div id="dash-asea-catalogos-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                    <button data-dropdown-toggle="gerentes-catalogos-menu" class="w-full flex items-center justify-between px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+            <div class="flex items-center gap-4">
+                <i class="ph ph-list-dashes text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                <span>Catálogos</span>
+            </div>
+            <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
+        </button>
+                    <div id="gerentes-catalogos-menu" data-dropdown="" class="hidden pl-12 pr-4 py-2 space-y-1">
                         <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
                         <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
                         <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
-                        <a href="gerentes.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Gerentes</a>
-                        <a href="orden_servicio.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Orden de servicio</a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <div class="p-4 border-t border-dark-700">
-            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
-                    LR
+                
+    
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger="" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50" title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
-                    <p class="text-xs text-gray-500">Administrador</p>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
                 </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0" title="Opciones de perfil"></i>
             </div>
-            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            <a href="../login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
             </a>
         </div>
-    </aside>
+</aside>
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
@@ -162,7 +148,7 @@
                         <span class="px-4 py-1.5 text-sm rounded-md bg-dark-700 text-white shadow-sm flex items-center gap-1">Agosto <i class="ph ph-caret-down"></i></span>
                         <span class="px-4 py-1.5 text-sm rounded-md text-gray-400 flex items-center gap-1">2026</span>
                     </button>
-                    <div id="dash-asea-periodo-menu" data-dropdown class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
+                    <div id="dash-asea-periodo-menu" data-dropdown="" class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
                         <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Mes</p>
                         <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-white bg-dark-700">Agosto 2026</button>
                         <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Julio 2026</button>
@@ -172,7 +158,7 @@
                 <button id="btn-ver-periodo" class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-dark-700 rounded-lg hover:bg-dark-800 transition-colors">
                     <i class="ph ph-calendar-blank"></i> Ver periodo
                 </button>
-                <button id="btn-actualizar" class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                <button id="btn-actualizar" class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
                     <i class="ph ph-arrows-clockwise"></i> Actualizar
                 </button>
             </div>
@@ -425,23 +411,24 @@
         </div>
     </main>
 
-    <script src="../JS/app.js" defer></script>
-    <script defer>
+    <script src="../JS/app.js" defer=""></script>
+    <script src="../JS/table-actions.js" defer=""></script>
+    <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
             // --- Botón "Actualizar" ---
             const btnActualizar = document.getElementById('btn-actualizar');
             btnActualizar?.addEventListener('click', () => {
-                App.withLoading(btnActualizar, {
+                window.App.withLoading(btnActualizar, {
                     loadingText: 'Actualizando...',
-                    task: () => App.fakeRequest(900).then(() => {
-                        App.toast('Dashboard ASEA actualizado con los datos más recientes.', 'success');
+                    task: () => window.App.fakeRequest(900).then(() => {
+                        window.App.toast('Dashboard ASEA actualizado con los datos más recientes.', 'success');
                     }),
                 });
             });
 
             // --- Botón "Ver periodo" ---
             document.getElementById('btn-ver-periodo')?.addEventListener('click', () => {
-                App.toast('Mostrando el periodo Agosto 2026.', 'info');
+                window.App.toast('Mostrando el periodo Agosto 2026.', 'info');
             });
 
             // --- Gráficas (Chart.js) ---
@@ -497,7 +484,7 @@
                     datasets: [{
                         label: 'Órdenes',
                         data: [0, 0, 4, 0],
-                        backgroundColor: ['#F97316', '#EAB308', '#10b981', '#ef4444'],
+                        backgroundColor: ['#EAB308', '#EAB308', '#10b981', '#ef4444'],
                         borderRadius: 6,
                         maxBarThickness: 56,
                     }],
@@ -545,5 +532,5 @@
             });
         });
     </script>
-</body>
-</html>
+
+</body></html>

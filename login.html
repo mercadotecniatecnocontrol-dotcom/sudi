@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SUDI · Iniciar sesión</title>
@@ -63,24 +66,24 @@
 <body class="wave-bg min-h-screen flex items-center justify-center p-4 overflow-hidden">
 
   <svg class="fixed inset-0 w-full h-full -z-0 opacity-40" viewBox="0 0 1024 683" preserveAspectRatio="xMidYMid slice">
-    <path class="wave-1" d="M-50 400 C 200 250, 400 550, 650 350 S 1100 250, 1300 450" stroke="#ea580c" stroke-width="1.5" fill="none" opacity=".5"/>
+    <path class="wave-1" d="M-50 400 C 200 250, 400 550, 650 350 S 1100 250, 1300 450" stroke="#eab308" stroke-width="1.5" fill="none" opacity=".5"/>
     <path class="wave-2" d="M-50 300 C 250 150, 450 480, 700 280 S 1150 150, 1350 380" stroke="#f97316" stroke-width="1" fill="none" opacity=".35"/>
-    <path class="wave-3" d="M-50 500 C 200 400, 500 650, 750 430 S 1100 380, 1350 550" stroke="#fb923c" stroke-width="1" fill="none" opacity=".25"/>
+    <path class="wave-3" d="M-50 500 C 200 400, 500 650, 750 430 S 1100 380, 1350 550" stroke="#facc15" stroke-width="1" fill="none" opacity=".25"/>
   </svg>
 
   <main class="relative z-10 w-full max-w-sm">
-    <form id="loginForm" class="card-anim glow rounded-2xl border border-orange-500/30 bg-neutral-900/80 backdrop-blur-xl p-8 flex flex-col gap-5">
+    <form id="loginForm" class="card-anim glow rounded-2xl border border-yellow-500/30 bg-neutral-900/80 backdrop-blur-xl p-8 flex flex-col gap-5">
 
       <div class="flex flex-col items-center gap-1 mb-1">
         <div class="flex items-center gap-2">
-          <i class="ph-fill ph-check-circle text-orange-500 text-2xl"></i>
+          <i class="ph-fill ph-check-circle text-yellow-500 text-2xl"></i>
           <span class="text-white font-extrabold tracking-wide text-xl">JOMAR</span>
         </div>
-        <span class="text-[10px] tracking-[0.3em] text-orange-500/80 font-medium">VERIFICACIONES</span>
+        <span class="text-[10px] tracking-[0.3em] text-yellow-500/80 font-medium">VERIFICACIONES</span>
       </div>
 
       <div class="flex justify-center my-2">
-        <div class="badge-anim w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/50">
+        <div class="badge-anim w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/50">
           <i class="ph-fill ph-shield-check text-white text-3xl"></i>
         </div>
       </div>
@@ -91,26 +94,26 @@
       <label class="relative">
         <i class="ph ph-user absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500"></i>
         <input id="email" type="email" required placeholder="Correo electrónico"
-          class="w-full bg-black/40 border border-neutral-700 focus:border-orange-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
+          class="w-full bg-black/40 border border-neutral-700 focus:border-yellow-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
       </label>
 
       <label class="relative">
         <i class="ph ph-lock-key absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500"></i>
         <input id="password" type="password" required placeholder="Contraseña"
-          class="w-full bg-black/40 border border-neutral-700 focus:border-orange-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
+          class="w-full bg-black/40 border border-neutral-700 focus:border-yellow-500 outline-none text-white text-sm rounded-lg pl-10 pr-3 py-3 placeholder-neutral-500 transition">
       </label>
 
       <button type="submit"
-        class="btn-anim w-full bg-orange-500 hover:bg-orange-600 transition text-black font-bold text-sm tracking-wide rounded-lg py-3 shadow-lg shadow-orange-900/40">
+        class="btn-anim w-full bg-yellow-500 hover:bg-yellow-600 transition text-black font-bold text-sm tracking-wide rounded-lg py-3 shadow-lg shadow-yellow-900/40">
         INGRESAR
       </button>
 
       <div class="flex items-center justify-between text-xs text-neutral-400">
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" class="accent-orange-500 w-3.5 h-3.5">
+          <input type="checkbox" class="accent-yellow-500 w-3.5 h-3.5">
           Mantener la sesión
         </label>
-        <a href="#" class="text-neutral-300 hover:text-orange-500 transition">Recuperar acceso</a>
+        <a href="#" class="text-neutral-300 hover:text-yellow-500 transition">Recuperar acceso</a>
       </div>
     </form>
   </main>

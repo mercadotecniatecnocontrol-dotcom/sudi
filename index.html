@@ -1,14 +1,14 @@
-<!-- index.html (antes dashboard.html — menú de módulos) -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<!-- index.html (antes dashboard.html — menú de módulos) --><!DOCTYPE html><html lang="es"><head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://unpkg.com">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SUDI · Inicio</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
   body{font-family:'Inter',sans-serif}
   .wave-bg{
@@ -46,10 +46,9 @@
   <header class="border-b border-neutral-800/80 bg-black/40 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <i class="ph-fill ph-check-circle text-orange-500 text-xl"></i>
-        <span class="font-extrabold tracking-wide">JOMAR <span class="font-normal text-neutral-400 text-sm">SUDI</span></span>
-      </div>
-      <a href="login.html" class="text-xs text-neutral-400 hover:text-orange-500 transition flex items-center gap-1">
+                <img src="img\JOMARLOGO.png" alt="Jomar Logo" class="h-16 w-auto object-contain drop-shadow-[0_0_8px_rgba(234,179,8,0.5)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
+            </div>
+      <a href="login.html" class="text-xs text-neutral-400 hover:text-yellow-500 transition flex items-center gap-1">
         <i class="ph ph-sign-out"></i> Cerrar sesión
       </a>
     </div>
@@ -59,48 +58,74 @@
     <h1 class="text-2xl font-bold mb-1">Selecciona un módulo</h1>
     <p class="text-neutral-400 text-sm mb-10">Elige la sección con la que deseas trabajar.</p>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-4 gap-4">
 
-      <a href="SCFI/dashboard.html" onclick="sessionStorage.setItem('sudi_entry_anim','1')" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
-        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
-          <i class="ph-fill ph-certificate text-white text-2xl"></i>
+      <a href="SCFI/dashboard.html" onclick="sessionStorage.setItem('sudi_entry_anim','1')" class="card-anim rounded-2xl border border-yellow-500/20 bg-neutral-900/70 backdrop-blur-xl p-6 flex flex-col gap-3 hover:border-yellow-500/50">
+        <div class="icon-box w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/40">
+          <i class="ph-fill ph-certificate text-white text-xl"></i>
         </div>
         <div>
-          <h2 class="text-lg font-semibold">SCFI</h2>
+          <h2 class="text-base font-semibold">SCFI</h2>
           <p class="text-neutral-400 text-sm mt-1">Verificaciones y normatividad SCFI.</p>
         </div>
-        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+        <span class="mt-auto text-yellow-500 text-sm font-medium flex items-center gap-1">
           Ingresar <i class="ph ph-arrow-right arrow-move"></i>
         </span>
       </a>
 
-      <a href="ASEA/Dash_ASEA.html" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
-        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
-          <i class="ph-fill ph-gas-pump text-white text-2xl"></i>
+      <a href="ASEA/Dash_ASEA.html" class="card-anim rounded-2xl border border-yellow-500/20 bg-neutral-900/70 backdrop-blur-xl p-6 flex flex-col gap-3 hover:border-yellow-500/50">
+        <div class="icon-box w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/40">
+          <i class="ph-fill ph-gas-pump text-white text-xl"></i>
         </div>
         <div>
-          <h2 class="text-lg font-semibold">ASEA</h2>
+          <h2 class="text-base font-semibold">ASEA</h2>
           <p class="text-neutral-400 text-sm mt-1">Verificaciones y normatividad ASEA.</p>
         </div>
-        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+        <span class="mt-auto text-yellow-500 text-sm font-medium flex items-center gap-1">
           Ingresar <i class="ph ph-arrow-right arrow-move"></i>
         </span>
       </a>
 
-      <a href="dashboard.html?modulo=Reportes" class="card-anim rounded-2xl border border-orange-500/20 bg-neutral-900/70 backdrop-blur-xl p-8 flex flex-col gap-4 hover:border-orange-500/50">
-        <div class="icon-box w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg shadow-orange-900/40">
-          <i class="ph-fill ph-chart-bar text-white text-2xl"></i>
+      <a href="reportes/dash_reporte.html" class="card-anim rounded-2xl border border-yellow-500/20 bg-neutral-900/70 backdrop-blur-xl p-6 flex flex-col gap-3 hover:border-yellow-500/50">
+        <div class="icon-box w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/40">
+          <i class="ph-fill ph-chart-bar text-white text-xl"></i>
         </div>
         <div>
-          <h2 class="text-lg font-semibold">Reportes</h2>
+          <h2 class="text-base font-semibold">Reportes</h2>
           <p class="text-neutral-400 text-sm mt-1">Estadísticas y reportes generales.</p>
         </div>
-        <span class="mt-auto text-orange-500 text-sm font-medium flex items-center gap-1">
+        <span class="mt-auto text-yellow-500 text-sm font-medium flex items-center gap-1">
           Ingresar <i class="ph ph-arrow-right arrow-move"></i>
         </span>
       </a>
 
+    
+      <a href="calendario.html" class="card-anim rounded-2xl border border-yellow-500/20 bg-neutral-900/70 backdrop-blur-xl p-6 flex flex-col gap-3 hover:border-yellow-500/50">
+        <div class="icon-box w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/40">
+          <i class="ph-fill ph-calendar-blank text-white text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-base font-semibold">Calendario</h2>
+          <p class="text-neutral-400 text-sm mt-1">Agenda general de verificaciones e inspecciones.</p>
+        </div>
+        <span class="mt-auto text-yellow-500 text-sm font-medium flex items-center gap-1">
+          Ingresar <i class="ph ph-arrow-right arrow-move"></i>
+        </span>
+      </a>
+
+      <a href="catalogos/clientes.html" class="card-anim rounded-2xl border border-yellow-500/20 bg-neutral-900/70 backdrop-blur-xl p-6 flex flex-col gap-3 hover:border-yellow-500/50">
+        <div class="icon-box w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-700 flex items-center justify-center shadow-lg shadow-yellow-900/40">
+          <i class="ph-fill ph-address-book text-white text-xl"></i>
+        </div>
+        <div>
+          <h2 class="text-base font-semibold">Catálogos</h2>
+          <p class="text-neutral-400 text-sm mt-1">Gestión de clientes y usuarios del sistema.</p>
+        </div>
+        <span class="mt-auto text-yellow-500 text-sm font-medium flex items-center gap-1">
+          Ingresar <i class="ph ph-arrow-right arrow-move"></i>
+        </span>
+      </a>
     </div>
   </main>
-</body>
-</html>
+
+</body></html>

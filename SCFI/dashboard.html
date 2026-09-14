@@ -1,19 +1,26 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Operativo - Jomar</title>
+    <!-- Preconexiones para acelerar la carga -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Phosphor Icons (versión fijada sin redirección 302) -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
     <!-- Estilos personalizados -->
     <link rel="stylesheet" href="../CSS/styles.css">
-    <!-- Chart.js (gráficas reales y animadas) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <!-- Chart.js (cargado con defer sin bloquear renderizado) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer=""></script>
 
     <script>
         tailwind.config = {
@@ -31,7 +38,7 @@
                             600: '#32384e'
                         },
                         brand: {
-                            orange: '#F97316',
+                            orange: '#EAB308',
                             yellow: '#EAB308'
                         }
                     }
@@ -40,24 +47,89 @@
         }
     </script>
     <style>
-        @keyframes fadeIn{from{opacity:0} to{opacity:1}}
-        @keyframes fadeInUp{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)}}
-        @keyframes slideInLeft{from{opacity:0; transform:translateX(-24px)} to{opacity:1; transform:translateX(0)}}
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
 
-        .anim-fadeIn{animation:fadeIn .5s ease-out both}
-        .anim-slideIn{animation:slideInLeft .5s ease-out both}
+            to {
+                opacity: 1
+            }
+        }
 
-        .anim-section{opacity:0; animation:fadeInUp .6s ease-out forwards}
-        .anim-section:nth-of-type(1){animation-delay:.05s}
-        .anim-section:nth-of-type(2){animation-delay:.15s}
-        .anim-section:nth-of-type(3){animation-delay:.25s}
-        .anim-section:nth-of-type(4){animation-delay:.35s}
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
 
-        .anim-card{opacity:0; animation:fadeInUp .5s ease-out forwards}
-        .anim-card:nth-child(1){animation-delay:.1s}
-        .anim-card:nth-child(2){animation-delay:.18s}
-        .anim-card:nth-child(3){animation-delay:.26s}
-        .anim-card:nth-child(4){animation-delay:.34s}
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-24px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        .anim-fadeIn {
+            animation: fadeIn .5s ease-out both
+        }
+
+        .anim-slideIn {
+            animation: slideInLeft .5s ease-out both
+        }
+
+        .anim-section {
+            opacity: 0;
+            animation: fadeInUp .6s ease-out forwards
+        }
+
+        .anim-section:nth-of-type(1) {
+            animation-delay: .05s
+        }
+
+        .anim-section:nth-of-type(2) {
+            animation-delay: .15s
+        }
+
+        .anim-section:nth-of-type(3) {
+            animation-delay: .25s
+        }
+
+        .anim-section:nth-of-type(4) {
+            animation-delay: .35s
+        }
+
+        .anim-card {
+            opacity: 0;
+            animation: fadeInUp .5s ease-out forwards
+        }
+
+        .anim-card:nth-child(1) {
+            animation-delay: .1s
+        }
+
+        .anim-card:nth-child(2) {
+            animation-delay: .18s
+        }
+
+        .anim-card:nth-child(3) {
+            animation-delay: .26s
+        }
+
+        .anim-card:nth-child(4) {
+            animation-delay: .34s
+        }
 
         /* Sin flag de entrada desde index.html: mostrar todo sin animar */
         body.no-entry-anim .anim-slideIn,
@@ -69,6 +141,7 @@
         }
     </style>
 </head>
+
 <body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
     <script>
         if (sessionStorage.getItem('sudi_entry_anim') === '1') {
@@ -81,98 +154,138 @@
     <!-- Overlay móvil del sidebar -->
     <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
-    <!-- Sidebar Lateral -->
-    <aside class="anim-slideIn w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 -translate-x-full lg:translate-x-0">
+    <!-- Sidebar Lateral (Se agregó overflow-y-auto para permitir scroll cuando el menú se despliegue) -->
+    <aside
+        class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
         <div>
             <!-- LOGO -->
             <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
-                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
-                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
-                </div>
+                <img src="..\img\JOMARLOGO.png" alt="Jomar Logo"
+                    class="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.3)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
             </div>
 
             <!-- Navegación -->
-            <nav class="p-4 space-y-2 mt-2">
-                <a href="dashboard.html" class="relative flex items-center px-4 py-3 rounded-xl bg-brand-orange/10 text-brand-orange font-medium transition-all group overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
-                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inicio
-                </a>
-                <a href="clientes.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Clientes
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Equipos
-                </a>
-                <a href="inspecciones.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inspecciones
-                </a>
+            <nav class="p-6 space-y-3 select-none">
+                <!-- Ir al Menú Principal -->
+                <a href="../../index.html"
+                    class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i
+                        class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir
+                        al Menú Principal</span></a>
+
+                <!-- Inicio (Activo) -->
+                <a href="dashboard.html"
+                    class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow"><i
+                        class="ph ph-house text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i><span>Inicio</span></a>
+
+                <!-- Clientes -->
+                <a href="clientes.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i
+                        class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
+
+                <!-- Equipos -->
+                <a href="equipos.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i
+                        class="ph ph-wrench text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Equipos</span></a>
+
+                <!-- Inspecciones -->
+                <a href="inspecciones.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i
+                        class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
+
+                <!-- Separador -->
                 <div class="pt-2 pb-2">
-                    <div class="border-t border-dark-700 my-2"></div>
+                    <div class="border-t border-dark-700/50"></div>
                 </div>
+
+                <!-- Dropdown Hologramas -->
                 <div class="relative">
-                    <button data-dropdown-toggle="dashboard-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Hologramas
+                    <button type="button" data-dropdown-toggle="dashboard-hologramas-menu"
+                        class="w-full flex items-center justify-between px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                        <div class="flex items-center gap-4">
+                            <i
+                                class="ph ph-files text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                            <span>Hologramas</span>
                         </div>
-                        <i class="ph ph-caret-down text-sm"></i>
+                        <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
                     </button>
-                    <div id="dashboard-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                    <div id="dashboard-hologramas-menu" data-dropdown="" class="hidden pl-14 pr-4 py-2 space-y-2">
+                        <a href="hologramas/distintivos.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-hash text-xs"></i> Distintivos
                         </a>
-                        <a href="hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                        <a href="hologramas/flexogramas.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-hash text-xs"></i> Flexogramas
                         </a>
-                        <a href="hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                        <a href="hologramas/precintos.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-hash text-xs"></i> Precintos
                         </a>
-                        <a href="hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                        <a href="hologramas/asignar_distintivos.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
                         </a>
-                        <a href="hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                        <a href="hologramas/asignar_flexogramas.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
                         </a>
-                        <a href="hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
+                        <a href="hologramas/asignar_precintos.html"
+                            class="flex items-center gap-2 py-1.5 text-base text-gray-400 hover:text-white transition-colors">
                             <i class="ph ph-user-plus text-xs"></i> Asignar precintos
                         </a>
                     </div>
                 </div>
+
+                <!-- Dropdown Catálogos -->
                 <div class="relative">
-                    <button data-dropdown-toggle="dashboard-catalogos-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Catálogos
+                    <button type="button" data-dropdown-toggle="dashboard-catalogos-menu"
+                        class="w-full flex items-center justify-between px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                        <div class="flex items-center gap-4">
+                            <i
+                                class="ph ph-list-dashes text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                            <span>Catálogos</span>
                         </div>
-                        <i class="ph ph-caret-down text-sm"></i>
+                        <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
                     </button>
-                    <div id="dashboard-catalogos-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="catalogo_scfi/productos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Productos</a>
-                        <a href="catalogo_scfi/marcas.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Marcas</a>
+                    <div id="dashboard-catalogos-menu" data-dropdown="" class="hidden pl-14 pr-4 py-2 space-y-2">
+                        <a href="catalogo_scfi/productos.html"
+                            class="block py-1.5 text-base text-gray-400 hover:text-white transition-colors">Productos</a>
+                        <a href="catalogo_scfi/marcas.html"
+                            class="block py-1.5 text-base text-gray-400 hover:text-white transition-colors">Marcas</a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <!-- Usuario y Ajustes -->
-        <div class="p-4 border-t border-dark-700">
-            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
-                    LR
+
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger=""
+                class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50"
+                title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span
+                        class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
-                    <p class="text-xs text-gray-500">Administrador</p>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p
+                        class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">
+                        Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
                 </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0"
+                    title="Opciones de perfil"></i>
             </div>
-            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            <a href="../login.html"
+                class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
             </a>
         </div>
     </aside>
@@ -181,9 +294,11 @@
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
 
         <!-- Header -->
-        <header class="px-4 sm:px-8 pt-8 pb-6 flex items-start justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 gap-4">
+        <header
+            class="px-4 sm:px-8 pt-8 pb-6 flex items-start justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                <button id="sidebar-toggle" type="button"
+                    class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
                     <i class="ph ph-list text-lg"></i>
                 </button>
                 <div class="min-w-0">
@@ -194,21 +309,37 @@
 
             <div class="flex items-center gap-4">
                 <div class="relative hidden md:block">
-                    <button data-dropdown-toggle="periodo-menu" class="flex bg-dark-800 rounded-lg p-1 border border-dark-700 items-center">
-                        <span class="px-4 py-1.5 text-sm rounded-md bg-dark-700 text-white shadow-sm flex items-center gap-1">Agosto <i class="ph ph-caret-down"></i></span>
+                    <button type="button" data-dropdown-toggle="periodo-menu"
+                        class="flex bg-dark-800 rounded-lg p-1 border border-dark-700 items-center">
+                        <span
+                            class="px-4 py-1.5 text-sm rounded-md bg-dark-700 text-white shadow-sm flex items-center gap-1">Agosto
+                            <i class="ph ph-caret-down transition-transform duration-200"></i></span>
                         <span class="px-4 py-1.5 text-sm rounded-md text-gray-400 flex items-center gap-1">2026</span>
                     </button>
-                    <div id="periodo-menu" data-dropdown class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
-                        <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Mes</p>
-                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-white bg-dark-700">Agosto 2026</button>
-                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Julio 2026</button>
-                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Junio 2026</button>
+                    <div id="periodo-menu" data-dropdown=""
+                        class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20">
+                        <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Mes
+                        </p>
+                        <button type="button"
+                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-white bg-dark-700">Agosto
+                            2026</button>
+                        <button type="button"
+                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Julio
+                            2026</button>
+                        <button type="button"
+                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Junio
+                            2026</button>
                     </div>
                 </div>
-                <button id="btn-ver-periodo" class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-dark-700 rounded-lg hover:bg-dark-800 transition-colors">
+                <button id="btn-ver-periodo" onclick="window.App.toast('Mostrando periodo actual', 'info')"
+                    type="button"
+                    class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-dark-700 rounded-lg hover:bg-dark-800 transition-colors">
                     <i class="ph ph-calendar-blank"></i> Ver periodo
                 </button>
-                <button id="btn-actualizar" class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                <button id="btn-actualizar"
+                    onclick="window.App.withLoading(this, { loadingText: 'Actualizando...', task: () => window.App.fakeRequest(800).then(() => window.App.toast('Dashboard actualizado correctamente', 'success')) })"
+                    type="button"
+                    class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
                     <i class="ph ph-arrows-clockwise"></i> Actualizar
                 </button>
             </div>
@@ -216,24 +347,26 @@
 
         <!-- Contenedor del Dashboard -->
         <div class="p-8 space-y-10">
-            
+
             <!-- SECCIÓN 1: INDICADORES DEL MES -->
             <section class="anim-section">
                 <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-trend-up text-brand-orange text-xl"></i>
+                    <i class="ph ph-trend-up text-brand-yellow text-xl"></i>
                     <h2 class="text-lg font-semibold tracking-wide">Indicadores del mes (agosto 2026)</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                     <!-- Tarjeta 1 -->
-                    <div class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div
+                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
                         <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500"></div>
                         <div class="flex justify-between items-start mb-2 pl-2">
                             <div>
                                 <h3 class="text-white font-bold text-base">Inspecciones realizadas</h3>
                                 <p class="text-xs text-gray-500 mt-1">Total del mes actual (SCFI).</p>
                             </div>
-                            <div class="p-2 bg-dark-700 rounded-lg text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
+                            <div
+                                class="p-2 bg-dark-700 rounded-lg text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
                                 <i class="ph ph-clipboard-text text-xl"></i>
                             </div>
                         </div>
@@ -244,95 +377,112 @@
                         <div class="flex gap-3 pl-2 mt-auto">
                             <div class="bg-dark-900 rounded-lg py-3 px-4 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">150</span>
-                                <span class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">SCFI</span>
+                                <span
+                                    class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">SCFI</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-4 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">150</span>
-                                <span class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Total</span>
+                                <span
+                                    class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Total</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tarjeta 2 -->
-                    <div class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div
+                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
                         <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500"></div>
                         <div class="flex justify-between items-start mb-2 pl-2">
                             <div>
                                 <h3 class="text-white font-bold text-base">Hologramas</h3>
                                 <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
                             </div>
-                            <div class="p-2 bg-dark-700 rounded-lg text-blue-400 group-hover:bg-blue-500/10 transition-colors">
+                            <div
+                                class="p-2 bg-dark-700 rounded-lg text-blue-400 group-hover:bg-blue-500/10 transition-colors">
                                 <i class="ph ph-image text-xl"></i>
                             </div>
                         </div>
                         <div class="flex gap-2 pl-2 mt-auto pt-8">
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">480</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">470</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">8478</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tarjeta 3 -->
-                    <div class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-orange"></div>
+                    <div
+                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-yellow"></div>
                         <div class="flex justify-between items-start mb-2 pl-2">
                             <div>
                                 <h3 class="text-white font-bold text-base">Precintos</h3>
                                 <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
                             </div>
-                            <div class="p-2 bg-dark-700 rounded-lg text-brand-orange group-hover:bg-brand-orange/10 transition-colors">
+                            <div
+                                class="p-2 bg-dark-700 rounded-lg text-brand-yellow group-hover:bg-brand-yellow/10 transition-colors">
                                 <i class="ph ph-tag text-xl"></i>
                             </div>
                         </div>
                         <div class="flex gap-2 pl-2 mt-auto pt-8">
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">1044</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">435</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">3576</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tarjeta 4 -->
-                    <div class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
+                    <div
+                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
                         <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500"></div>
                         <div class="flex justify-between items-start mb-2 pl-2">
                             <div>
                                 <h3 class="text-white font-bold text-base">Flexogramas</h3>
                                 <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
                             </div>
-                            <div class="p-2 bg-dark-700 rounded-lg text-purple-400 group-hover:bg-purple-500/10 transition-colors">
+                            <div
+                                class="p-2 bg-dark-700 rounded-lg text-purple-400 group-hover:bg-purple-500/10 transition-colors">
                                 <i class="ph ph-barcode text-xl"></i>
                             </div>
                         </div>
                         <div class="flex gap-2 pl-2 mt-auto pt-8">
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">715</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">442</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
                             </div>
                             <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
                                 <span class="block text-white font-bold text-lg">8469</span>
-                                <span class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
+                                <span
+                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
                             </div>
                         </div>
                     </div>
@@ -342,13 +492,14 @@
             <!-- SECCIÓN 2: GRÁFICAS DEL MES -->
             <section class="anim-section">
                 <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-chart-line-up text-brand-orange text-xl"></i>
+                    <i class="ph ph-chart-line-up text-brand-yellow text-xl"></i>
                     <h2 class="text-lg font-semibold tracking-wide">Gráficas del mes (agosto 2026)</h2>
                 </div>
-                
+
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Gráfica 1 (Inspecciones por día) -->
-                    <div class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
+                    <div
+                        class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <h3 class="text-white font-bold text-base">Inspecciones por día</h3>
@@ -361,7 +512,8 @@
                     </div>
 
                     <!-- Gráfica 2 (Uso de insumos por día) -->
-                    <div class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
+                    <div
+                        class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
                         <div class="flex justify-between items-center mb-4">
                             <div>
                                 <h3 class="text-white font-bold text-base">Uso de insumos por día</h3>
@@ -378,10 +530,10 @@
             <!-- SECCIÓN 3: SCFI DEL MES -->
             <section class="anim-section">
                 <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-shield-check text-brand-orange text-xl"></i>
+                    <i class="ph ph-shield-check text-brand-yellow text-xl"></i>
                     <h2 class="text-lg font-semibold tracking-wide">SCFI del mes (agosto 2026)</h2>
                 </div>
-                
+
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg">
                         <div class="mb-5">
@@ -389,25 +541,30 @@
                             <p class="text-xs text-gray-500 mt-1">Distribución por estatus</p>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">0</span>
                                 <span class="text-xs text-gray-400 font-medium">Pendiente</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">1</span>
                                 <span class="text-xs text-gray-400 font-medium">En proceso</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
                                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 rounded-l-xl"></div>
                                 <span class="block text-2xl font-bold text-white mb-1 pl-2">58</span>
                                 <span class="text-xs text-gray-400 font-medium pl-2">Terminada</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
                                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
                                 <span class="block text-2xl font-bold text-white mb-1 pl-2">92</span>
                                 <span class="text-xs text-gray-400 font-medium pl-2">Cerrada</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">0</span>
                                 <span class="text-xs text-gray-400 font-medium">Vencida</span>
                             </div>
@@ -420,23 +577,34 @@
                             <p class="text-xs text-gray-500 mt-1">SCFI por tipo</p>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>1er periodo</span>
+                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>1er
+                                    periodo</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>1er periodo</span>
+                                <span
+                                    class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>1er
+                                    periodo</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">144</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>2do periodo</span>
+                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>2do
+                                    periodo</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">6</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>2do periodo</span>
+                                <span
+                                    class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>2do
+                                    periodo</span>
                             </div>
-                            <div class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
+                            <div
+                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
                                 <span class="block text-2xl font-bold text-white mb-1">1</span>
                                 <span class="text-xs text-gray-400 font-medium block h-8">Inicial</span>
                             </div>
@@ -448,7 +616,7 @@
             <!-- SECCIÓN 4: INSPECTORES DEL MES -->
             <section class="anim-section">
                 <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-users text-brand-orange text-xl"></i>
+                    <i class="ph ph-users text-brand-yellow text-xl"></i>
                     <h2 class="text-lg font-semibold tracking-wide">Inspectores del mes (agosto 2026)</h2>
                 </div>
 
@@ -468,49 +636,9 @@
                             </thead>
                             <tbody class="text-sm divide-y divide-dark-700/50">
                                 <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">FILIBERTO ISAI SALCEDO GARDEA</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">22</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">22</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">ALAN ALBERTO ESTRADA GOMEZ</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">21</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">21</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">IRVING ABRAHAM SAUCEDO MARTINEZ</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">21</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">21</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">LUIS RICARDO SIFUENTES NEVAREZ</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">21</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">21</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">ALBERTO ALAN MINJAREZ OCHOA</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">13</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">13</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">DIEGO FRANCISCO MARTINEZ LOPEZ</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">12</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">12</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">GUILLERMO DURSTEWITZ MAESE</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">12</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">12</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">ERICK GIOVANNI BUENROSTRO HUERTA</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">8</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">8</td>
-                                </tr>
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-gray-300 group-hover:text-white transition-colors">CARLOS ALBERTO LICONA TOLEDO</td>
-                                    <td class="py-4 px-6 text-gray-400 text-right">7</td>
-                                    <td class="py-4 px-6 text-white font-bold text-right">7</td>
+                                    <td class="py-4 px-6 text-white font-medium">Ejemplo Inspector</td>
+                                    <td class="py-4 px-6 text-right text-gray-300">150</td>
+                                    <td class="py-4 px-6 text-right text-white font-bold">150</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -521,111 +649,200 @@
         </div>
     </main>
 
-    <script src="../JS/app.js" defer></script>
-    <script defer>
+    <!-- SCRIPT PARA GRÁFICAS (CHART.JS) Y CONTROL RESPONSIVE -->
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Botón "Actualizar" ---
-            const btnActualizar = document.getElementById('btn-actualizar');
-            btnActualizar?.addEventListener('click', () => {
-                App.withLoading(btnActualizar, {
-                    loadingText: 'Actualizando...',
-                    task: () => App.fakeRequest(900).then(() => {
-                        App.toast('Dashboard actualizado con los datos más recientes.', 'success');
-                    }),
+            // Dropdowns gestionados por JS/app.js
+
+            // Control del menú lateral en móviles
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.querySelector('aside');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle && sidebar && sidebarOverlay) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('-translate-x-full');
+                    sidebarOverlay.classList.toggle('hidden');
                 });
-            });
 
-            // --- Botón "Ver periodo" ---
-            document.getElementById('btn-ver-periodo')?.addEventListener('click', () => {
-                App.toast('Mostrando el periodo Agosto 2026.', 'info');
-            });
+                sidebarOverlay.addEventListener('click', () => {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden');
+                });
+            }
 
-            // --- Gráficas (Chart.js) ---
-            Chart.defaults.color = '#9CA3AF';
-            Chart.defaults.font.family = 'Inter, sans-serif';
+            // Inicialización de Gráficas Chart.js
+            function initDashboardCharts() {
+                if (typeof Chart === 'undefined') {
+                    setTimeout(initDashboardCharts, 50);
+                    return;
+                }
 
-            const dias = ['1', '5', '10', '15', '20', '25', '30'];
+                Chart.defaults.color = '#9CA3AF';
+                Chart.defaults.font.family = 'Inter, sans-serif';
 
-            new Chart(document.getElementById('chart-inspecciones-dia'), {
-                type: 'line',
-                data: {
-                    labels: dias,
-                    datasets: [{
-                        label: 'Inspecciones SCFI',
-                        data: [3, 6, 4, 8, 5, 9, 6],
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 3,
-                        pointBackgroundColor: '#3b82f6',
-                    }],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: { duration: 1200, easing: 'easeOutQuart' },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#161925',
-                            borderColor: '#232736',
-                            borderWidth: 1,
-                            padding: 10,
-                            titleColor: '#fff',
+                const tooltipStyle = {
+                    backgroundColor: '#161925',
+                    borderColor: '#232736',
+                    borderWidth: 1,
+                    padding: 12,
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#D1D5DB',
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    cornerRadius: 8,
+                };
+
+                const dias = Array.from({ length: 31 }, (_, i) => String(i + 1));
+                const inspeccionesPorDia = [1, 0, 6, 7, 8, 7, 8, 2, 0, 7, 6, 8, 7, 6, 1, 0, 8, 9, 7, 8, 8, 2, 0, 7, 6, 8, 7, 6, 1, 0, 0];
+                const hologramasPorDia = [8, 0, 46, 54, 62, 54, 62, 15, 0, 54, 46, 62, 54, 46, 8, 0, 62, 69, 54, 62, 62, 15, 0, 54, 46, 62, 54, 46, 8, 0, 0];
+                const precintosPorDia = [24, 0, 142, 166, 189, 166, 189, 47, 0, 166, 142, 189, 166, 142, 24, 0, 189, 213, 166, 189, 189, 47, 0, 166, 142, 189, 166, 142, 24, 0, 0];
+                const flexogramasPorDia = [56, 0, 336, 393, 449, 393, 449, 112, 0, 393, 336, 449, 393, 336, 56, 0, 449, 505, 393, 449, 449, 112, 0, 393, 336, 449, 393, 336, 56, 0, 0];
+
+                // 1. Gráfica de Inspecciones por día (SCFI realizadas)
+                const canvasInspecciones = document.getElementById('chart-inspecciones-dia');
+                if (canvasInspecciones) {
+                    const ctx1 = canvasInspecciones.getContext('2d');
+                    const gradiente = ctx1.createLinearGradient(0, 0, 0, 300);
+                    gradiente.addColorStop(0, 'rgba(234, 179, 8, 0.28)');
+                    gradiente.addColorStop(1, 'rgba(234, 179, 8, 0.0)');
+
+                    new Chart(canvasInspecciones, {
+                        type: 'line',
+                        data: {
+                            labels: dias,
+                            datasets: [{
+                                label: 'Inspecciones realizadas',
+                                data: inspeccionesPorDia,
+                                borderColor: '#EAB308',
+                                backgroundColor: gradiente,
+                                fill: true,
+                                tension: 0.35,
+                                borderWidth: 2.5,
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: '#EAB308',
+                                pointHoverBackgroundColor: '#FFFFFF',
+                                pointBorderColor: '#0F111A',
+                                pointBorderWidth: 1.5,
+                            }],
                         },
-                    },
-                    scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true },
-                    },
-                },
-            });
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: { duration: 800, easing: 'easeOutQuart' },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: tooltipStyle,
+                            },
+                            scales: {
+                                x: {
+                                    grid: { color: 'rgba(255, 255, 255, 0.04)' },
+                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                    ticks: { color: '#9CA3AF', stepSize: 2, font: { size: 10 } },
+                                },
+                            },
+                        },
+                    });
+                }
 
-            new Chart(document.getElementById('chart-insumos-dia'), {
-                type: 'line',
-                data: {
-                    labels: dias,
-                    datasets: [
-                        {
-                            label: 'Hologramas',
-                            data: [12, 19, 14, 22, 18, 25, 20],
-                            borderColor: '#f97316',
-                            backgroundColor: 'rgba(249, 115, 22, 0.1)',
-                            tension: 0.4,
-                            pointRadius: 2,
+                // 2. Gráfica de Uso de insumos por día
+                const canvasInsumos = document.getElementById('chart-insumos-dia');
+                if (canvasInsumos) {
+                    new Chart(canvasInsumos, {
+                        type: 'bar',
+                        data: {
+                            labels: dias,
+                            datasets: [
+                                {
+                                    label: 'Hologramas',
+                                    data: hologramasPorDia,
+                                    backgroundColor: '#EAB308',
+                                    borderRadius: 4,
+                                    maxBarThickness: 10,
+                                },
+                                {
+                                    label: 'Precintos',
+                                    data: precintosPorDia,
+                                    backgroundColor: '#3B82F6',
+                                    borderRadius: 4,
+                                    maxBarThickness: 10,
+                                },
+                                {
+                                    label: 'Flexogramas',
+                                    data: flexogramasPorDia,
+                                    backgroundColor: '#A855F7',
+                                    borderRadius: 4,
+                                    maxBarThickness: 10,
+                                },
+                            ],
                         },
-                        {
-                            label: 'Precintos / Flexogramas',
-                            data: [8, 11, 9, 16, 12, 18, 15],
-                            borderColor: '#a855f7',
-                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
-                            tension: 0.4,
-                            pointRadius: 2,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: { duration: 800, easing: 'easeOutQuart' },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        boxWidth: 12,
+                                        boxHeight: 12,
+                                        borderRadius: 3,
+                                        useBorderRadius: true,
+                                        padding: 14,
+                                        font: { size: 11 },
+                                        color: '#D1D5DB',
+                                    },
+                                },
+                                tooltip: tooltipStyle,
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
+                                },
+                            },
                         },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: { duration: 1200, easing: 'easeOutQuart' },
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 16 } },
-                        tooltip: {
-                            backgroundColor: '#161925',
-                            borderColor: '#232736',
-                            borderWidth: 1,
-                            padding: 10,
-                            titleColor: '#fff',
-                        },
-                    },
-                    scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true },
-                    },
-                },
-            });
+                    });
+                }
+            }
+
+            initDashboardCharts();
+
+            // Eventos de botones
+            const btnActualizar = document.getElementById('btn-actualizar');
+            if (btnActualizar) {
+                btnActualizar.addEventListener('click', () => {
+                    window.App.withLoading(btnActualizar, {
+                        loadingText: 'Actualizando...',
+                        task: () => window.App.fakeRequest(800).then(() => {
+                            window.App.toast('Dashboard actualizado correctamente', 'success');
+                        })
+                    });
+                });
+            }
+
+            const btnVerPeriodo = document.getElementById('btn-ver-periodo');
+            if (btnVerPeriodo) {
+                btnVerPeriodo.addEventListener('click', () => {
+                    window.App.toast('Mostrando periodo actual', 'info');
+                });
+            }
         });
     </script>
+    <script src="../JS/app.js" defer=""></script>
+    <script src="../JS/table-actions.js" defer=""></script>
+
+
 </body>
+
 </html>

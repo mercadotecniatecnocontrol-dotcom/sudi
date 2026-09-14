@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Catálogos SUDI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: {
+                        dark: { 900: '#11131e', 800: '#1a1d2d', 700: '#232736', 600: '#32384e' },
+                        brand: { yellow: '#EAB308' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeInUp 0.4s ease-out forwards; opacity: 0; }
+        * { scrollbar-width: thin; scrollbar-color: #232736 transparent; }
+        *::-webkit-scrollbar { width: 8px; height: 8px; }
+        *::-webkit-scrollbar-track { background: transparent; }
+        *::-webkit-scrollbar-thumb { background: #32384e; border-radius: 4px; }
+        *::-webkit-scrollbar-thumb:hover { background: #EAB308; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">
+
+    <!-- Sidebar Lateral -->
+    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <img src="../img/JOMARLOGO.png" alt="Jomar Logo" class="h-10 w-auto object-contain drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="../index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4">
+                    <i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Ir al Menú Principal</span>
+                </a>
+                
+                <a href="clientes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                    <i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                    <span>Clientes</span>
+                </a>
+                
+                <a href="usuarios.html" class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow">
+                    <i class="ph ph-user-circle text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i>
+                    <span>Usuarios</span>
+                </a>
+            </nav>
+        </div>
+
+                <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger=""
+                class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50"
+                title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span
+                        class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
+                </div>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p
+                        class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">
+                        Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
+                </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0"
+                    title="Opciones de perfil"></i>
+            </div>
+            <a href="../login.html"
+                class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex overflow-hidden">
+        <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden fade-in">
+            <header class="px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4">
+                <div class="flex items-center gap-6">
+                    <div>
+                        <p class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">Módulo de Catálogos</p>
+                        <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                            <i class="ph-fill ph-user-circle text-brand-yellow"></i>
+                            Gestión de Usuarios
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <!-- Buscador -->
+                    <div class="relative w-full md:w-80">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph ph-magnifying-glass text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="text" id="usuarios-search" class="block w-full pl-10 pr-3 py-2.5 border border-dark-600 rounded-xl bg-dark-800 text-white placeholder-gray-400 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-colors" placeholder="Buscar usuario...">
+                    </div>
+                    <!-- Botón Añadir Usuario -->
+                    <button onclick="document.getElementById('modal-nuevo-usuario').classList.remove('hidden')" class="bg-brand-yellow text-dark-900 px-5 py-2.5 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:bg-yellow-400 transition-all flex items-center gap-2 whitespace-nowrap shrink-0">
+                        <i class="ph ph-plus-circle text-lg"></i> Añadir Usuario
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-x-auto overflow-y-auto bg-dark-900 p-8 custom-scrollbar relative">
+                <div class="bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl p-6 fade-in min-w-[900px]">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-dark-900 text-gray-400 uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th class="py-4 px-4 font-semibold rounded-tl-xl">Nombre</th>
+                                <th class="py-4 px-4 font-semibold">E-mail</th>
+                                <th class="py-4 px-4 font-semibold">Género</th>
+                                <th class="py-4 px-4 font-semibold text-right rounded-tr-xl">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-tbody">
+                            
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        H
+                    </div>
+                    <span>Hugo Acosta
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">hugo.acosta@upgrade.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        U
+                    </div>
+                    <span>Upgrade Diseño
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">user@upgrade.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-pink-500/10 text-pink-400 border-pink-500/20 font-semibold">
+                    Femenino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        D
+                    </div>
+                    <span>DENISSE GUTIERREZ
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">d.gutierrez@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-pink-500/10 text-pink-400 border-pink-500/20 font-semibold">
+                    Femenino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        M
+                    </div>
+                    <span>Martin De la O
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">m.delao@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        C
+                    </div>
+                    <span>CYNTHIA PINEDO
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">p.pinedo@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-pink-500/10 text-pink-400 border-pink-500/20 font-semibold">
+                    Femenino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        U
+                    </div>
+                    <span>ULISES NUÑEZ
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">u.nunez@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        S
+                    </div>
+                    <span>SERGIO MENDOZA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">s.becerra@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        I
+                    </div>
+                    <span>IRVING SAUCEDO
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">i.saucedo@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        J
+                    </div>
+                    <span>JUAN ESPINOSA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">a.espinosa@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        R
+                    </div>
+                    <span>ROBERTO MUÑOZ
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">r.munoz@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        R
+                    </div>
+                    <span>RICARDO MORIEL
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">r.moriel@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        G
+                    </div>
+                    <span>GUILLERMO DURSTEWITZ
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">G.DURSTEWITZ@JOMARVERIFICA.COM.MX</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        F
+                    </div>
+                    <span>FILIBERTO SALCEDO
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">f.salcedo@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        J
+                    </div>
+                    <span>JORGE GUERRERO
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">j.guerrero@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        C
+                    </div>
+                    <span>CHRISTOPHER ESPINOSA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">C.ESPINOSA@JOMARVERIFICA.COM</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        N
+                    </div>
+                    <span>NORMA RUIZ
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">I.OLMEDO@JOMARVERIFICA.COM</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-pink-500/10 text-pink-400 border-pink-500/20 font-semibold">
+                    Femenino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        A
+                    </div>
+                    <span>ANA OROZCO
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">A.MIRANDA@JOMARVERIFICA.COM</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-pink-500/10 text-pink-400 border-pink-500/20 font-semibold">
+                    Femenino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        I
+                    </div>
+                    <span>IVAN SEPULVEDA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">i.sepulveda@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        A
+                    </div>
+                    <span>ALAN ESTRADA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">a.estrada@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+        <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+            <td class="py-4 px-4 font-medium text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-bold text-xs shrink-0">
+                        G
+                    </div>
+                    <span>GIOVANNI MEDINA
+            </span>
+                </div>
+            </td>
+            <td class="py-4 px-4 text-gray-400 lowercase">G.medina@jomarverifica.com.mx</td>
+            <td class="py-4 px-4">
+                <span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">
+                    Masculino
+                </span>
+            </td>
+            <td class="py-4 px-4 text-right">
+                <button class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors" title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+            </td>
+        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Formulario Nuevo Usuario -->
+    <div id="modal-nuevo-usuario" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="relative bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl w-full max-w-4xl p-8 transform transition-all fade-in">
+            
+            <!-- Botón Cerrar -->
+            <button onclick="document.getElementById('modal-nuevo-usuario').classList.add('hidden')" class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors bg-dark-900 p-2 rounded-full border border-dark-600 hover:border-dark-500">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+
+            <div class="mb-8 pr-12">
+                <h2 class="text-2xl font-bold text-white mb-2">Añadir/Editar usuario</h2>
+                <p class="text-gray-400 text-sm">Llene la siguiente información para dar de alta o editar un usuario en el sistema.</p>
+            </div>
+
+            <form class="space-y-6">
+                <!-- Account Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Correo electrónico</label>
+                        <input type="email" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="ejemplo@jomar.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Contraseña</label>
+                        <input type="password" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <!-- Role -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Perfil:</label>
+                    <select class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all appearance-none cursor-pointer">
+                        <option value="">Selecciona</option>
+                        <option value="admin">Administrador</option>
+                        <option value="gerente">Gerente</option>
+                        <option value="tecnico">Técnico Verificador</option>
+                    </select>
+                </div>
+
+                <hr class="border-dark-700 my-6">
+
+                <!-- Personal Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Nombre:</label>
+                        <input type="text" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="Primer nombre">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">Segundo nombre:</label>
+                        <input type="text" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="Segundo nombre (Opcional)">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">A. Paterno:</label>
+                        <input type="text" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="Apellido paterno">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">A. Materno:</label>
+                        <input type="text" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all" placeholder="Apellido materno">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Género:</label>
+                    <select class="w-full md:w-1/2 bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all appearance-none cursor-pointer">
+                        <option value="">Selecciona una opción</option>
+                        <option value="m">Masculino</option>
+                        <option value="f">Femenino</option>
+                        <option value="o">Otro</option>
+                    </select>
+                </div>
+
+                <div class="pt-6 flex justify-end gap-4 mt-8 border-t border-dark-700 pt-8">
+                    <button type="button" onclick="document.getElementById('modal-nuevo-usuario').classList.add('hidden')" class="px-6 py-3 rounded-xl border border-dark-600 text-gray-300 hover:bg-dark-700 hover:text-white transition-all font-semibold">Cancelar</button>
+                    <button type="button" onclick="document.getElementById('modal-nuevo-usuario').classList.add('hidden')" class="px-6 py-3 rounded-xl bg-brand-yellow text-dark-900 hover:bg-yellow-400 font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all flex items-center gap-2">
+                        <i class="ph ph-floppy-disk text-xl"></i> Guardar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal logic via clicks on background
+        document.getElementById('modal-nuevo-usuario').addEventListener('click', function(e) {
+            if(e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // Init search
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.App && window.App.initSearch) {
+                App.initSearch(document.getElementById('usuarios-search'), '#usuarios-tbody tr');
+            }
+        });
+    </script>
+    <script src="../JS/app.js" defer></script>
+    <script src="../JS/table-actions.js" defer></script>
+</body>
+</html>

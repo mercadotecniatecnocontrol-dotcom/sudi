@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - Catálogos SUDI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: {
+                        dark: { 900: '#11131e', 800: '#1a1d2d', 700: '#232736', 600: '#32384e' },
+                        brand: { yellow: '#EAB308' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #232736 transparent;
+        }
+
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: #32384e;
+            border-radius: 4px;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background: #EAB308;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #EAB308;
+            color: #EAB308;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">
+
+    <!-- Sidebar Lateral -->
+    <aside
+        class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <img src="../img/JOMARLOGO.png" alt="Jomar Logo"
+                    class="h-10 w-auto object-contain drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="../index.html"
+                    class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4">
+                    <i
+                        class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Ir al Menú Principal</span>
+                </a>
+
+                <a href="clientes.html"
+                    class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow">
+                    <i class="ph ph-users text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i>
+                    <span>Clientes</span>
+                </a>
+
+                <a href="usuarios.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                    <i class="ph ph-user-circle text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                    <span>Usuarios</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger=""
+                class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50"
+                title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span
+                        class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
+                </div>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p
+                        class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">
+                        Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
+                </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0"
+                    title="Opciones de perfil"></i>
+            </div>
+            <a href="../login.html"
+                class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex overflow-hidden">
+        <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden fade-in">
+            <header
+                class="px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4">
+                <div class="flex items-center gap-6">
+                    <div>
+                        <p class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">Módulo de Catálogos
+                        </p>
+                        <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                            <i class="ph-fill ph-users text-brand-yellow"></i>
+                            Gestión de Clientes
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <!-- Buscador -->
+                    <div class="relative w-full md:w-80">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="ph ph-magnifying-glass text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="text" id="clientes-search"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-dark-600 rounded-xl bg-dark-800 text-white placeholder-gray-400 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-colors"
+                            placeholder="Buscar cliente por nombre o RFC...">
+                    </div>
+                    <!-- Botón Añadir Cliente -->
+                    <button onclick="document.getElementById('modal-nuevo-cliente').classList.remove('hidden')"
+                        class="bg-brand-yellow text-dark-900 px-5 py-2.5 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:bg-yellow-400 transition-all flex items-center gap-2 whitespace-nowrap shrink-0">
+                        <i class="ph ph-plus-circle text-lg"></i> Añadir Cliente
+                    </button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-x-auto overflow-y-auto bg-dark-900 p-8 custom-scrollbar relative">
+                <div class="bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl p-6 fade-in min-w-[1100px]">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-dark-900 text-gray-400 uppercase text-[10px] tracking-wider">
+                            <tr>
+                                <th class="py-4 px-4 font-semibold rounded-tl-xl">Nombre Comercial</th>
+                                <th class="py-4 px-4 font-semibold">Representante</th>
+                                <th class="py-4 px-4 font-semibold">Teléfono</th>
+                                <th class="py-4 px-4 font-semibold">Correo</th>
+                                <th class="py-4 px-4 font-semibold text-center">Estaciones</th>
+                                <th class="py-4 px-4 font-semibold text-center">Normas</th>
+                                <th class="py-4 px-4 font-semibold text-right rounded-tr-xl">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientes-tbody">
+
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">ESTACION DE SERVICIO TRES HERMANOS SA DE CV
+                                </td>
+                                <td class="py-4 px-4">ALEJANDRO ZAMORA SANCHEZ</td>
+                                <td class="py-4 px-4">16563794217</td>
+                                <td class="py-4 px-4">agnp@prodigy.net.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SUPER SERVICIO HERRERA DEL NORTE SA DE CV
+                                </td>
+                                <td class="py-4 px-4">RUBEN HERRERA</td>
+                                <td class="py-4 px-4">6566171091</td>
+                                <td class="py-4 px-4">jesus.pacheco@hgasolineras.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">20</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">DIAZ GAS, S.A. DE C.V.</td>
+                                <td class="py-4 px-4">Alfredo Escalera Baca</td>
+                                <td class="py-4 px-4">6566383535</td>
+                                <td class="py-4 px-4">salvador.navarro@totalgas.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">20</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO EL JARUDO SA DE CV</td>
+                                <td class="py-4 px-4">JOSE IGNACIO CASTILLO AVALOS</td>
+                                <td class="py-4 px-4">6566183101</td>
+                                <td class="py-4 px-4">jcortes@distribuidoragasomex.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SUPER SERVICIO 4 CAMINOS SA DE CV</td>
+                                <td class="py-4 px-4">FERNANDO CARBAJAL FLORES</td>
+                                <td class="py-4 px-4">6566331107</td>
+                                <td class="py-4 px-4">r.carbajal@4caminos.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">DISTRIBUIDORA CLARA SA DE CV</td>
+                                <td class="py-4 px-4">JOSE IGNACIO CASTILLO AVALOS</td>
+                                <td class="py-4 px-4">6566183100</td>
+                                <td class="py-4 px-4">jgamboa@gaso-mex.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">DISTRIBUIDORA GASO MEX SA DE CV</td>
+                                <td class="py-4 px-4">José Ignacio Castillo Ávalos</td>
+                                <td class="py-4 px-4">6562156815</td>
+                                <td class="py-4 px-4">jgamboa@gaso-mex.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">5</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">AUTOGAS DE LA FRONTERA SA DE CV</td>
+                                <td class="py-4 px-4">FERNANDO MOLINA</td>
+                                <td class="py-4 px-4">6566137667</td>
+                                <td class="py-4 px-4">lfdomolina@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GABINA GUADALUPE SIFUENTES GUTIERREZ</td>
+                                <td class="py-4 px-4">GABINA GUADALUPE SIFUENTES GUTIERREZ</td>
+                                <td class="py-4 px-4">6564764147</td>
+                                <td class="py-4 px-4">gpemonsi@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO DUBLAN SA DE CV</td>
+                                <td class="py-4 px-4">HUGO MORALES</td>
+                                <td class="py-4 px-4">6366940925</td>
+                                <td class="py-4 px-4">serviciodublan@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">FRANCISCO SORIA LUNA</td>
+                                <td class="py-4 px-4">CARMEN MORALES</td>
+                                <td class="py-4 px-4">4421093164</td>
+                                <td class="py-4 px-4">servicioguadalupe1227@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GILBERTO HERNANDEZ VEGA</td>
+                                <td class="py-4 px-4">GILBERTO HERNANDEZ CASTRO</td>
+                                <td class="py-4 px-4">6366940134</td>
+                                <td class="py-4 px-4">factura-ssm@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">0</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO OLLIVIER RICO SA DE CV</td>
+                                <td class="py-4 px-4">RAUL OLLIVIER</td>
+                                <td class="py-4 px-4">6366941211</td>
+                                <td class="py-4 px-4">gasamerica84@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO FAMBA SA DE CV</td>
+                                <td class="py-4 px-4">JUAN GABRIEL BARRIO</td>
+                                <td class="py-4 px-4">16366940085</td>
+                                <td class="py-4 px-4">johnny_gbr@prodigy.net.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">MA CONCEPCION ARMENDARIZ PARRA</td>
+                                <td class="py-4 px-4">ERNESTO CID</td>
+                                <td class="py-4 px-4">6366940136</td>
+                                <td class="py-4 px-4">serviciopaquime1236@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SAZA YAPOR SA DE CV</td>
+                                <td class="py-4 px-4">FABIAN DELGADO TERRAZAS</td>
+                                <td class="py-4 px-4">6143633916</td>
+                                <td class="py-4 px-4">independencia.1336@rendilitros.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">COMBUSTIBLES Y LUBRICANTES RACHALI SA DE CV
+                                </td>
+                                <td class="py-4 px-4">ORESTES CHAVEZ GARCIA</td>
+                                <td class="py-4 px-4">6351092109</td>
+                                <td class="py-4 px-4">rachali@live.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIOS GASOLINEROS DE MEXICO SA DE CV
+                                </td>
+                                <td class="py-4 px-4">GERARDO JAVIER GARZA TORRES</td>
+                                <td class="py-4 px-4">6142397691</td>
+                                <td class="py-4 px-4">luis.reyes@oxxogas.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">65</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">ORALIA ADAME GONZALEZ</td>
+                                <td class="py-4 px-4">MANUEL SIGALA MENDOZA</td>
+                                <td class="py-4 px-4">5760625</td>
+                                <td class="py-4 px-4">manuelsigala_adame@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">0</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">JAIME HUMBERTO NUÑEZ CASTILLO</td>
+                                <td class="py-4 px-4">JAIME HUMBERTO NUÑEZ CASTILLO</td>
+                                <td class="py-4 px-4">6141036529</td>
+                                <td class="py-4 px-4">servicio_mirador@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO VICALBER</td>
+                                <td class="py-4 px-4">ROBERTO RUIZ VELASCO ALVAREZ DEL CASTILLO</td>
+                                <td class="py-4 px-4">6351092109</td>
+                                <td class="py-4 px-4">servicioguerrero@prodigy.net.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">AVECON SA DE CV</td>
+                                <td class="py-4 px-4">DENISSE DAMIAN SALCIDO</td>
+                                <td class="py-4 px-4">6141007098</td>
+                                <td class="py-4 px-4">avecon.salcido@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">TELESFORO BALDEMAR RODRIGUEZ GUTIERREZ</td>
+                                <td class="py-4 px-4">TELESFORO BALDEMAR RODRIGUEZ GUTIERREZ</td>
+                                <td class="py-4 px-4">6255822095</td>
+                                <td class="py-4 px-4">baldemarrodriguez@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO CHAVO S.A. DE C.V.</td>
+                                <td class="py-4 px-4">SALVADOR BOCANEGRA DURAN</td>
+                                <td class="py-4 px-4">6255820948</td>
+                                <td class="py-4 px-4">sevicio_chavoacv@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">PRONTOGAS SA DE CV</td>
+                                <td class="py-4 px-4">FABIAN DELGADO TERRAZAS</td>
+                                <td class="py-4 px-4">6142351357</td>
+                                <td class="py-4 px-4">fabian.delgado@rendilitros.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">27</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO LEYVA SA DE CV</td>
+                                <td class="py-4 px-4">FATIMA KARELY RUIZ ESCOBEDO</td>
+                                <td class="py-4 px-4">6361322245</td>
+                                <td class="py-4 px-4">jesusleyvae1379@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">LA MERCANTIL DE GOMEZ FARIAS SA DE CV</td>
+                                <td class="py-4 px-4">CARLOS GERARDO GUTIERREZ CAMPOS</td>
+                                <td class="py-4 px-4">16525520036</td>
+                                <td class="py-4 px-4">la.mercantil@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">AGUEDA JAVALERA VILLALOBOS</td>
+                                <td class="py-4 px-4">JOSE EDUARDO ORTEGA</td>
+                                <td class="py-4 px-4">6144582380</td>
+                                <td class="py-4 px-4">chegs694@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">IVANNA RIVERA MARTINEZ</td>
+                                <td class="py-4 px-4">ANABELL MARTINEZ CONTRERAS</td>
+                                <td class="py-4 px-4">6595780615</td>
+                                <td class="py-4 px-4">anabell-mc@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO MORALES GUADALUPE CADENA ARBALLO
+                                </td>
+                                <td class="py-4 px-4">GUADALUPECADENA</td>
+                                <td class="py-4 px-4">6595768112</td>
+                                <td class="py-4 px-4">lupitacadear@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO HERMANOS VEGA SA DE CV</td>
+                                <td class="py-4 px-4">Nallely Henandez Rios</td>
+                                <td class="py-4 px-4">6366960590</td>
+                                <td class="py-4 px-4">serv-vega@prodigy.net.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">ROSENDO RODRIGUEZ MARTINEZ</td>
+                                <td class="py-4 px-4">ROSENDO RODRIGUEZ MARTINEZ</td>
+                                <td class="py-4 px-4">6355880016</td>
+                                <td class="py-4 px-4">serviciorodriguez1410@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GASOLINERA LA JEFA SA DE CV</td>
+                                <td class="py-4 px-4">ABRAM FEHR WIEBE</td>
+                                <td class="py-4 px-4">6251154241</td>
+                                <td class="py-4 px-4">campanaref@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GI POWER GROUP SA DE CV</td>
+                                <td class="py-4 px-4">OSCAR IRVING CASTILLEJOS ARTEAGA</td>
+                                <td class="py-4 px-4">6214750210</td>
+                                <td class="py-4 px-4">e01418@powergroup.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">4</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">RAMON MARQUEZ ESPINOZA</td>
+                                <td class="py-4 px-4">ANGELICA PI?ON</td>
+                                <td class="py-4 px-4">6646351191</td>
+                                <td class="py-4 px-4">brenda.alba@rendilitros.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO RIO FUERTE SA DE CV</td>
+                                <td class="py-4 px-4">CARLOS HERRARA DUARTE</td>
+                                <td class="py-4 px-4">664 635-1191</td>
+                                <td class="py-4 px-4">brenda.alba@rendilitros.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO HERNANDEZ GASOLINERA SA DE CV</td>
+                                <td class="py-4 px-4">HECTOR LAURO HERNANDEZ BELTRAN</td>
+                                <td class="py-4 px-4">6271115400</td>
+                                <td class="py-4 px-4">serviciohernandezgas@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SAMUEL CHAVEZ VILLALOBOS</td>
+                                <td class="py-4 px-4">SAMUEL CHAVEZ VILLALOBOS</td>
+                                <td class="py-4 px-4">6275231785</td>
+                                <td class="py-4 px-4">gasolinera_bellavista@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">3</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO BALLEZA SA DE CV</td>
+                                <td class="py-4 px-4">LIZETH GARFIO</td>
+                                <td class="py-4 px-4">6495350346</td>
+                                <td class="py-4 px-4">servicioballeza09@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">ERNESTO AGUILERA ALMAZAN</td>
+                                <td class="py-4 px-4">SAUL GUILERA</td>
+                                <td class="py-4 px-4">6272793228</td>
+                                <td class="py-4 px-4">ernesto.almazan@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO MORENO DE GUACHOCHI SA DE CV</td>
+                                <td class="py-4 px-4">OMAR MORENO BUSTILLOS</td>
+                                <td class="py-4 px-4">6495430088</td>
+                                <td class="py-4 px-4">servmorenoguachochi@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">PEDRO TOQUERO GUTIERREZ</td>
+                                <td class="py-4 px-4">MARIA ASUNCION RIOS RODRIGUEZ</td>
+                                <td class="py-4 px-4">649 547 00 66</td>
+                                <td class="py-4 px-4">servicio_lasnievasdgo@hotmail.com, entronquegasolinera@gmail.com
+                                </td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">4</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GASOLINERA STA BARBARA S DE RL DE CV</td>
+                                <td class="py-4 px-4">CLAUDIA ZAPATA</td>
+                                <td class="py-4 px-4">6285240437</td>
+                                <td class="py-4 px-4">servicionavarrogonzalo@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">VIZA LUAN GASOLINERA SA DE CV</td>
+                                <td class="py-4 px-4">ERIKA TRINIDAD VELAZQUEZ BARRERA</td>
+                                <td class="py-4 px-4">4412273369</td>
+                                <td class="py-4 px-4">vilgasa_2013@outlook.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">GASOLINERA VALLES SA</td>
+                                <td class="py-4 px-4">VICTOR VALLES GOMEZ</td>
+                                <td class="py-4 px-4">6275230856</td>
+                                <td class="py-4 px-4">gasvalles@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">COMERCIAL TEIKA, S.A. DE C.V.</td>
+                                <td class="py-4 px-4">JOHAN THIESSEN NEUFELD</td>
+                                <td class="py-4 px-4">6252071228</td>
+                                <td class="py-4 px-4">tramitesteika@gmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">JORGE ALONSO RODELA CAMPOS</td>
+                                <td class="py-4 px-4">JORGE ALONSO RODELA CAMPOS</td>
+                                <td class="py-4 px-4">6530015</td>
+                                <td class="py-4 px-4">combustibles3184@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">ALEJANDRO MANUEL GARCIA GIRARD</td>
+                                <td class="py-4 px-4">ENRIQUETA CONTRERAS MELENDEZ</td>
+                                <td class="py-4 px-4">6214760034</td>
+                                <td class="py-4 px-4">servicionaica@yahoo.com.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">SERVICIO PLAZA SAN FELIPE SA DE CV</td>
+                                <td class="py-4 px-4">MARTIN VILLANUEVA</td>
+                                <td class="py-4 px-4">4147081</td>
+                                <td class="py-4 px-4">grupoexpress@prodigy.net.mx</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">2</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                        <span
+                                            class="bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-emerald-500/20 uppercase tracking-wide">ASEA</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-dark-700 hover:bg-dark-800/50 transition-colors">
+                                <td class="py-4 px-4 font-medium text-white">FRANCISCO JESUS TORRES CABALLERO</td>
+                                <td class="py-4 px-4">OMAR TORRES</td>
+                                <td class="py-4 px-4">4593069</td>
+                                <td class="py-4 px-4">mario_157@hotmail.com</td>
+                                <td class="py-4 px-4 text-center">
+                                    <span
+                                        class="bg-dark-700 text-brand-yellow font-bold px-2 py-1 rounded-lg text-xs border border-dark-600">1</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center justify-center gap-2 flex-wrap min-w-[100px]">
+                                        <span
+                                            class="bg-blue-500/10 text-blue-400 font-bold px-2.5 py-1 rounded-md text-[10px] border border-blue-500/20 uppercase tracking-wide">SCFI</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button
+                                        class="no-row-action p-1.5 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white transition-colors"
+                                        title="Ver detalles"><i class="ph ph-eye text-lg"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Formulario Nuevo Cliente -->
+    <div id="modal-nuevo-cliente"
+        class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div
+            class="relative bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl w-full max-w-5xl p-8 transform transition-all fade-in custom-scrollbar overflow-y-auto max-h-[90vh]">
+
+            <!-- Botón Cerrar -->
+            <button onclick="document.getElementById('modal-nuevo-cliente').classList.add('hidden')"
+                class="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors bg-dark-900 p-2 rounded-full border border-dark-600 hover:border-dark-500">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+
+            <div class="flex items-center justify-between mb-6 pr-12">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Añadir/Editar cliente</h2>
+                    <p class="text-gray-400 text-sm">Registre los datos de la empresa y configure sus normativas
+                        aplicables.</p>
+                </div>
+                <!-- Image Logo Input -->
+                <div
+                    class="relative w-20 h-20 rounded-2xl bg-dark-900 border-2 border-dashed border-dark-600 flex flex-col items-center justify-center text-gray-500 hover:border-brand-yellow hover:text-brand-yellow transition-colors cursor-pointer overflow-hidden group shrink-0">
+                    <i class="ph ph-image text-2xl mb-1 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] font-bold uppercase text-center leading-tight">Subir Logo</span>
+                    <input type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Tabs para navegación interna -->
+            <div class="flex border-b border-dark-700 mb-8 overflow-x-auto custom-scrollbar">
+                <button
+                    class="tab-btn active px-6 py-3 border-b-2 font-semibold text-sm transition-colors whitespace-nowrap"
+                    data-target="tab-general">
+                    Información General
+                </button>
+                <button
+                    class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-gray-200 font-semibold text-sm transition-colors whitespace-nowrap"
+                    data-target="tab-fiscal">
+                    Datos Fiscales
+                </button>
+                <button
+                    class="tab-btn px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-gray-200 font-semibold text-sm transition-colors whitespace-nowrap"
+                    data-target="tab-contactos">
+                    Contactos
+                </button>
+            </div>
+
+            <form class="space-y-6">
+                <!-- TAB GENERAL -->
+                <div id="tab-general" class="tab-content active space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Nombre comercial</label>
+                            <input type="text"
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                placeholder="Nombre comercial de la empresa">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Razón social</label>
+                            <input type="text"
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                placeholder="Razón social completa">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">RFC</label>
+                            <input type="text"
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all uppercase"
+                                placeholder="ABC123456T1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">INE del representante
+                                legal</label>
+                            <div class="relative">
+                                <input type="file" class="hidden" id="ine-upload">
+                                <label for="ine-upload"
+                                    class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-gray-400 focus:outline-none focus:border-brand-yellow transition-all flex items-center justify-between cursor-pointer hover:bg-dark-700">
+                                    <span class="truncate">Seleccionar archivo (PDF, JPG, PNG)</span>
+                                    <i class="ph ph-upload-simple text-brand-yellow text-lg"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-dark-700 my-6">
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-4">Normas que aplican</label>
+                        <div class="flex flex-wrap gap-6">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <div
+                                    class="relative flex items-center justify-center w-6 h-6 rounded border-2 border-dark-600 bg-dark-900 group-hover:border-brand-yellow transition-colors">
+                                    <input type="checkbox" class="peer absolute w-full h-full opacity-0 cursor-pointer">
+                                    <i
+                                        class="ph-bold ph-check text-dark-900 opacity-0 peer-checked:opacity-100 scale-50 peer-checked:scale-100 transition-all absolute"></i>
+                                    <div
+                                        class="absolute inset-0 bg-brand-yellow opacity-0 peer-checked:opacity-100 transition-opacity -z-10 rounded-sm">
+                                    </div>
+                                </div>
+                                <span class="text-white font-medium">SCFI</span>
+                            </label>
+
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <div
+                                    class="relative flex items-center justify-center w-6 h-6 rounded border-2 border-dark-600 bg-dark-900 group-hover:border-brand-yellow transition-colors">
+                                    <input type="checkbox" class="peer absolute w-full h-full opacity-0 cursor-pointer">
+                                    <i
+                                        class="ph-bold ph-check text-dark-900 opacity-0 peer-checked:opacity-100 scale-50 peer-checked:scale-100 transition-all absolute"></i>
+                                    <div
+                                        class="absolute inset-0 bg-brand-yellow opacity-0 peer-checked:opacity-100 transition-opacity -z-10 rounded-sm">
+                                    </div>
+                                </div>
+                                <span class="text-white font-medium">ASEA</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB FISCAL -->
+                <div id="tab-fiscal" class="tab-content space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Dirección fiscal
+                                completa</label>
+                            <input type="text"
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                placeholder="Calle, Número exterior e interior, Colonia...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Código Postal</label>
+                            <input type="text"
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                placeholder="Ej. 64000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">Régimen fiscal</label>
+                            <select
+                                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all appearance-none cursor-pointer">
+                                <option value="">Selecciona</option>
+                                <option value="601">General de Ley Personas Morales</option>
+                                <option value="612">Personas Físicas con Actividades Empresariales</option>
+                                <option value="626">Régimen Simplificado de Confianza</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB CONTACTOS -->
+                <div id="tab-contactos" class="tab-content space-y-6">
+                    <div class="bg-dark-900 p-6 rounded-2xl border border-dark-600 relative">
+                        <h3 class="text-white font-bold mb-4 flex items-center gap-2"><i
+                                class="ph ph-star text-brand-yellow"></i> Contacto Principal</h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Nombre del
+                                    contacto</label>
+                                <input type="text"
+                                    class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                    placeholder="Nombre completo">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Puesto / Cargo</label>
+                                <input type="text"
+                                    class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                    placeholder="Ej. Gerente de Mantenimiento">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Teléfono</label>
+                                <input type="tel"
+                                    class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                    placeholder="(00) 0000 0000">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-300 mb-2">Correo electrónico</label>
+                                <input type="email"
+                                    class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all"
+                                    placeholder="contacto@empresa.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                        class="w-full py-3 rounded-xl border border-dashed border-dark-600 text-gray-400 hover:text-brand-yellow hover:border-brand-yellow transition-colors flex items-center justify-center gap-2 font-medium">
+                        <i class="ph ph-plus-circle text-lg"></i> Añadir contacto adicional
+                    </button>
+                </div>
+
+                <div class="pt-6 flex justify-end gap-4 mt-8 border-t border-dark-700 pt-8">
+                    <button type="button"
+                        onclick="document.getElementById('modal-nuevo-cliente').classList.add('hidden')"
+                        class="px-6 py-3 rounded-xl border border-dark-600 text-gray-300 hover:bg-dark-700 hover:text-white transition-all font-semibold">Cancelar</button>
+                    <button type="button"
+                        onclick="document.getElementById('modal-nuevo-cliente').classList.add('hidden')"
+                        class="px-6 py-3 rounded-xl bg-brand-yellow text-dark-900 hover:bg-yellow-400 font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all flex items-center gap-2">
+                        <i class="ph ph-floppy-disk text-xl"></i> Guardar Cliente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active', 'border-brand-yellow', 'text-brand-yellow');
+                    btn.classList.add('border-transparent', 'text-gray-400');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                button.classList.remove('border-transparent', 'text-gray-400');
+
+                const targetId = button.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Modal logic via clicks on background
+        document.getElementById('modal-nuevo-cliente').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // Init search
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.App && window.App.initSearch) {
+                App.initSearch(document.getElementById('clientes-search'), '#clientes-tbody tr');
+            }
+        });
+    </script>
+    <script src="../JS/app.js" defer></script>
+    <script src="../JS/table-actions.js" defer></script>
+</body>
+
+</html>

@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="es" class="dark">
-<head>
+<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://unpkg.com">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes ASEA - Jomar</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
 
     <script>
@@ -25,7 +28,7 @@
                             600: '#32384e'
                         },
                         brand: {
-                            orange: '#F97316',
+                            orange: '#EAB308',
                             yellow: '#EAB308'
                         }
                     }
@@ -33,109 +36,96 @@
             }
         }
     </script>
-</head>
-<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">
+
+
 
     <!-- Overlay móvil del sidebar -->
     <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
     <!-- Sidebar Lateral -->
-    <aside class="w-64 bg-dark-800 border-r border-dark-700 flex flex-col justify-between z-20 shrink-0 -translate-x-full lg:translate-x-0">
+    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
-                <i class="ph ph-shield-check text-3xl text-brand-orange mr-3 hover:-rotate-12 hover:scale-110 transition-transform"></i>
-                <div class="flex flex-col">
-                    <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-orange to-brand-yellow tracking-wider">JOMAR</span>
-                    <span class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Verificaciones</span>
-                </div>
+                <img src="..\img\JOMARLOGO.png" alt="Jomar Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.3)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
             </div>
 
             <nav class="p-4 space-y-2 mt-2">
-                <a href="Dash_ASEA.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-house text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inicio
-                </a>
-                <a href="clientes_asea.html" class="relative flex items-center px-4 py-3 rounded-xl bg-brand-orange/10 text-brand-orange font-medium transition-all group overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange shadow-[0_0_10px_#F97316]"></div>
-                    <i class="ph ph-users text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Clientes
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-wrench text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Equipos
-                </a>
-                <a href="inspecciones_asea.html" class="flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group">
-                    <i class="ph ph-clipboard-text text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                    Inspecciones
-                </a>
+                <a href="../../index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
+                <a href="Dash_ASEA.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-house text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inicio</span></a>
+                <a href="clientes_asea.html" class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow"><i class="ph ph-users text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
+                <a href="orden_servicio.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-file-plus text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Orden de servicio</span></a>
+                <a href="inspecciones_asea.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
+                <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-list-checks text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Requerimientos</span></a>
+                <a href="gerentes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-user-list text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Gerentes</span></a>
+
                 <div class="pt-2 pb-2">
                     <div class="border-t border-dark-700 my-2"></div>
                 </div>
 
                 <div class="relative">
-                    <button data-dropdown-toggle="clientes-asea-hologramas-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-files text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Hologramas
-                        </div>
-                        <i class="ph ph-caret-down text-sm"></i>
-                    </button>
-                    <div id="clientes-asea-hologramas-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="../SCFI/hologramas/distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-hash text-xs"></i> Precintos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_distintivos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar distintivos
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_flexogramas.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar flexogramas
-                        </a>
-                        <a href="../SCFI/hologramas/asignar_precintos.html" class="flex items-center gap-2 py-2 text-sm text-gray-500 hover:text-white transition-colors">
-                            <i class="ph ph-user-plus text-xs"></i> Asignar precintos
-                        </a>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <button data-dropdown-toggle="clientes-asea-catalogos-menu" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-400 hover:bg-dark-700 hover:text-white transition-all group justify-between">
-                        <div class="flex items-center">
-                            <i class="ph ph-list-dashes text-xl mr-3 group-hover:scale-110 transition-transform"></i>
-                            Catálogos
-                        </div>
-                        <i class="ph ph-caret-down text-sm"></i>
-                    </button>
-                    <div id="clientes-asea-catalogos-menu" data-dropdown class="hidden pl-12 pr-4 py-2 space-y-1">
+                    <button data-dropdown-toggle="gerentes-catalogos-menu" class="w-full flex items-center justify-between px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+            <div class="flex items-center gap-4">
+                <i class="ph ph-list-dashes text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                <span>Catálogos</span>
+            </div>
+            <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
+        </button>
+                    <div id="gerentes-catalogos-menu" data-dropdown="" class="hidden pl-12 pr-4 py-2 space-y-1">
                         <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
                         <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
                         <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
-                        <a href="gerentes.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Gerentes</a>
-                        <a href="orden_servicio.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Orden de servicio</a>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <div class="p-4 border-t border-dark-700">
-            <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-dark-700 cursor-pointer transition-colors mb-2">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center text-white font-bold shadow-lg">
-                    LR
+                
+    
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        
+
+        <!-- Usuario / Cierre de sesión inferior -->
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger="" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50" title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm text-white font-medium truncate">l.ruiz@jomar...</p>
-                    <p class="text-xs text-gray-500">Administrador</p>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Luis Ruiz</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
                 </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0" title="Opciones de perfil"></i>
             </div>
-            <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">
-                <i class="ph ph-sign-out mr-2"></i> Cerrar sesión
+            <a href="../login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
             </a>
         </div>
-    </aside>
+</aside>
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
@@ -156,13 +146,13 @@
                     <button id="btn-filtrar" data-dropdown-toggle="clientes-filtrar-menu" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 transition-colors shadow-sm">
                         <i class="ph ph-funnel text-lg"></i> Filtrar
                     </button>
-                    <div id="clientes-filtrar-menu" data-dropdown class="hidden absolute right-0 mt-2 w-56 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
+                    <div id="clientes-filtrar-menu" data-dropdown="" class="hidden absolute right-0 mt-2 w-56 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
                         <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Ordenar por</p>
                         <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 hover:text-white transition-colors" data-filtro="nombre">Razón social (A-Z)</button>
                         <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 hover:text-white transition-colors" data-filtro="estaciones">Más estaciones</button>
                     </div>
                 </div>
-                <button data-modal-open="modal-nuevo-cliente" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 rounded-lg shadow-lg hover:shadow-orange-500/25 transition-all hover:-translate-y-0.5">
+                <button data-modal-open="modal-nuevo-cliente" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
                     <i class="ph ph-plus-circle text-lg"></i> Nuevo Cliente
                 </button>
             </div>
@@ -173,15 +163,14 @@
             <!-- Barra superior: Título y Buscador -->
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 fade-in">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center border border-brand-orange/20 shadow-inner">
-                        <i class="ph ph-users-three text-2xl text-brand-orange"></i>
+                    <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20 shadow-inner">
+                        <i class="ph ph-users-three text-2xl text-brand-yellow"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-white tracking-tight uppercase">CLIENTES</h2>
                 </div>
                 
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="clientes-search" placeholder="Buscar por razón social o representante..."
-                           class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all shadow-sm">
+                    <input type="text" id="clientes-search" placeholder="Buscar por razón social o representante..." class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all shadow-sm">
                     <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-xl"></i>
                     <button class="absolute right-3 top-2.5 p-1.5 rounded-md hover:bg-dark-700 text-gray-400 transition-colors bg-dark-900 border border-dark-600">
                         <i class="ph ph-magnifying-glass text-sm"></i>
@@ -195,8 +184,8 @@
             <div id="clientes-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                 <!-- Tarjeta 1 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.1s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -221,7 +210,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:agnp@prodigy.net.mx" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">agnp@prodigy.net.mx</a>
+                            <a href="mailto:agnp@prodigy.net.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">agnp@prodigy.net.mx</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -231,8 +220,8 @@
                 </div>
 
                 <!-- Tarjeta 2 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.15s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.15s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -257,7 +246,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jesus.pacheco@hgasolineras.com.mx" class="text-brand-orange hover:text-orange-400 truncate transition-colors block" title="jesus.pacheco@hgasolineras.com.mx">jesus.pacheco@hgasolineras.com.mx</a>
+                            <a href="mailto:jesus.pacheco@hgasolineras.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="jesus.pacheco@hgasolineras.com.mx">jesus.pacheco@hgasolineras.com.mx</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -267,8 +256,8 @@
                 </div>
 
                 <!-- Tarjeta 3 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.2s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.2s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -293,7 +282,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:salvador.navarro@totalgas.com" class="text-brand-orange hover:text-orange-400 truncate transition-colors block" title="salvador.navarro@totalgas.com">salvador.navarro@totalgas.com</a>
+                            <a href="mailto:salvador.navarro@totalgas.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="salvador.navarro@totalgas.com">salvador.navarro@totalgas.com</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -303,8 +292,8 @@
                 </div>
 
                 <!-- Tarjeta 4 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.25s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.25s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -329,7 +318,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jcortes@distribuidoragasomex.com.mx" class="text-brand-orange hover:text-orange-400 truncate transition-colors block" title="jcortes@distribuidoragasomex.com.mx">jcortes@distribuidoragasomex.com.mx</a>
+                            <a href="mailto:jcortes@distribuidoragasomex.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="jcortes@distribuidoragasomex.com.mx">jcortes@distribuidoragasomex.com.mx</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -339,8 +328,8 @@
                 </div>
 
                 <!-- Tarjeta 5 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.3s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.3s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -365,7 +354,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
+                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -375,8 +364,8 @@
                 </div>
 
                 <!-- Tarjeta 6 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.35s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.35s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -401,7 +390,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
+                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -411,8 +400,8 @@
                 </div>
 
                 <!-- Tarjeta 7 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.4s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.4s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -437,7 +426,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:factura-ssm@hotmail.com" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">factura-ssm@hotmail.com</a>
+                            <a href="mailto:factura-ssm@hotmail.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">factura-ssm@hotmail.com</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -447,8 +436,8 @@
                 </div>
 
                 <!-- Tarjeta 8 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.45s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.45s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -473,7 +462,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:independencia.1336@rendilitros.com" class="text-brand-orange hover:text-orange-400 truncate transition-colors block" title="independencia.1336@rendilitros.com">independencia.1336@rendilitros.com</a>
+                            <a href="mailto:independencia.1336@rendilitros.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="independencia.1336@rendilitros.com">independencia.1336@rendilitros.com</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -483,8 +472,8 @@
                 </div>
 
                 <!-- Tarjeta 9 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.5s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.5s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                     
                     <div class="mb-6 flex flex-col items-center text-center">
                         <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
@@ -509,7 +498,7 @@
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:rachali@live.com.mx" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">rachali@live.com.mx</a>
+                            <a href="mailto:rachali@live.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">rachali@live.com.mx</a>
                         </div>
                         <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                             <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -539,52 +528,52 @@
     </main>
 
     <!-- Modal: Nuevo Cliente -->
-    <div id="modal-nuevo-cliente" data-modal class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div id="modal-nuevo-cliente" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-white font-bold text-lg">Nuevo Cliente</h3>
-                <button data-modal-close class="text-gray-500 hover:text-white transition-colors">
+                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors">
                     <i class="ph ph-x text-xl"></i>
                 </button>
             </div>
             <form id="form-nuevo-cliente" class="space-y-4">
                 <div>
                     <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Razón social</label>
-                    <input type="text" required name="razonSocial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="text" required="" name="razonSocial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Nombre comercial</label>
-                    <input type="text" name="nombreComercial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="text" name="nombreComercial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Representante</label>
-                    <input type="text" required name="representante" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="text" required="" name="representante" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Teléfono</label>
-                        <input type="tel" name="telefono" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                        <input type="tel" name="telefono" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                     </div>
                     <div>
                         <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5"># Estaciones</label>
-                        <input type="number" min="0" name="estaciones" value="1" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                        <input type="number" min="0" name="estaciones" value="1" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Correo</label>
-                    <input type="email" name="correo" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all">
+                    <input type="email" name="correo" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 </div>
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" id="btn-guardar-cliente" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-orange to-orange-600 hover:shadow-orange-500/25 shadow-lg transition-all">Guardar</button>
+                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
+                    <button type="submit" id="btn-guardar-cliente" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 hover:shadow-yellow-500/25 shadow-lg transition-all">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="../JS/app.js" defer></script>
-    <script defer>
+    <script src="../JS/app.js" defer=""></script>
+    <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
             // --- Buscador de clientes ---
             App.initSearch(document.getElementById('clientes-search'), '.cliente-card', {
@@ -621,9 +610,9 @@
                         const razon = (data.razonSocial || '').toUpperCase();
                         const comercial = (data.nombreComercial || data.razonSocial || '').toUpperCase();
                         const card = document.createElement('div');
-                        card.className = 'cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-orange/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in';
+                        card.className = 'cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in';
                         card.innerHTML = `
-                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-orange transition-colors"></div>
+                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
                             <div class="mb-6 flex flex-col items-center text-center">
                                 <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">${razon}</h3>
                             </div>
@@ -644,7 +633,7 @@
                                 </div>
                                 <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
                                     <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                                    <a href="mailto:${data.correo || ''}" class="text-brand-orange hover:text-orange-400 truncate transition-colors block">${data.correo || 'Sin dato'}</a>
+                                    <a href="mailto:${data.correo || ''}" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">${data.correo || 'Sin dato'}</a>
                                 </div>
                                 <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
                                     <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
@@ -661,5 +650,5 @@
             });
         });
     </script>
-</body>
-</html>
+
+</body></html>

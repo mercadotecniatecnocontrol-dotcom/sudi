@@ -654,22 +654,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Dropdowns gestionados por JS/app.js
 
-            // Control del menú lateral en móviles
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const sidebar = document.querySelector('aside');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-            if (sidebarToggle && sidebar && sidebarOverlay) {
-                sidebarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('-translate-x-full');
-                    sidebarOverlay.classList.toggle('hidden');
-                });
-
-                sidebarOverlay.addEventListener('click', () => {
-                    sidebar.classList.add('-translate-x-full');
-                    sidebarOverlay.classList.add('hidden');
-                });
-            }
 
             // Inicialización de Gráficas Chart.js
             function initDashboardCharts() {
@@ -839,7 +824,7 @@
             }
         });
     </script>
-    <script src="../JS/app.js" defer=""></script>
+    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
     <script src="../JS/table-actions.js" defer=""></script>
 
 

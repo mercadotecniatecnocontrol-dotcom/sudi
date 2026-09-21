@@ -65,9 +65,13 @@
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .hidden { display: none !important; }
     </style>
 
 
+
+    <!-- Overlay móvil del sidebar -->
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
     <!-- Sidebar Lateral -->
     <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between"><div><div><div><div><div><div><div><div>
@@ -77,10 +81,10 @@
             </div>
 
             <nav class="p-4 space-y-2 mt-2">
-                <a href="../index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
+                <a href="index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
                 <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-calendar text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Agenda</span></a>
-                <a href="inspecciones.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
-                <a href="clientes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
+                <a href="SCFI/inspecciones.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
+                <a href="catalogos/clientes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
             </nav>
         </div>
 
@@ -125,7 +129,7 @@
                 </div>
                 <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0" title="Opciones de perfil"></i>
             </div>
-            <a href="../login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+            <a href="login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
                 <i class="ph ph-sign-out text-base"></i>
                 <span>Cerrar sesión</span>
             </a>
@@ -138,16 +142,19 @@
         <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden fade-in">
             
             
-        <header class="px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4">
+        <header class="px-4 sm:px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4 relative z-10 bg-dark-900/90 backdrop-blur-md">
             
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4 sm:gap-6">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
+                    <i class="ph ph-list text-lg"></i>
+                </button>
                 <div>
                     <p id="header-subtitle" class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">Agosto 2026</p>
-                    <h1 id="header-title" class="text-4xl font-extrabold text-white tracking-tight">Semana 33</h1>
+                    <h1 id="header-title" class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Semana 33</h1>
                 </div>
                 
                 <!-- Controles de navegación devueltos a su lugar original (izquierda) y un poco más abajo -->
-                <div class="flex gap-2 ml-4 mt-2">
+                <div class="hidden sm:flex gap-2 ml-4 mt-2">
                     <button class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors"><i class="ph ph-caret-left"></i></button>
                     <button class="bg-dark-800 border border-dark-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors">Hoy</button>
                     <button class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors"><i class="ph ph-caret-right"></i></button>
@@ -822,7 +829,7 @@
         </div>
     </div>
 
-    <script src="JS/app.js" defer=""></script>
+    <script src="JS/app.js?v=639250641835541270" defer=""></script>
     <script>
         function seleccionarTecnico(e, nombre) {
             e.preventDefault();

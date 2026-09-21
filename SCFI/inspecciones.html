@@ -1,4 +1,4 @@
-<html lang="es" class="dark">
+﻿<html lang="es" class="dark">
 
 <head></head>
 
@@ -1025,21 +1025,10 @@
         </div>
     </div>
 
-    <script src="../JS/app.js" defer=""></script>
+    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Control del Sidebar móvil ---
-            const sidebar = document.querySelector('aside');
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-            function toggleSidebar() {
-                sidebar.classList.toggle('-translate-x-full');
-                sidebarOverlay.classList.toggle('hidden');
-            }
-
-            if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
-            if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
             const gridContainer = document.getElementById('inspecciones-grid');
 

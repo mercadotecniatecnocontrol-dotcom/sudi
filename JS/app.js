@@ -652,6 +652,47 @@
         }
     });
 
+    // ---------------------------------------------------------------
+    // Mantener activo el menú del sidebar según la URL actual
+    // ---------------------------------------------------------------
+    function initSidebarActiveState() {
+        const path = window.location.pathname;
+        const pageName = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+        
+        const sidebarLinks = document.querySelectorAll('aside nav a, aside .menu-desplegable-btn + div a, aside [id^="menu-"] a');
+        
+        sidebarLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href) return;
+            
+            const hrefPageName = href.substring(href.lastIndexOf('/') + 1);
+            
+            // Comparación exacta del nombre del archivo (para no confundir precintos.html con asignar_precintos.html)
+            if (pageName && hrefPageName === pageName) {
+                // Resaltar el enlace actual
+                link.classList.remove('text-gray-400');
+                link.classList.add('text-white', 'font-bold');
+                const icon = link.querySelector('i');
+                if (icon) {
+                    icon.classList.add('text-brand-yellow');
+                }
+                
+                // Si está dentro de un menú desplegable, lo abrimos
+                const parentMenu = link.closest('.hidden');
+                if (parentMenu && parentMenu.id && parentMenu.id.startsWith('menu-')) {
+                    parentMenu.classList.remove('hidden');
+                    parentMenu.style.display = 'block';
+                    
+                    const toggleBtn = document.querySelector(`[data-target="${parentMenu.id}"]`);
+                    if (toggleBtn) {
+                        const caret = toggleBtn.querySelector('.ph-caret-down');
+                        if (caret) caret.classList.add('rotate-180');
+                    }
+                }
+            }
+        });
+    }
+
     window.App = {
         toast,
         openModal,
@@ -664,6 +705,7 @@
         confirmAction,
         initSidebarToggle,
         initProfileModal,
+        initSidebarActiveState,
         withLoading,
         fakeRequest,
     };
@@ -673,6 +715,7 @@
         initDropdowns();
         initSidebarToggle();
         initProfileModal();
+        initSidebarActiveState();
 
         // Carga automática de table-actions.js si no está presente en el documento
         if (!window.__tableActionsInitialized && !document.querySelector('script[src*="table-actions.js"]')) {

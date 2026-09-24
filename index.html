@@ -40,6 +40,11 @@
   .arrow-move{transition:transform .2s ease}
   .card-anim:hover .arrow-move{transform:translateX(4px)}
 </style>
+<script>
+  if (!sessionStorage.getItem('sudi_session')) {
+    window.location.href = 'login.html';
+  }
+</script>
 </head>
 <body class="wave-bg min-h-screen text-white">
 

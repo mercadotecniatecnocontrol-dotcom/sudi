@@ -392,18 +392,18 @@
                     <div class="p-5 rounded-2xl bg-gradient-to-r from-dark-900 via-dark-900/90 to-dark-700/40 border border-dark-700/80 relative overflow-hidden flex flex-col sm:flex-row items-center gap-5 shadow-inner">
                         <div class="relative shrink-0">
                             <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-yellow via-amber-500 to-yellow-400 text-dark-900 font-black text-3xl flex items-center justify-center shadow-xl shadow-brand-yellow/20 border-2 border-brand-yellow/40">
-                                LR
+                                DG
                             </div>
                             <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-[3px] border-dark-900 rounded-full shadow-md" title="Sesión activa"></span>
                         </div>
                         <div class="flex-1 text-center sm:text-left min-w-0">
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-                                <h2 class="text-xl font-bold text-white tracking-wide">Luis Ruiz</h2>
+                                <h2 class="text-xl font-bold text-white tracking-wide">Denisse Gutierrez</h2>
                                 <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30">
                                     <i class="ph ph-shield-check text-sm"></i> Administrador
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-400 font-mono mb-2">l.ruiz@jomar.com</p>
+                            <p class="text-sm text-gray-400 font-mono mb-2">d.gutierrez@tecnocontrol.com.mx</p>
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                                 <span class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
                                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -439,7 +439,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Nombre y apellido</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-user text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white">Luis Ruiz</span>
+                                    <span class="text-sm font-bold text-white">Denisse Gutierrez</span>
                                 </div>
                             </div>
 
@@ -447,7 +447,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Usuario</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-identification-badge text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white font-mono">l.ruiz</span>
+                                    <span class="text-sm font-bold text-white font-mono">d.gutierrez</span>
                                 </div>
                             </div>
 
@@ -455,7 +455,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Correo institucional</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-envelope text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200">l.ruiz@jomar.com</span>
+                                    <span class="text-sm text-gray-200">d.gutierrez@tecnocontrol.com.mx</span>
                                 </div>
                             </div>
 
@@ -463,7 +463,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Puesto</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-briefcase text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-white font-medium">Director de Operaciones</span>
+                                    <span class="text-sm text-white font-medium">No especificado</span>
                                 </div>
                             </div>
 
@@ -471,7 +471,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Teléfono</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-phone text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200 font-mono">+52 (55) 8492-3100</span>
+                                    <span class="text-sm text-gray-200 font-mono">No especificado</span>
                                 </div>
                             </div>
 
@@ -479,7 +479,7 @@
                                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Organización</span>
                                 <div class="flex items-center gap-2">
                                     <i class="ph ph-buildings text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-white font-medium">JOMAR SISTEMAS</span>
+                                    <span class="text-sm text-white font-medium">No especificado</span>
                                 </div>
                             </div>
                         </div>

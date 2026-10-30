@@ -410,6 +410,22 @@
         }
     }
 
+    // ¿La fila está ligada a un registro de Supabase? (tr data-tabla + data-id)
+    function dbRef(row) {
+        if (!row || !window.DB) return null;
+        const { tabla, id } = row.dataset;
+        return tabla && id ? { tabla, id } : null;
+    }
+
+    function valorParaBD(field, texto) {
+        if (texto === '') return null;
+        if (field.tipo === 'numero') {
+            const n = Number(texto.replace(/[$,\s]/g, ''));
+            return Number.isFinite(n) ? n : texto;
+        }
+        return texto;
+    }
+
     // Generar un identificador persistente para la fila
     function getRowId(row) {
         if (row.dataset.rowId) return row.dataset.rowId;
@@ -451,13 +467,18 @@
             const originalHtml = td.innerHTML;
             const originalText = td.innerText.trim();
 
+            const campo = td.dataset.campo || null;
             currentFields.push({
                 index,
                 label: headerText,
                 cell: td,
                 originalText,
                 originalHtml,
-                isAction: hasOnlyAction
+                isAction: hasOnlyAction,
+                campo,
+                tipo: td.dataset.tipo || 'texto',
+                // En filas conectadas a la BD solo se editan las celdas con data-campo
+                readonly: Boolean(dbRef(row)) && !campo
             });
         });
 
@@ -507,12 +528,12 @@
             let inputHtml = '';
             if (isLong) {
                 inputHtml = `
-                    <textarea id="${fieldId}" rows="3" 
+                    <textarea id="${fieldId}" rows="3" ${field.readonly ? 'readonly title="Este dato no se edita aquí"' : ''} 
                               class="w-full bg-dark-800 border border-dark-700 rounded-lg p-3 text-sm text-gray-200 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all resize-none">${escapeHtml(field.originalText)}</textarea>
                 `;
             } else {
                 inputHtml = `
-                    <input type="text" id="${fieldId}" value="${escapeHtml(field.originalText)}" 
+                    <input type="text" id="${fieldId}" value="${escapeHtml(field.originalText)}" ${field.readonly ? 'readonly title="Este dato no se edita aquí"' : ''} 
                            class="w-full bg-dark-800 border border-dark-700 rounded-lg py-2.5 px-3.5 text-sm text-gray-200 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
                 `;
             }
@@ -535,12 +556,38 @@
     }
 
     // Guardar cambios editados en la fila de la tabla
-    function saveRowEdits() {
+    async function saveRowEdits() {
         if (!activeRow) return;
+
+        // Guardar primero en Supabase si la fila está conectada
+        const ref = dbRef(activeRow);
+        if (ref) {
+            const cambios = {};
+            currentFields.forEach((field, i) => {
+                if (field.isAction || field.readonly || !field.campo) return;
+                const input = document.getElementById(`field_input_${i}`);
+                if (input && input.value.trim() !== field.originalText) {
+                    cambios[field.campo] = valorParaBD(field, input.value.trim());
+                }
+            });
+            if (Object.keys(cambios).length > 0) {
+                const btn = document.getElementById('btn-guardar-cambios-footer');
+                if (btn) btn.disabled = true;
+                try {
+                    const actualizado = await window.DB.actualizar(ref.tabla, ref.id, cambios);
+                    activeRow.dispatchEvent(new CustomEvent('sudi:fila-actualizada', { bubbles: true, detail: { ...ref, registro: actualizado } }));
+                } catch (err) {
+                    showToast(err.message, 'error');
+                    return;
+                } finally {
+                    if (btn) btn.disabled = false;
+                }
+            }
+        }
 
         let modifiedCount = 0;
         currentFields.forEach((field, i) => {
-            if (field.isAction) return;
+            if (field.isAction || field.readonly) return;
             const input = document.getElementById(`field_input_${i}`);
             if (!input) return;
 
@@ -598,10 +645,44 @@
         } catch (e) {}
     }
 
-    function renderComments() {
+    // Comentarios de filas conectadas: tabla sudi_comentarios en Supabase
+    let dbComments = [];
+
+    function formatDate(iso) {
+        const d = new Date(iso);
+        return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) +
+            ' ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function renderComments() {
         if (!activeRow) return;
-        const rowId = getRowId(activeRow);
-        const comments = getStoredComments(rowId);
+        const ref = dbRef(activeRow);
+        let comments;
+        if (ref) {
+            const rowAtStart = activeRow;
+            const listEl = document.getElementById('comments-list');
+            if (listEl) listEl.innerHTML = '<p class="text-xs text-gray-500 p-4 text-center"><i class="ph ph-spinner animate-spin"></i> Cargando comentarios...</p>';
+            try {
+                const filas = await window.DB.comentarios.listar(ref.tabla, ref.id);
+                if (rowAtStart !== activeRow) return;
+                dbComments = filas.map((c) => {
+                    const autor = c.autor?.nombre_completo || 'Usuario';
+                    return {
+                        id: c.id,
+                        author: autor,
+                        authorInitial: autor.split(/\s+/).slice(0, 2).map((p) => p[0]).join('').toUpperCase(),
+                        text: c.texto,
+                        date: formatDate(c.created_at)
+                    };
+                });
+            } catch (err) {
+                dbComments = [];
+                showToast(err.message, 'error');
+            }
+            comments = dbComments;
+        } else {
+            comments = getStoredComments(getRowId(activeRow));
+        }
         const listContainer = document.getElementById('comments-list');
         const countBadge = document.getElementById('comments-count-badge');
         const tabCounter = document.getElementById('tab-comments-counter');
@@ -653,7 +734,7 @@
         });
     }
 
-    function addComment() {
+    async function addComment() {
         if (!activeRow) return;
         const textarea = document.getElementById('comment-input-text');
         const text = textarea ? textarea.value.trim() : '';
@@ -661,6 +742,19 @@
         if (!text) {
             showToast('Por favor escribe un comentario antes de publicar.', 'warning');
             if (textarea) textarea.focus();
+            return;
+        }
+
+        const ref = dbRef(activeRow);
+        if (ref) {
+            try {
+                await window.DB.comentarios.crear(ref.tabla, ref.id, text);
+                if (textarea) textarea.value = '';
+                await renderComments();
+                showToast('Comentario publicado exitosamente', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
             return;
         }
 
@@ -691,8 +785,20 @@
         showToast('Comentario publicado exitosamente', 'success');
     }
 
-    function deleteComment(index) {
+    async function deleteComment(index) {
         if (!activeRow) return;
+        if (dbRef(activeRow)) {
+            const c = dbComments[index];
+            if (!c) return;
+            try {
+                await window.DB.comentarios.eliminar(c.id);
+                await renderComments();
+                showToast('Comentario eliminado', 'info');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+            return;
+        }
         const rowId = getRowId(activeRow);
         const comments = getStoredComments(rowId);
         comments.splice(index, 1);
@@ -720,11 +826,26 @@
     }
 
     // Eliminar la fila activa con animación
-    function deleteActiveRow() {
+    async function deleteActiveRow() {
         if (!activeRow) return;
 
         const rowToDelete = activeRow;
         const table = rowToDelete.closest('table');
+
+        const ref = dbRef(rowToDelete);
+        if (ref) {
+            const btn = document.getElementById('btn-confirmar-eliminar');
+            if (btn) btn.disabled = true;
+            try {
+                await window.DB.eliminar(ref.tabla, ref.id);
+            } catch (err) {
+                showToast(err.message, 'error');
+                return;
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+            rowToDelete.dispatchEvent(new CustomEvent('sudi:fila-eliminada', { bubbles: true, detail: ref }));
+        }
 
         // Confirmar eliminación
         closeDrawer();

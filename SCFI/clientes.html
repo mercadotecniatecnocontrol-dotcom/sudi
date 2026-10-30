@@ -1,4 +1,4 @@
-﻿<html lang="es" class="dark">
+<html lang="es" class="dark">
 
 <head></head>
 
@@ -237,7 +237,7 @@
                 </div>
 
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="clientes-search" placeholder="Buscar por razón social o representante..."
+                    <input type="text" id="clientes-search" placeholder="Buscar por cliente, representante, PL o estación..."
                         class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all shadow-sm">
                     <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-xl"></i>
                     <button data-dropdown-toggle="clientes-filter-menu"
@@ -253,349 +253,15 @@
 
             <!-- Grid de Tarjetas de Clientes -->
             <div id="clientes-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-                <!-- Tarjeta 1 -->
-                <div data-status="activo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.1s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            ESTACION DE SERVICIO TRES HERMANOS SA DE CV
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span
-                                class="text-gray-300 font-medium group-hover/row:text-white transition-colors">ESTACION
-                                DE SERVICIO TRES HERMANOS</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">ALEJANDRO ZAMORA
-                                SANCHEZ</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:16563794217"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 16563794217
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:agnp@prodigy.net.mx"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">agnp@prodigy.net.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 2 -->
-                <div data-status="activo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.15s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            SUPER SERVICIO HERRERA DEL NORTE SA DE CV
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">SUPER
-                                SERVICIO HERRERA DEL NORTE</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">RUBEN
-                                HERRERA</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566171091"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566171091
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jesus.pacheco@hgasolineras.com.mx"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block"
-                                title="jesus.pacheco@hgasolineras.com.mx">jesus.pacheco@hgas...</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">20</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 3 -->
-                <div data-status="activo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.2s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            DIAZ GAS, S.A. DE C.V.
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">DIAZ
-                                GAS</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">Alfredo Escalera
-                                Baca</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566383535"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566383535
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:salvador.navarro@totalgas.com"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block"
-                                title="salvador.navarro@totalgas.com">salvador.navarro@to...</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">20</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 4 -->
-                <div data-status="inactivo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.25s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            SERVICIO EL JARUDO SA DE CV
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">JOSE
-                                IGNACIO CASTILLO AVALOS</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span
-                                class="text-gray-300 group-hover/row:text-white transition-colors">jcortes@distribuidoragasomex...</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566183101"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566183101
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jcortes@distribuidoragasomex.com.mx"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block"
-                                title="jcortes@distribuidoragasomex.com.mx">-</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 5 -->
-                <div data-status="activo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.3s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            SUPER SERVICIO 4 CAMINOS SA DE CV
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">SUPER
-                                SERVICIO 4 CAMINOS</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">FERNANDO CARBAJAL
-                                FLORES</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566331107"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566331107
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:r.carbajal@4caminos.com.mx"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">r.carbajal@4caminos.com.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 6 -->
-                <div data-status="activo"
-                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in"
-                    style="animation-delay: 0.35s;">
-                    <div
-                        class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors">
-                    </div>
-
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3
-                            class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">
-                            DISTRIBUIDORA CLARA SA DE CV
-                        </h3>
-                    </div>
-
-                    <div class="space-y-4 text-sm">
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Razón
-                                Social</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">JOSE
-                                IGNACIO CASTILLO AVALOS</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span
-                                class="text-gray-300 group-hover/row:text-white transition-colors">jgamboa@gaso-mex.com</span>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566183100"
-                                class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566183100
-                            </a>
-                        </div>
-                        <div
-                            class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jgamboa@gaso-mex.com"
-                                class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">-</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span
-                                class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span
-                                class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
+                <p class="col-span-full text-center text-gray-500 text-sm py-10"><i class="ph ph-spinner animate-spin text-lg align-middle"></i> Cargando clientes...</p>
             </div>
 
             <!-- Paginación -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mt-10 p-4 bg-dark-800 border border-dark-700 rounded-xl fade-in"
                 style="animation-delay: 0.5s;">
                 <div class="text-sm text-gray-500">
-                    Mostrando <span class="font-medium text-white">1</span> a <span
-                        class="font-medium text-white">6</span> de <span class="font-medium text-white">42</span>
+                    Mostrando <span id="cli-desde" class="font-medium text-white">0</span> a <span
+                        id="cli-hasta" class="font-medium text-white">0</span> de <span id="cli-total" class="font-medium text-white">0</span>
                     clientes
                 </div>
 
@@ -724,92 +390,235 @@
     </div>
 
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
+    <!-- Clientes SCFI: catálogo compartido "clientes_catalogo" (solo los que tienen la norma SCFI)
+         con sus estaciones de "estaciones_servicio". La sesión viene de JS/supabase-client.js. -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            const grid = document.getElementById('clientes-grid');
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const POR_PAGINA = 6;
+            const CATALOGO = '../catalogos/clientes.html';
 
-            // --- Buscador en vivo ---
-            App.initSearch(document.getElementById('clientes-search'), '#clientes-grid > div', {
-                emptyStateSelector: '#clientes-empty-state',
-            });
+            const grid = $('clientes-grid');
+            const buscador = $('clientes-search');
+            const emptyState = $('clientes-empty-state');
+            const prevBtn = $('clientes-prev');
+            const nextBtn = $('clientes-next');
 
-            // --- Filtro por estatus (mock, solo visual) ---
-            document.querySelectorAll('.clientes-filter-check').forEach((check) => {
-                check.addEventListener('change', () => {
-                    const activos = Array.from(document.querySelectorAll('.clientes-filter-check:checked')).map((c) => c.value);
-                    grid.querySelectorAll(':scope > div').forEach((card) => {
-                        card.classList.toggle('hidden', !activos.includes(card.dataset.status));
-                    });
+            let DB = null;
+            let clientes = [];
+            let estPorCliente = {};
+            let pagina = 1;
+
+            // ----------------------------------------------------------
+            // Datos
+            // ----------------------------------------------------------
+            async function cargar() {
+                try {
+                    const [lista, mapa] = await Promise.all([
+                        DB.listar('clientes_catalogo', {
+                            orden: 'razon_social',
+                            consulta: (q) => q.contains('normas', ['SCFI']),
+                        }),
+                        cargarEstaciones(),
+                    ]);
+                    clientes = lista;
+                    estPorCliente = mapa;
+                    render();
+                } catch (err) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-red-400 text-sm py-10">No se pudieron cargar los clientes: ${esc(err.message)}</p>`;
+                }
+            }
+
+            async function cargarEstaciones() {
+                const mapa = {};
+                for (let desde = 0; ; desde += 1000) {
+                    const { data, error } = await DB.sb.from('estaciones_servicio')
+                        .select('id, cliente_id, nombre, nombre_comercial, permiso, numero_estacion, municipio')
+                        .not('cliente_id', 'is', null).order('id').range(desde, desde + 999);
+                    if (error) throw new Error(DB.mensajeError(error));
+                    (data || []).forEach((e) => { (mapa[e.cliente_id] ||= []).push(e); });
+                    if (!data || data.length < 1000) break;
+                }
+                return mapa;
+            }
+
+            // ----------------------------------------------------------
+            // Filtros: buscador + estatus (activo / inactivo)
+            // ----------------------------------------------------------
+            function textoBusqueda(c) {
+                const ests = (estPorCliente[c.id] || []).map((e) => [e.nombre, e.nombre_comercial, e.permiso, e.numero_estacion, e.municipio].join(' '));
+                return norm([c.nombre_comercial, c.razon_social, c.rfc, c.representante, c.telefono, c.correo, ...ests].join(' '));
+            }
+
+            function filtrados() {
+                const estatus = [...document.querySelectorAll('.clientes-filter-check:checked')].map((c) => c.value);
+                const term = norm(buscador.value.trim());
+                return clientes.filter((c) => {
+                    const st = c.activo === false ? 'inactivo' : 'activo';
+                    return estatus.includes(st) && (!term || textoBusqueda(c).includes(term));
                 });
-            });
+            }
 
-            // --- Paginación real sobre las tarjetas existentes ---
-            let clientesPager = App.initPagination({
-                itemsSelector: '#clientes-grid > div',
-                pageSize: 6,
-                prevBtn: document.getElementById('clientes-prev'),
-                nextBtn: document.getElementById('clientes-next'),
-                labelEl: document.getElementById('clientes-page-label'),
-            });
+            // ----------------------------------------------------------
+            // Tarjetas
+            // ----------------------------------------------------------
+            function tarjeta(c, i) {
+                const ests = estPorCliente[c.id] || [];
+                const term = norm(buscador.value.trim());
+                const coinciden = term ? ests.filter((e) => norm([e.nombre, e.nombre_comercial, e.permiso, e.numero_estacion].join(' ')).includes(term)) : [];
+                const muestra = (coinciden.length ? coinciden : ests).slice(0, 3);
+                const tel = c.telefono || '';
+                const dec = c.estaciones_declaradas;
+                const fila = (label, valor) => `
+                    <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
+                        <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">${label}</span>
+                        ${valor}
+                    </div>`;
+                return `
+                <div data-status="${c.activo === false ? 'inactivo' : 'activo'}"
+                    class="bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in flex flex-col"
+                    style="animation-delay: ${0.05 * i}s;">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 ${c.activo === false ? 'bg-red-500/40' : 'bg-dark-600'} group-hover:bg-brand-yellow transition-colors"></div>
+                    <div class="mb-6 flex flex-col items-center text-center">
+                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center">${esc(c.nombre_comercial || c.razon_social)}</h3>
+                        ${c.activo === false ? '<span class="text-[10px] uppercase tracking-wider text-red-400 font-semibold">Inactivo</span>' : ''}
+                    </div>
+                    <div class="space-y-4 text-sm flex-1">
+                        ${fila('Razón Social', `<span class="text-gray-300 font-medium group-hover/row:text-white transition-colors">${esc(c.razon_social || '—')}</span>`)}
+                        ${fila('Representante', `<span class="text-gray-300 group-hover/row:text-white transition-colors">${esc(c.representante || '—')}</span>`)}
+                        ${fila('Teléfono', tel
+                            ? `<a href="tel:${esc(tel.replace(/\s+/g, ''))}" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1"><i class="ph ph-phone text-xs"></i> ${esc(tel)}</a>`
+                            : '<span class="text-gray-500">—</span>')}
+                        ${fila('Correo', c.correo
+                            ? `<a href="mailto:${esc(c.correo)}" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">${esc(c.correo)}</a>`
+                            : '<span class="text-gray-500">—</span>')}
+                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start group/row">
+                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-1">Estaciones</span>
+                            <div class="space-y-1.5 min-w-0">
+                                <span class="inline-block bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold">${ests.length}</span>
+                                ${dec != null && dec > ests.length ? `<span class="text-[10px] text-amber-400 ml-1">faltan ${dec - ests.length} de ${dec}</span>` : ''}
+                                ${muestra.map((e) => `<p class="text-[11px] text-gray-400 truncate"><i class="ph ph-gas-pump text-brand-yellow"></i> ${esc(e.permiso || e.nombre_comercial || e.nombre)}${e.nombre_comercial && e.permiso ? ' · ' + esc(e.nombre_comercial) : ''}</p>`).join('')}
+                                ${ests.length > muestra.length ? `<p class="text-[11px] text-gray-500">y ${ests.length - muestra.length} más…</p>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-dark-700/50 flex justify-between gap-2">
+                        <a href="${CATALOGO}?cliente=${encodeURIComponent(c.id)}" class="text-xs font-semibold text-gray-300 hover:text-white flex items-center gap-1"><i class="ph ph-pencil-simple"></i> Ver / editar</a>
+                        <a href="${CATALOGO}?cliente=${encodeURIComponent(c.id)}&tab=estaciones" class="text-xs font-semibold text-brand-yellow hover:text-yellow-400 flex items-center gap-1"><i class="ph ph-gas-pump"></i> ${ests.length ? 'Estaciones' : 'Agregar estación'}</a>
+                    </div>
+                </div>`;
+            }
 
-            // --- Modal: Nuevo Cliente ---
-            const form = document.getElementById('form-nuevo-cliente');
-            const btnGuardar = document.getElementById('btn-guardar-cliente');
-            const template = document.getElementById('clientes-card-template');
+            function render() {
+                const lista = filtrados();
+                const totalPaginas = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), totalPaginas);
+                const inicio = (pagina - 1) * POR_PAGINA;
+                const visibles = lista.slice(inicio, inicio + POR_PAGINA);
 
-            form?.addEventListener('submit', (e) => {
+                grid.innerHTML = visibles.map(tarjeta).join('');
+                emptyState.textContent = clientes.length
+                    ? 'No se encontraron clientes con ese criterio de búsqueda.'
+                    : 'Aún no hay clientes SCFI. Agrega uno con “Nuevo Cliente” o marca la norma SCFI en Catálogos → Clientes.';
+                emptyState.classList.toggle('hidden', lista.length > 0);
+
+                $('cli-desde').textContent = lista.length ? inicio + 1 : 0;
+                $('cli-hasta').textContent = inicio + visibles.length;
+                $('cli-total').textContent = lista.length;
+                $('clientes-page-label').textContent = `Pág. ${pagina} de ${totalPaginas}`;
+                prevBtn.disabled = pagina <= 1;
+                nextBtn.disabled = pagina >= totalPaginas;
+                [prevBtn, nextBtn].forEach((b) => b.classList.toggle('opacity-40', b.disabled));
+            }
+
+            buscador.addEventListener('input', () => { pagina = 1; render(); });
+            document.querySelectorAll('.clientes-filter-check').forEach((ch) => ch.addEventListener('change', () => { pagina = 1; render(); }));
+            prevBtn.addEventListener('click', () => { pagina -= 1; render(); });
+            nextBtn.addEventListener('click', () => { pagina += 1; render(); });
+
+            // ----------------------------------------------------------
+            // Nuevo cliente (se guarda en el catálogo compartido con norma SCFI)
+            // ----------------------------------------------------------
+            const form = $('form-nuevo-cliente');
+            const btnGuardar = $('btn-guardar-cliente');
+
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                let valid = true;
+                let valido = true;
                 ['razonSocial', 'representante', 'telefono', 'estaciones', 'correo'].forEach((name) => {
                     const input = form.elements[name];
                     const errorEl = input.closest('div').querySelector('.field-error');
-                    const filled = input.value.trim() !== '';
-                    input.classList.toggle('border-red-500', !filled);
-                    errorEl?.classList.toggle('hidden', filled);
-                    if (!filled) valid = false;
+                    const lleno = input.value.trim() !== '';
+                    input.classList.toggle('border-red-500', !lleno);
+                    errorEl?.classList.toggle('hidden', lleno);
+                    if (!lleno) valido = false;
                 });
-                if (!valid) return;
+                if (!valido) return;
 
                 App.withLoading(btnGuardar, {
                     loadingText: 'Guardando...',
-                    task: () => App.fakeRequest(700).then(() => {
-                        const card = template.content.firstElementChild.cloneNode(true);
-                        const razonSocial = form.elements.razonSocial.value.trim();
-                        const representante = form.elements.representante.value.trim();
-                        const telefono = form.elements.telefono.value.trim();
-                        const correo = form.elements.correo.value.trim();
-                        const estaciones = form.elements.estaciones.value.trim();
+                    task: async () => {
+                        const val = (n) => form.elements[n].value.trim();
+                        const correo = val('correo').toLowerCase();
+                        try {
+                            const nuevo = await DB.crear('clientes_catalogo', {
+                                razon_social: val('razonSocial'),
+                                representante: val('representante'),
+                                telefono: val('telefono'),
+                                correo,
+                                estaciones_declaradas: parseInt(val('estaciones'), 10) || null,
+                                normas: ['SCFI'],
+                                empresas: ['JOMAR'],
+                                contactos: [{ nombre: val('representante'), telefono: val('telefono'), correo, principal: true }],
+                                activo: true,
+                                origen: 'sudi',
+                                actualizado_en: new Date().toISOString(),
+                                actualizado_por: DB.perfil?.correo || 'SUDI',
+                            });
+                            clientes.push(nuevo);
+                            clientes.sort((a, b) => String(a.razon_social).localeCompare(String(b.razon_social), 'es'));
+                            buscador.value = '';
+                            pagina = Math.ceil((filtrados().findIndex((c) => c.id === nuevo.id) + 1) / POR_PAGINA) || 1;
+                            render();
 
-                        card.querySelector('[data-field="nombre"]').textContent = razonSocial;
-                        card.querySelector('[data-field="razonSocial"]').textContent = razonSocial;
-                        card.querySelector('[data-field="representante"]').textContent = representante;
-                        card.querySelector('[data-field="telefono"]').textContent = telefono;
-                        card.querySelector('[data-field="telefonoLink"]').setAttribute('href', `tel:${telefono.replace(/\s+/g, '')}`);
-                        card.querySelector('[data-field="correo"]').textContent = correo;
-                        card.querySelector('[data-field="correoLink"]').setAttribute('href', `mailto:${correo}`);
-                        card.querySelector('[data-field="estaciones"]').textContent = estaciones || '1';
-
-                        grid.appendChild(card);
-                        form.reset();
-                        form.querySelectorAll('.border-red-500').forEach((el) => el.classList.remove('border-red-500'));
-                        form.querySelectorAll('.field-error').forEach((el) => el.classList.add('hidden'));
-
-                        clientesPager = App.initPagination({
-                            itemsSelector: '#clientes-grid > div',
-                            pageSize: 6,
-                            prevBtn: document.getElementById('clientes-prev'),
-                            nextBtn: document.getElementById('clientes-next'),
-                            labelEl: document.getElementById('clientes-page-label'),
-                        });
-                        clientesPager?.goTo(9999);
-
-                        App.closeModal('modal-nuevo-cliente');
-                        App.toast('Cliente creado correctamente.', 'success');
-                    }),
+                            form.reset();
+                            form.querySelectorAll('.border-red-500').forEach((el) => el.classList.remove('border-red-500'));
+                            form.querySelectorAll('.field-error').forEach((el) => el.classList.add('hidden'));
+                            App.closeModal('modal-nuevo-cliente');
+                            App.toast('Cliente creado. Usa “Agregar estación” en su tarjeta para registrar sus estaciones.', 'success', 6000);
+                        } catch (err) {
+                            App.toast(/repetido|duplicate/i.test(err.message) ? 'Ya existe un cliente con esa razón social o RFC.' : err.message, 'error');
+                        }
+                    },
                 });
             });
+
+            // ----------------------------------------------------------
+            // Arranque
+            // ----------------------------------------------------------
+            (async () => {
+                try {
+                    DB = await App.db();
+                } catch (err) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-red-400 text-sm py-10">${esc(err.message)}</p>`;
+                    return;
+                }
+                if (!DB.puedeEditar()) document.querySelector('[data-modal-open="modal-nuevo-cliente"]')?.classList.add('hidden');
+                await cargar();
+
+                let t = null;
+                const recargar = () => { clearTimeout(t); t = setTimeout(cargar, 600); };
+                DB.sb.channel('sudi-scfi-clientes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'clientes_catalogo' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'estaciones_servicio' }, recargar)
+                    .subscribe();
+            })();
         });
     </script>
+
 
 
 </body>

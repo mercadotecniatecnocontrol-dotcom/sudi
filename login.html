@@ -110,16 +110,17 @@
 
       <div class="flex items-center justify-between text-xs text-neutral-400">
         <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" class="accent-yellow-500 w-3.5 h-3.5">
+          <input id="recordar" type="checkbox" checked class="accent-yellow-500 w-3.5 h-3.5">
           Mantener la sesión
         </label>
-        <a href="#" class="text-neutral-300 hover:text-yellow-500 transition">Recuperar acceso</a>
+        <a href="#" id="recuperar" class="text-neutral-300 hover:text-yellow-500 transition">Recuperar acceso</a>
       </div>
     </form>
   </main>
 
   <div id="toast-container"></div>
 
+  <script src="JS/supabase-client.js"></script>
   <script>
     function showToast(message, type = 'error') {
       const colors = { error: 'border-red-500/40 text-red-400', success: 'border-emerald-500/40 text-emerald-400' };
@@ -141,10 +142,42 @@
       input.addEventListener('input', () => input.classList.remove('input-error'));
     });
 
-    form.addEventListener('submit', (e) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const recordar = document.getElementById('recordar');
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('motivo') === 'sin_acceso') {
+      showToast('Tu cuenta no tiene acceso a SUDI o está inactiva. Pide al administrador que te dé de alta.', 'error');
+    }
+    try { recordar.checked = localStorage.getItem('sudi-recordar') !== '0'; } catch (_) {}
+
+    function marcarError(msg) {
+      emailInput.classList.add('input-error');
+      passInput.classList.add('input-error');
+      form.classList.remove('shake');
+      void form.offsetWidth;
+      form.classList.add('shake');
+      showToast(msg, 'error');
+    }
+
+    // Solo se permite regresar a páginas del mismo sitio
+    function destino() {
+      const next = params.get('next');
+      return next && /^[\w\-\/]+\.html([?#].*)?$/.test(next) ? next : 'index.html';
+    }
+
+    // Si ya hay sesión válida, entrar directo
+    window.DB.listo.then(async () => {
+      const { data: { session } } = await window.DB.sb.auth.getSession();
+      if (!session || params.get('motivo')) return;
+      const perfil = await window.DB.rpc('sudi_vincular_cuenta').catch(() => null);
+      if (perfil?.id) window.location.replace(destino());
+    }).catch(() => {});
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = emailInput.value.trim();
-      const password = passInput.value.trim();
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passInput.value;
 
       if (!email || !password) {
         [emailInput, passInput].forEach((input) => {
@@ -157,21 +190,47 @@
         return;
       }
 
-      // Mock de autenticación (sin backend real)
-      const VALID_EMAIL = 'd.gutierrez@tecnocontrol.com.mx';
-      const VALID_PASSWORD = '6566422576';
-      if (email !== VALID_EMAIL || password !== VALID_PASSWORD) {
-        emailInput.classList.add('input-error');
-        passInput.classList.add('input-error');
-        form.classList.remove('shake');
-        void form.offsetWidth;
-        form.classList.add('shake');
-        showToast('Credenciales incorrectas. Verifica tu correo y contraseña.', 'error');
-        return;
-      }
+      const textoOriginal = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="ph ph-spinner animate-spin"></i> INGRESANDO...';
 
-      sessionStorage.setItem('sudi_session', JSON.stringify({ email, ts: Date.now() }));
-      window.location.href = 'index.html';
+      try {
+        await window.DB.listo;
+        const sb = window.DB.sb;
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) {
+          marcarError(/confirm/i.test(error.message)
+            ? 'Tu correo aún no está confirmado. Pide al administrador que lo confirme.'
+            : 'Credenciales incorrectas. Verifica tu correo y contraseña.');
+          return;
+        }
+
+        // Liga la cuenta con su perfil SUDI (por correo) y valida que esté activo
+        const perfil = await window.DB.rpc('sudi_vincular_cuenta');
+        if (!perfil?.id) {
+          await sb.auth.signOut();
+          marcarError('Tu cuenta no tiene acceso a SUDI o está inactiva. Pide al administrador que te dé de alta.');
+          return;
+        }
+
+        try {
+          localStorage.setItem('sudi-recordar', recordar.checked ? '1' : '0');
+          sessionStorage.setItem('sudi-sesion-viva', '1');
+        } catch (_) {}
+
+        showToast(`Bienvenido(a), ${perfil.nombre}.`, 'success');
+        window.location.href = destino();
+      } catch (err) {
+        showToast(err.message || 'No se pudo conectar con el servidor.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = textoOriginal;
+      }
+    });
+
+    document.getElementById('recuperar').addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast('Para restablecer tu contraseña contacta al administrador de SUDI.', 'error');
     });
   </script>
 </body>

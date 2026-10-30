@@ -236,60 +236,10 @@
                             </tr>
                         </thead>
                         <tbody id="productos-tbody" class="text-[15px] font-medium divide-y divide-dark-700/50">
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    1</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Magna</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    2</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Premium</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    3</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Diesel</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    4</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Diesel Marino</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    5</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">Turbosina</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    6</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">G Super</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    7</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">G Premium</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    8</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">G Diesel</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    9</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">87 OCTANOS</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    10</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">91 OCTANOS</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    11</td>
-                                <td class="py-4 px-6 text-gray-300 group-hover:text-white">DIESEL AUTOMOTRIZ</td>
+                            <tr class="no-clickable">
+                                <td colspan="2" class="py-10 text-gray-500 text-sm">
+                                    <i class="ph ph-spinner animate-spin text-lg align-middle"></i> Cargando productos...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -369,21 +319,78 @@
             sidebarOverlay?.addEventListener('click', toggleSidebar);
 
             const tbody = document.getElementById('productos-tbody');
+            const buscador = document.getElementById('productos-search');
+            const emptyState = document.getElementById('productos-empty-state');
+            const prevBtn = document.getElementById('productos-prev');
+            const nextBtn = document.getElementById('productos-next');
+            const pageLabel = document.getElementById('productos-page-label');
+            const TABLA = 'sudi_scfi_productos';
+            const POR_PAGINA = 6;
 
-            // --- Buscador en vivo ---
-            App.initSearch(document.getElementById('productos-search'), '#productos-tbody tr', {
-                emptyStateSelector: '#productos-empty-state',
+            let productos = [];
+            let pagina = 1;
+
+            const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const ordenar = (lista) => lista.sort((a, b) => String(a.clave).localeCompare(String(b.clave), 'es', { numeric: true }));
+
+            function filtrados() {
+                const term = buscador.value.trim().toLowerCase();
+                if (!term) return productos;
+                return productos.filter((p) => `${p.clave} ${p.nombre}`.toLowerCase().includes(term));
+            }
+
+            // --- Tabla con búsqueda y paginación sobre los datos de Supabase ---
+            function render() {
+                const lista = filtrados();
+                const totalPaginas = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), totalPaginas);
+                const visibles = lista.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+
+                // data-tabla/data-id/data-campo: el panel de la fila (table-actions.js) edita, comenta y elimina en Supabase
+                tbody.innerHTML = visibles.map((p) => `
+                    <tr data-tabla="${TABLA}" data-id="${p.id}" class="hover:bg-dark-700/30 transition-colors group">
+                        <td data-campo="clave" class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">${esc(p.clave)}</td>
+                        <td data-campo="nombre" class="py-4 px-6 text-gray-300 group-hover:text-white">${esc(p.nombre)}</td>
+                    </tr>`).join('');
+
+                emptyState.classList.toggle('hidden', lista.length > 0);
+                if (productos.length === 0) emptyState.textContent = 'Aún no hay productos registrados.';
+                else emptyState.textContent = 'No se encontraron productos con ese criterio de búsqueda.';
+
+                pageLabel.textContent = `Pág. ${pagina} de ${totalPaginas}`;
+                prevBtn.disabled = pagina <= 1;
+                nextBtn.disabled = pagina >= totalPaginas;
+                [prevBtn, nextBtn].forEach((btn) => {
+                    btn.classList.toggle('opacity-40', btn.disabled);
+                    btn.classList.toggle('cursor-not-allowed', btn.disabled);
+                });
+            }
+
+            buscador?.addEventListener('input', () => { pagina = 1; render(); });
+            prevBtn?.addEventListener('click', () => { pagina -= 1; render(); });
+            nextBtn?.addEventListener('click', () => { pagina += 1; render(); });
+
+            // Mantener el arreglo local al día cuando se edita o elimina desde el panel lateral
+            tbody.addEventListener('sudi:fila-actualizada', (e) => {
+                const i = productos.findIndex((p) => p.id === e.detail.id);
+                if (i >= 0) productos[i] = e.detail.registro;
+                ordenar(productos);
+            });
+            tbody.addEventListener('sudi:fila-eliminada', (e) => {
+                productos = productos.filter((p) => p.id !== e.detail.id);
+                setTimeout(render, 400);
             });
 
-            // --- Paginación real sobre las filas existentes ---
-            const initProductosPager = () => App.initPagination({
-                itemsSelector: '#productos-tbody tr',
-                pageSize: 6,
-                prevBtn: document.getElementById('productos-prev'),
-                nextBtn: document.getElementById('productos-next'),
-                labelEl: document.getElementById('productos-page-label'),
-            });
-            let productosPager = initProductosPager();
+            async function cargar() {
+                try {
+                    const DB = await App.db();
+                    productos = ordenar(await DB.listar(TABLA, { filtros: { activo: true } }));
+                    render();
+                } catch (err) {
+                    tbody.innerHTML = `<tr class="no-clickable"><td colspan="2" class="py-10 text-red-400 text-sm">${esc(err.message)}</td></tr>`;
+                }
+            }
+            cargar();
 
             // --- Modal: Nuevo producto ---
             const form = document.getElementById('form-nuevo-producto');
@@ -404,26 +411,27 @@
 
                 App.withLoading(btnGuardar, {
                     loadingText: 'Guardando...',
-                    task: () => App.fakeRequest(700).then(() => {
-                        const clave = form.elements.clave.value.trim();
-                        const nombre = form.elements.nombre.value.trim();
-                        const row = document.createElement('tr');
-                        row.className = 'hover:bg-dark-700/30 transition-colors group';
-                        row.innerHTML = `
-                            <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">${clave}</td>
-                            <td class="py-4 px-6 text-gray-300 group-hover:text-white">${nombre}</td>
-                        `;
-                        tbody.appendChild(row);
-                        form.reset();
-                        form.querySelectorAll('.border-red-500').forEach((el) => el.classList.remove('border-red-500'));
-                        form.querySelectorAll('.field-error').forEach((el) => el.classList.add('hidden'));
+                    task: async () => {
+                        try {
+                            const DB = await App.db();
+                            const nuevo = await DB.crear(TABLA, {
+                                clave: form.elements.clave.value.trim(),
+                                nombre: form.elements.nombre.value.trim(),
+                            });
+                            productos = ordenar([...productos, nuevo]);
+                            buscador.value = '';
+                            pagina = Math.ceil((productos.findIndex((p) => p.id === nuevo.id) + 1) / POR_PAGINA);
+                            render();
 
-                        productosPager = initProductosPager();
-                        productosPager?.goTo(9999);
-
-                        App.closeModal('modal-nuevo-producto');
-                        App.toast('Producto agregado correctamente.', 'success');
-                    }),
+                            form.reset();
+                            form.querySelectorAll('.border-red-500').forEach((el) => el.classList.remove('border-red-500'));
+                            form.querySelectorAll('.field-error').forEach((el) => el.classList.add('hidden'));
+                            App.closeModal('modal-nuevo-producto');
+                            App.toast('Producto agregado correctamente.', 'success');
+                        } catch (err) {
+                            App.toast(err.message, 'error');
+                        }
+                    },
                 });
             });
         });

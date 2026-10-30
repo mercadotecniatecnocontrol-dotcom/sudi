@@ -693,7 +693,30 @@
         });
     }
 
+    // ---------------------------------------------------------------
+    // Base de datos (Supabase): carga JS/supabase-client.js junto a este archivo
+    // y App.db() devuelve window.DB cuando la sesión y el perfil están listos.
+    // ---------------------------------------------------------------
+    (function cargarSupabase() {
+        if (window.DB || document.querySelector('script[src*="supabase-client.js"]')) return;
+        const appScript = document.currentScript || document.querySelector('script[src*="app.js"]');
+        if (!appScript) return;
+        const s = document.createElement('script');
+        s.src = appScript.getAttribute('src').replace('app.js', 'supabase-client.js');
+        document.head.appendChild(s);
+    })();
+
+    function db() {
+        if (window.DB) return window.DB.listo.then(() => window.DB);
+        return new Promise((resolve, reject) => {
+            document.addEventListener('sudi:db-cargado', () => {
+                window.DB.listo.then(() => resolve(window.DB), reject);
+            }, { once: true });
+        });
+    }
+
     window.App = {
+        db,
         toast,
         openModal,
         closeModal,
@@ -729,4 +752,3 @@
         }
     });
 })();
-

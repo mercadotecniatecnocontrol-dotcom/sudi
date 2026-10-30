@@ -1084,6 +1084,14 @@
                 }
                 await cargar();
 
+                // Abrir un cliente directo desde otra página: ?cliente=ID&tab=estaciones
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('cliente')) {
+                    abrirCliente(params.get('cliente'));
+                    if (editando && params.get('tab') === 'estaciones') abrirTab('tab-estaciones');
+                    if (!editando) toast('Ese cliente ya no está activo en el catálogo.', 'warning');
+                }
+
                 // Cambios desde el Portal u otra pestaña se reflejan solos
                 let tRecarga = null;
                 const recargar = () => { clearTimeout(tRecarga); tRecarga = setTimeout(cargar, 600); };

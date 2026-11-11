@@ -6,12 +6,12 @@
     <link rel="preconnect" href="https://unpkg.com">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orden de Servicio - Jomar</title>
+    <title>Órdenes de servicio ASEA - Jomar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../CSS/styles.css">
-    
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -39,6 +39,7 @@
 
 
 
+    <!-- Overlay móvil del sidebar -->
     <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
 
     <!-- Sidebar Lateral -->
@@ -70,9 +71,9 @@
             <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
         </button>
                     <div id="gerentes-catalogos-menu" data-dropdown="" class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
-                        <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
-                        <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
+                        <a href="catalogos_asea.html#checklist" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
+                        <a href="catalogos_asea.html#petroliferos" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
+                        <a href="catalogos_asea.html#documentos" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
                     </div>
                 </div>
             </nav>
@@ -125,422 +126,497 @@
             </a>
         </div>
 </aside>
-
-    <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
-        
         <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
                 <div class="min-w-0">
-                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Control de Órdenes de Servicio</h1>
-                    <p class="text-sm text-gray-400 mt-1 truncate">Listado general de órdenes y autorizaciones</p>
+                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Órdenes de Servicio ASEA</h1>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Solicitudes, folios y autorizaciones</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative hidden md:block">
-                    <input type="text" id="os-search" placeholder="Buscar por folio, representante, verificador..." class="w-72 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
-                </div>
-                <button id="os-nueva-btn" data-modal-open="os-nueva-modal" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 transition-colors shadow-sm">
-                    <i class="ph ph-plus text-lg"></i> Nueva orden de servicio
-                </button>
+            <div class="flex items-center gap-2 shrink-0">
+                <button id="btn-consecutivos" class="hidden items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:border-brand-yellow"><i class="ph ph-hash"></i> <span class="hidden md:inline">Consecutivos</span></button>
+                <button id="btn-nueva" data-editor class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5"><i class="ph ph-plus-circle text-lg"></i> <span class="hidden sm:inline">Nueva orden</span></button>
             </div>
         </header>
 
-        <div class="p-8">
-            
-            <!-- Barra superior: Título -->
-            <div class="flex items-center justify-between mb-8 fade-in">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20 shadow-inner">
-                        <i class="ph ph-file-plus text-2xl text-brand-yellow"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-white tracking-tight uppercase">ORDEN DE SERVICIO</h2>
+        <div class="p-4 sm:p-8 space-y-5">
+            <div id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 fade-in"></div>
+
+            <div class="flex flex-col lg:flex-row gap-2 fade-in">
+                <select id="f-campo" class="fil lg:w-52">
+                    <option value="todo">Buscar en todo</option>
+                    <option value="folio">Folio</option>
+                    <option value="seguimiento">Folio de seguimiento</option>
+                    <option value="cumple">Cumple / No cumple</option>
+                    <option value="estacion">Estación</option>
+                </select>
+                <div class="relative flex-1">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
+                    <input id="f-texto" class="fil pl-10" placeholder="Folio, PL, estación, verificador...">
                 </div>
+                <select id="f-tipo" class="fil lg:w-56">
+                    <option value="">Todos los tipos</option>
+                    <option value="OP">Operación y mantenimiento</option>
+                    <option value="D">Diseño</option>
+                    <option value="C">Construcción</option>
+                </select>
+                <select id="f-estatus" class="fil lg:w-48">
+                    <option value="">Todos los estatus</option>
+                    <option value="en_tramite">En trámite</option>
+                    <option value="realizada">Realizada</option>
+                    <option value="cancelada">Cancelada</option>
+                    <option value="pend_aut">Sin autorizar</option>
+                </select>
             </div>
 
-            <!-- Tabla principal -->
-            <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-center border-collapse min-w-[1200px]">
-                        <thead>
-                            <tr class="bg-dark-900/80 border-b border-dark-700 text-[11px] text-gray-400 uppercase tracking-wider font-semibold">
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[140px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-hash text-base text-brand-yellow"></i> Folio
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-arrow-elbow-down-right text-base text-brand-yellow"></i> F. de seguimiento
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[160px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-user text-base text-brand-yellow"></i> Representante
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[160px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-gas-pump text-base text-brand-yellow"></i> Estación
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[140px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-hard-hat text-base text-brand-yellow"></i> Verificador
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[160px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-calendar-blank text-base text-brand-yellow"></i> Solicitud
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-check text-base text-brand-yellow"></i> Cumple
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-tag text-base text-brand-yellow"></i> Estatus
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 w-28">
-                                    <div class="flex items-center justify-center">
-                                        <i class="ph ph-check text-lg text-brand-yellow"></i>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="os-tbody" class="text-[13px] font-medium divide-y divide-dark-700/50">
-
-                            <!-- Row 1 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-D-26-03-16</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Diseño</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/4102/EXP/ES/2019</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">21 de Agosto del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizar-btn w-full bg-[#004b93] hover:bg-[#003870] text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]">
-                                        <i class="ph ph-check font-bold text-[10px]"></i>
-                                        <span class="text-[10px] tracking-wider font-medium">Autorizar</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 2 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-C-26-03-6</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Construcción</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">En tramite</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">20 de Agosto del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="w-full bg-[#004b93] hover:bg-[#003870] text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]">
-                                        <i class="ph ph-check font-bold text-[10px]"></i>
-                                        <span class="text-[10px] tracking-wider font-medium">Autorizar</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 3 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-96-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-96</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/23788/EXP/ES/2021</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">27 de Abril del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="w-full bg-[#004b93] hover:bg-[#003870] text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]">
-                                        <i class="ph ph-check font-bold text-[10px]"></i>
-                                        <span class="text-[10px] tracking-wider font-medium">Autorizar</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 4 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-C-26-03-5</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Construcción</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">CNE/PL/654/EXP/ES/2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">SERGIO MENDOZA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">19 de Agosto del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 5 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-130-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-130</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/7038/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">07 de Agosto del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 6 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-110-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-110</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/785/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">04 de Mayo del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 7 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-109-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-109</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/9418/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">04 de Mayo del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 8 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-98-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-98</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/5786/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">27 de Abril del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 9 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-111-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Operación</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-111</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/1169/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">RICARDO MORIEL</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">27 de Junio del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Realizada</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]">
-                                        <span class="text-[11px] tracking-wider font-medium">Autorizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 10 -->
-                            <tr class="os-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-D-26-03-15</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Diseño</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Gestoria GESTORIA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">A</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">SERGIO MENDOZA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">01 de Julio del 2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">Asignado</td>
-                                <td class="py-2 px-2">
-                                    <button class="os-pendiente-btn w-full bg-brand-yellow/90 hover:bg-brand-yellow text-dark-900 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]">
-                                        <span class="text-[10px] uppercase tracking-wider font-bold leading-tight">Pendiente<br>autorizar</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
+            <div class="bg-dark-800 border border-dark-700 rounded-2xl overflow-x-auto fade-in">
+                <table class="w-full text-sm min-w-[1150px]">
+                    <thead class="bg-dark-900/80 text-[11px] text-gray-400 uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-hash"></i> Folio</th>
+                            <th class="py-3.5 px-4 text-left">F. seguimiento</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-user"></i> Representante</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-gas-pump"></i> Estación</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-identification-badge"></i> Verificador</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-calendar-check"></i> Solicitud</th>
+                            <th class="py-3.5 px-4 text-center">Cumple</th>
+                            <th class="py-3.5 px-4 text-center">Estatus</th>
+                            <th class="py-3.5 px-4 text-center w-32"><i class="ph ph-check"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="divide-y divide-dark-700/60">
+                        <tr class="no-clickable"><td colspan="9" class="py-12 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando órdenes...</td></tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="flex items-center justify-between px-6 py-4 border-t border-dark-700">
-                <span class="text-xs text-gray-500">Pág. <span id="os-pag-label">1</span></span>
-                <div class="flex gap-2">
-                    <button id="os-prev" class="w-9 h-9 rounded-lg border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors flex items-center justify-center"><i class="ph ph-caret-left"></i></button>
-                    <button id="os-next" class="w-9 h-9 rounded-lg border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors flex items-center justify-center"><i class="ph ph-caret-right"></i></button>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                <span id="pag-info" class="text-gray-500"></span>
+                <div class="flex items-center gap-2">
+                    <button id="pag-prev" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-left"></i></button>
+                    <span id="pag-label" class="text-gray-400"></span>
+                    <button id="pag-next" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-right"></i></button>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal: Nueva orden de servicio -->
-    <div id="os-nueva-modal" data-modal="" class="hidden fixed inset-0 z-[80] flex items-center justify-center px-4">
+    <!-- Modal: Solicitud de servicio -->
+    <div id="modal-orden" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-white font-bold text-lg">Nueva orden de servicio</h3>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 class="text-white font-bold text-xl flex items-center gap-2"><i class="ph ph-file-plus text-brand-yellow"></i> <span id="o-titulo">Solicitud de servicio</span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form id="os-nueva-form" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Cliente / Representante</label>
-                    <input required="" name="cliente" class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-yellow">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Verificador</label>
-                    <input required="" name="verificador" class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-yellow">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">Fecha de solicitud</label>
-                    <input required="" name="fecha" type="date" class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-yellow">
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 text-sm rounded-lg font-medium text-white bg-brand-yellow hover:bg-yellow-600 transition-colors">Guardar</button>
-                </div>
-            </form>
+            <div class="p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div><label class="lbl">Tipo de verificación *</label>
+                    <select id="o-tipo" class="inp"><option value="OP">Operación y mantenimiento</option><option value="D">Diseño</option><option value="C">Construcción</option></select></div>
+                <div><label class="lbl">Zona *</label><select id="o-zona" class="inp"></select></div>
+                <div><label class="lbl">Tipo de folio</label>
+                    <select id="o-tipo-folio" class="inp"><option value="normal">Normal (automático)</option><option value="manual">Manual (folio ya existente)</option></select></div>
+
+                <div><label class="lbl">Folio</label>
+                    <input id="o-folio" class="inp font-semibold text-brand-yellow uppercase" readonly>
+                    <p id="o-folio-ayuda" class="text-[11px] text-gray-500 mt-1"></p></div>
+                <div><label class="lbl">Folio de seguimiento</label><input id="o-seguimiento" class="inp uppercase"></div>
+                <div class="relative"><label class="lbl">Estación *</label>
+                    <input id="o-estacion" class="inp" placeholder="Busca por PL, nombre o cliente" autocomplete="off">
+                    <div id="o-est-lista" class="hidden absolute left-0 right-0 mt-1 z-20 bg-dark-900 border border-dark-600 rounded-xl shadow-2xl max-h-64 overflow-y-auto"></div>
+                    <p id="o-est-info" class="text-[11px] text-gray-500 mt-1 truncate"></p></div>
+
+                <div><label class="lbl">Verificador *</label><select id="o-verificador" class="inp"></select></div>
+                <div><label class="lbl">Fecha de solicitud *</label><input id="o-fecha" type="date" class="inp"></div>
+                <div><label class="lbl">El cliente acepta compartir los documentos</label>
+                    <select id="o-comparte" class="inp"><option value="">Selecciona</option><option value="si">Sí</option><option value="no">No</option></select></div>
+
+                <div><label class="lbl">Tipo de gerente</label>
+                    <select id="o-gerente" class="inp"><option value="">Selecciona el tipo de gerente</option><option>Gerente técnico</option><option>Gerente técnico sustituto</option></select></div>
+                <div><label class="lbl">¿Cumple con la inspección?</label>
+                    <select id="o-cumple" class="inp"><option value="">Pendiente</option><option value="si">Cumple</option><option value="no">No cumple</option></select></div>
+                <div><label class="lbl">Estatus</label>
+                    <select id="o-estatus" class="inp"><option value="en_tramite">En trámite</option><option value="realizada">Realizada</option><option value="cancelada">Cancelada</option></select></div>
+
+                <div class="md:col-span-3"><label class="lbl">Observaciones</label><textarea id="o-obs" rows="2" class="inp resize-y"></textarea></div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-white bg-red-500/80 hover:bg-red-500"><i class="ph ph-x"></i> Cancelar</button>
+                <button id="o-guardar" data-editor class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <!-- Modal: Consecutivos -->
+    <div id="modal-cons" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-hash text-brand-yellow"></i> Consecutivos de folios</h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <p class="text-xs text-gray-400">Escribe el <b>último</b> consecutivo usado en el SUDI anterior; los folios nuevos siguen después de él. No se puede bajar si ya hay folios más altos.</p>
+            <div><label class="lbl">Serie</label><select id="c-serie" class="inp"></select></div>
+            <p id="c-actual" class="text-sm text-gray-300"></p>
+            <div><label class="lbl">Último consecutivo</label><input id="c-ultimo" type="number" min="0" class="inp"></div>
+            <div class="flex justify-end gap-3">
+                <button data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="c-guardar" class="px-4 py-2 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.err { border-color: #ef4444; }
+        .inp[readonly], .inp:disabled { opacity: .85; cursor: not-allowed; }
+        .fil { width: 100%; background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .65rem 1rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .os-row { animation: rowIn .3s ease both; }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    </style>
+
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../JS/table-actions.js" defer=""></script>
+    <!-- Órdenes de servicio ASEA: sudi_asea_ordenes (SQL 0011). El folio lo asigna la base (trigger) y no se repite. -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            App.initSearch(document.getElementById('os-search'), '#os-tbody tr.os-row');
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const toast = (m, t = 'success', ms) => App.toast(m, t, ms);
+            const hoy = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+            const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const fechaLarga = (f) => { if (!f) return '—'; const [y, m, d] = f.split('-'); return `${d} de ${MESES[Number(m) - 1]} del ${y}`; };
+            const TIPO = { OP: 'Operación', D: 'Diseño', C: 'Construcción' };
+            const ESTATUS = {
+                en_tramite: ['En trámite', 'bg-amber-500/10 text-amber-400 border-amber-500/30'],
+                realizada: ['Realizada', 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'],
+                cancelada: ['Cancelada', 'bg-red-500/10 text-red-400 border-red-500/30'],
+            };
+            const POR_PAGINA = 20;
+            const EST_COLS = 'id, cliente_id, nombre, nombre_comercial, razon_social, permiso, numero_estacion, municipio';
 
-            document.querySelectorAll('.os-autorizar-btn, .os-pendiente-btn').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const row = btn.closest('tr');
+            let DB = null, editor = false, admin = false;
+            let ordenes = [], estaciones = [], estMap = {}, clientes = {}, usuarios = {}, verificadores = [], aseaEst = {};
+            let pagina = 1, editando = null, estSel = null;
+
+            // ---------------- Carga ----------------
+            async function todo(tabla, cols, filtro) {
+                const out = [];
+                for (let desde = 0; ; desde += 1000) {
+                    let q = DB.sb.from(tabla).select(cols).range(desde, desde + 999);
+                    if (filtro) q = filtro(q);
+                    const { data, error } = await q;
+                    if (error) throw new Error(DB.mensajeError(error));
+                    out.push(...(data || []));
+                    if (!data || data.length < 1000) break;
+                }
+                return out;
+            }
+
+            async function cargarCatalogos() {
+                const [ests, clis, usrs, zonas, asea] = await Promise.all([
+                    todo('estaciones_servicio', EST_COLS, (q) => q.not('cliente_id', 'is', null).order('id')),
+                    todo('clientes_catalogo', 'id, razon_social, nombre_comercial, representante', (q) => q.order('id')),
+                    DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector, firma_verificador, activo', orden: 'nombre_completo' }),
+                    DB.listar('sudi_zonas', { filtros: { activo: true }, orden: 'clave' }).catch(() => []),
+                    DB.listar('sudi_asea_estaciones').catch(() => []),
+                ]);
+                estaciones = ests;
+                estMap = Object.fromEntries(ests.map((e) => [String(e.id), e]));
+                clientes = Object.fromEntries(clis.map((c) => [c.id, c]));
+                usuarios = Object.fromEntries(usrs.map((u) => [u.id, u]));
+                aseaEst = Object.fromEntries(asea.map((a) => [String(a.estacion_id), a]));
+                const activos = usrs.filter((u) => u.activo !== false);
+                verificadores = activos.filter((u) => u.firma_verificador);
+                if (!verificadores.length) verificadores = activos.filter((u) => u.es_inspector);
+                $('o-verificador').innerHTML = '<option value="">Selecciona</option>' + verificadores.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join('');
+                const zz = zonas.filter((z) => /^\d{2}$/.test(z.clave));
+                $('o-zona').innerHTML = (zz.length ? zz : [{ clave: '03', nombre: 'Chihuahua' }, { clave: '01', nombre: 'Juárez' }, { clave: '02', nombre: '' }])
+                    .map((z) => `<option value="${z.clave}">${z.clave}${z.nombre ? ` · ${esc(z.nombre)}` : ''}</option>`).join('');
+            }
+
+            async function cargarOrdenes() {
+                try {
+                    ordenes = await todo('sudi_asea_ordenes', '*', (q) => q.order('fecha_solicitud', { ascending: false }).order('consecutivo', { ascending: false, nullsFirst: false }));
+                    pintar();
+                } catch (err) {
+                    $('tbody').innerHTML = `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-red-400">No se pudieron cargar las órdenes: ${esc(err.message)}</td></tr>`;
+                }
+            }
+
+            // ---------------- Listado ----------------
+            const estDe = (o) => estMap[String(o.estacion_id)] || null;
+            const repDe = (o) => aseaEst[String(o.estacion_id)]?.representante || clientes[o.cliente_id]?.representante || '—';
+            const cumpleTxt = (o) => (o.cumple === true ? 'Cumple' : o.cumple === false ? 'No cumple' : 'Pendiente');
+
+            function filtradas() {
+                const campo = $('f-campo').value, term = norm($('f-texto').value.trim());
+                const tipo = $('f-tipo').value, est = $('f-estatus').value;
+                return ordenes.filter((o) => {
+                    if (tipo && o.tipo_verificacion !== tipo) return false;
+                    if (est === 'pend_aut' ? o.autorizada || o.estatus === 'cancelada' : est && o.estatus !== est) return false;
+                    if (!term) return true;
+                    const e = estDe(o);
+                    const v = {
+                        folio: o.folio, seguimiento: o.folio_seguimiento, cumple: cumpleTxt(o),
+                        estacion: [e?.permiso, e?.nombre_comercial, e?.nombre, e?.numero_estacion].join(' '),
+                    };
+                    v.todo = [v.folio, v.seguimiento, v.cumple, v.estacion, repDe(o), usuarios[o.verificador_id]?.nombre_completo, clientes[o.cliente_id]?.razon_social].join(' ');
+                    return norm(v[campo]).includes(term);
+                });
+            }
+
+            function kpis() {
+                const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
+                const vivas = ordenes.filter((o) => o.estatus !== 'cancelada');
+                $('kpis').innerHTML = k('Órdenes', vivas.length, 'ph-files', 'text-gray-400')
+                    + k('En trámite', vivas.filter((o) => o.estatus === 'en_tramite').length, 'ph-hourglass', 'text-amber-400')
+                    + k('Realizadas', vivas.filter((o) => o.estatus === 'realizada').length, 'ph-check-circle', 'text-emerald-400')
+                    + k('Sin autorizar', vivas.filter((o) => !o.autorizada).length, 'ph-seal-warning', 'text-brand-yellow');
+            }
+
+            function botonAut(o) {
+                if (o.estatus === 'cancelada') return '<span class="text-gray-600">—</span>';
+                if (o.autorizada) {
+                    const quien = usuarios[o.autorizada_por]?.nombre_completo || '';
+                    return `<button data-aut ${admin ? '' : 'disabled'} title="${esc(quien)}" class="w-full rounded-lg py-2 text-xs font-semibold bg-emerald-600/15 border border-emerald-500/40 text-emerald-400 flex flex-col items-center gap-0.5"><i class="ph-bold ph-seal-check text-base"></i>Autorizada</button>`;
+                }
+                if (!editor) return '<span class="text-xs text-gray-500">Pendiente</span>';
+                return '<button data-aut class="w-full rounded-lg py-2 text-xs font-semibold bg-[#004b93] hover:bg-[#003870] text-white flex flex-col items-center gap-0.5 transition-colors"><i class="ph-bold ph-check text-base"></i>Autorizar</button>';
+            }
+
+            function pintar() {
+                kpis();
+                const lista = filtradas();
+                const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), total);
+                const ini = (pagina - 1) * POR_PAGINA;
+                const vis = lista.slice(ini, ini + POR_PAGINA);
+                $('tbody').innerHTML = vis.length ? vis.map((o, i) => {
+                    const e = estDe(o);
+                    const [et, ec] = ESTATUS[o.estatus] || ['—', ''];
+                    const cumple = o.cumple === true ? '<span class="text-emerald-400 font-semibold">Cumple</span>' : o.cumple === false ? '<span class="text-red-400 font-semibold">No cumple</span>' : '<span class="text-gray-500">Pendiente</span>';
+                    return `<tr data-id="${o.id}" class="os-row no-clickable hover:bg-dark-700/30 cursor-pointer" style="animation-delay:${Math.min(i * 0.02, 0.3)}s">
+                        <td class="py-3 px-4"><p class="text-white font-semibold whitespace-nowrap">${esc(o.folio || '—')}</p><p class="text-[11px] text-gray-500">${TIPO[o.tipo_verificacion] || ''}${o.tipo_folio === 'manual' ? ' · manual' : ''}</p></td>
+                        <td class="py-3 px-4 text-gray-400">${esc(o.folio_seguimiento || 'Sin folio')}</td>
+                        <td class="py-3 px-4 text-gray-300 uppercase">${esc(repDe(o))}</td>
+                        <td class="py-3 px-4"><p class="text-gray-200 uppercase truncate max-w-[220px]">${esc(e?.nombre_comercial || e?.nombre || '—')}</p><p class="text-[11px] text-gray-500">${esc(e?.permiso || '')}</p></td>
+                        <td class="py-3 px-4 text-gray-300 uppercase">${esc(usuarios[o.verificador_id]?.nombre_completo || '—')}</td>
+                        <td class="py-3 px-4 text-gray-400 whitespace-nowrap">${fechaLarga(o.fecha_solicitud)}</td>
+                        <td class="py-3 px-4 text-center">${cumple}</td>
+                        <td class="py-3 px-4 text-center"><span class="text-[11px] font-semibold px-2.5 py-1 rounded-md border ${ec}">${et}</span></td>
+                        <td class="py-2 px-3">${botonAut(o)}</td>
+                    </tr>`;
+                }).join('') : `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-gray-500">${ordenes.length ? 'Sin órdenes con ese filtro.' : 'Aún no hay órdenes de servicio.'}</td></tr>`;
+                $('pag-info').textContent = `${lista.length} orden(es)`;
+                $('pag-label').textContent = `Pág. ${pagina} de ${total}`;
+                $('pag-prev').disabled = pagina <= 1; $('pag-next').disabled = pagina >= total;
+                $('pag-prev').classList.toggle('opacity-40', pagina <= 1); $('pag-next').classList.toggle('opacity-40', pagina >= total);
+            }
+
+            ['f-campo', 'f-tipo', 'f-estatus'].forEach((id) => $(id).addEventListener('change', () => { pagina = 1; pintar(); }));
+            $('f-texto').addEventListener('input', () => { pagina = 1; pintar(); });
+            $('pag-prev').addEventListener('click', () => { pagina -= 1; pintar(); });
+            $('pag-next').addEventListener('click', () => { pagina += 1; pintar(); });
+
+            $('tbody').addEventListener('click', (e) => {
+                const tr = e.target.closest('tr[data-id]');
+                if (!tr) return;
+                const o = ordenes.find((x) => x.id === tr.dataset.id);
+                if (e.target.closest('[data-aut]')) { autorizar(o); return; }
+                abrir(o);
+            });
+
+            function autorizar(o) {
+                if (o.autorizada) {
+                    if (!admin) return;
                     App.confirmAction({
-                        title: 'Autorizar orden de servicio',
-                        message: '¿Confirmas autorizar esta orden de servicio?',
-                        confirmLabel: 'Autorizar',
-                        danger: false,
-                        onConfirm: () => {
-                            App.withLoading(btn, {
-                                loadingText: 'Autorizando...',
-                                task: () => App.fakeRequest(700).then(() => {
-                                    row.querySelector('.os-estatus').textContent = 'Realizada';
-                                    btn.outerHTML = '<button class="os-autorizada-badge w-full bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center shadow-sm min-h-[46px]"><span class="text-[11px] tracking-wider font-medium">Autorizada</span></button>';
-                                    App.toast('Orden de servicio autorizada.', 'success');
-                                }),
-                            });
+                        title: '¿Quitar autorización?', message: o.folio, confirmLabel: 'Quitar',
+                        onConfirm: async () => {
+                            try { await DB.actualizar('sudi_asea_ordenes', o.id, { autorizada: false, autorizada_por: null, autorizada_en: null }); await cargarOrdenes(); }
+                            catch (err) { toast(err.message, 'error'); }
                         },
                     });
+                    return;
+                }
+                const aviso = o.estatus !== 'realizada' ? ' Ojo: la orden todavía no está marcada como Realizada.' : '';
+                App.confirmAction({
+                    title: `¿Autorizar ${o.folio}?`, message: `Quedará registrada a tu nombre.${aviso}`, confirmLabel: 'Autorizar', danger: false,
+                    onConfirm: async () => {
+                        try {
+                            await DB.actualizar('sudi_asea_ordenes', o.id, { autorizada: true, autorizada_por: DB.perfil?.id || null, autorizada_en: new Date().toISOString() });
+                            toast(`${o.folio} autorizada.`);
+                            await cargarOrdenes();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            }
+
+            // ---------------- Formulario ----------------
+            const serieDe = () => `DI-${$('o-tipo').value}-${($('o-fecha').value || hoy()).slice(2, 4)}`;
+
+            async function previewFolio() {
+                if (editando) return;
+                const manual = $('o-tipo-folio').value === 'manual';
+                $('o-folio').readOnly = !manual;
+                if (manual) {
+                    if (!$('o-folio').value || $('o-folio').dataset.auto) { $('o-folio').value = ''; delete $('o-folio').dataset.auto; }
+                    $('o-folio').placeholder = 'DI-OP-26-03-150';
+                    $('o-folio-ayuda').textContent = 'Captura el folio tal como salió en el SUDI anterior.';
+                    return;
+                }
+                $('o-folio').dataset.auto = '1';
+                let n = '?';
+                try { const u = await DB.rpc('sudi_asea_ultimo_consecutivo', { p_serie: serieDe() }); n = (u || 0) + 1; } catch (_) { /* sin permiso o sin serie */ }
+                $('o-folio').value = `${serieDe()}-${$('o-zona').value}-${n}`;
+                $('o-folio-ayuda').textContent = 'Se confirma al guardar; nunca se repite.';
+            }
+            ['o-tipo', 'o-zona', 'o-tipo-folio', 'o-fecha'].forEach((id) => $(id).addEventListener('change', previewFolio));
+
+            function ponerEstacion(e) {
+                estSel = e;
+                $('o-estacion').value = e ? `${e.permiso || ''} · ${e.nombre_comercial || e.nombre || ''}` : '';
+                const c = e ? clientes[e.cliente_id] : null;
+                $('o-est-info').textContent = c ? `Cliente: ${c.razon_social}` : '';
+                $('o-est-lista').classList.add('hidden');
+            }
+            $('o-estacion').addEventListener('input', () => {
+                estSel = null;
+                $('o-est-info').textContent = '';
+                const term = norm($('o-estacion').value.trim());
+                const lista = $('o-est-lista');
+                if (term.length < 2) { lista.classList.add('hidden'); return; }
+                const res = estaciones.filter((e) => norm([e.permiso, e.nombre_comercial, e.nombre, e.numero_estacion, clientes[e.cliente_id]?.razon_social].join(' ')).includes(term)).slice(0, 12);
+                lista.innerHTML = res.length ? res.map((e) => `<button type="button" data-est="${esc(e.id)}" class="w-full text-left px-4 py-2.5 hover:bg-dark-700 border-b border-dark-700/50 last:border-0">
+                    <p class="text-sm text-white uppercase">${esc(e.nombre_comercial || e.nombre || '')} <span class="text-gray-500 normal-case">· ${esc(e.permiso || '')}</span></p>
+                    <p class="text-[11px] text-gray-500 uppercase truncate">${esc(clientes[e.cliente_id]?.razon_social || '')}</p></button>`).join('')
+                    : '<p class="px-4 py-3 text-sm text-gray-500">Sin coincidencias. Da de alta la estación en Clientes ASEA.</p>';
+                lista.classList.remove('hidden');
+            });
+            $('o-est-lista').addEventListener('click', (e) => { const b = e.target.closest('[data-est]'); if (b) ponerEstacion(estMap[b.dataset.est]); });
+            document.addEventListener('click', (e) => { if (!e.target.closest('#o-estacion, #o-est-lista')) $('o-est-lista').classList.add('hidden'); });
+
+            const siNo = (v) => (v === 'si' ? true : v === 'no' ? false : null);
+            const aSiNo = (b) => (b === true ? 'si' : b === false ? 'no' : '');
+
+            function abrir(o = null) {
+                editando = o;
+                const ro = !editor;
+                $('o-titulo').textContent = o ? `Orden ${o.folio}` : 'Solicitud de servicio';
+                $('o-tipo').value = o?.tipo_verificacion || 'OP';
+                $('o-zona').value = o?.zona || '03';
+                $('o-tipo-folio').value = o?.tipo_folio || 'normal';
+                ['o-tipo', 'o-zona', 'o-tipo-folio'].forEach((id) => { $(id).disabled = Boolean(o) || ro; });
+                $('o-folio').value = o?.folio || '';
+                $('o-folio').readOnly = true;
+                $('o-folio-ayuda').textContent = o ? 'El folio no se puede cambiar.' : '';
+                $('o-seguimiento').value = o?.folio_seguimiento || '';
+                ponerEstacion(o ? estMap[String(o.estacion_id)] || null : null);
+                if (o && !estMap[String(o.estacion_id)] && o.estacion_id) $('o-estacion').value = o.estacion_id;
+                $('o-verificador').value = o?.verificador_id || '';
+                $('o-fecha').value = o?.fecha_solicitud || hoy();
+                $('o-comparte').value = aSiNo(o?.comparte_documentos);
+                $('o-gerente').value = o?.tipo_gerente || '';
+                $('o-cumple').value = aSiNo(o?.cumple);
+                $('o-estatus').value = o?.estatus || 'en_tramite';
+                $('o-obs').value = o?.observaciones || '';
+                document.querySelectorAll('#modal-orden .inp').forEach((el) => { el.classList.remove('err'); if (ro && el.id !== 'o-folio') el.disabled = true; });
+                if (!o) previewFolio();
+                App.openModal('modal-orden');
+            }
+            $('btn-nueva').addEventListener('click', () => abrir(null));
+
+            $('o-guardar').addEventListener('click', () => {
+                const manual = !editando && $('o-tipo-folio').value === 'manual';
+                const req = [['o-verificador', !$('o-verificador').value], ['o-fecha', !$('o-fecha').value], ['o-estacion', !estSel && !editando?.estacion_id],
+                    ['o-folio', manual && !/^DI-(OP|D|C)-\d{2}-\d{2}-\d+$/i.test($('o-folio').value.trim())]];
+                req.forEach(([id, mal]) => $(id).classList.toggle('err', mal));
+                if (req.some(([, mal]) => mal)) { toast(manual && req[3][1] ? 'Folio manual con formato DI-OP-26-03-150.' : 'Completa estación, verificador y fecha.', 'error'); return; }
+
+                const fila = {
+                    folio_seguimiento: $('o-seguimiento').value.trim().toUpperCase() || null,
+                    estacion_id: estSel ? String(estSel.id) : editando?.estacion_id,
+                    cliente_id: estSel?.cliente_id || editando?.cliente_id || null,
+                    verificador_id: $('o-verificador').value,
+                    fecha_solicitud: $('o-fecha').value,
+                    comparte_documentos: siNo($('o-comparte').value),
+                    tipo_gerente: $('o-gerente').value || null,
+                    cumple: siNo($('o-cumple').value),
+                    estatus: $('o-estatus').value,
+                    observaciones: $('o-obs').value.trim() || null,
+                };
+                App.withLoading($('o-guardar'), {
+                    task: async () => {
+                        try {
+                            if (editando) {
+                                await DB.actualizar('sudi_asea_ordenes', editando.id, fila);
+                                toast('Orden actualizada.');
+                            } else {
+                                const nueva = await DB.crear('sudi_asea_ordenes', {
+                                    ...fila, tipo_verificacion: $('o-tipo').value, zona: $('o-zona').value, tipo_folio: $('o-tipo-folio').value,
+                                    folio: manual ? $('o-folio').value.trim().toUpperCase() : null, created_by: DB.perfil?.id || null,
+                                });
+                                const folio = (Array.isArray(nueva) ? nueva[0] : nueva)?.folio;
+                                toast(folio ? `Orden creada con folio ${folio}.` : 'Orden creada.', 'success', 6000);
+                            }
+                            App.closeModal('modal-orden');
+                            await cargarOrdenes();
+                        } catch (err) {
+                            toast(/duplicate|repetido|unique/i.test(err.message) ? 'Ese folio ya existe; no se puede repetir.' : err.message, 'error');
+                        }
+                    },
                 });
             });
 
-            document.getElementById('os-nueva-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const data = new FormData(e.target);
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                App.withLoading(submitBtn, {
-                    task: () => App.fakeRequest(700).then(() => {
-                        const tbody = document.getElementById('os-tbody');
-                        const tr = document.createElement('tr');
-                        tr.className = 'os-row hover:bg-dark-700/30 transition-colors group';
-                        const folio = `DI-D-26-08-${Math.floor(Math.random() * 90 + 10)}`;
-                        tr.innerHTML = `
-                            <td class="py-3 px-4 border-r border-dark-700/50"><span class="block text-gray-300">${folio}</span><span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">Diseño</span></td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">${data.get('cliente')}</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">Sin folio</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">${data.get('verificador')}</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">${data.get('fecha')}</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Cumple</td>
-                            <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 os-estatus">En trámite</td>
-                            <td class="py-2 px-2"><button class="os-autorizar-btn w-full bg-[#004b93] hover:bg-[#003870] text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm min-h-[46px]"><i class="ph ph-check font-bold text-[10px]"></i><span class="text-[10px] tracking-wider font-medium">Autorizar</span></button></td>
-                        `;
-                        tbody.prepend(tr);
-                        tr.querySelector('.os-autorizar-btn').addEventListener('click', function () {
-                            const btn2 = this;
-                            const row2 = btn2.closest('tr');
-                            App.confirmAction({
-                                title: 'Autorizar orden de servicio', message: '¿Confirmas autorizar esta orden de servicio?', confirmLabel: 'Autorizar', danger: false,
-                                onConfirm: () => App.withLoading(btn2, { loadingText: 'Autorizando...', task: () => App.fakeRequest(700).then(() => {
-                                    row2.querySelector('.os-estatus').textContent = 'Realizada';
-                                    App.toast('Orden de servicio autorizada.', 'success');
-                                }) }),
-                            });
-                        });
-                        App.toast('Orden de servicio creada correctamente.', 'success');
-                        App.closeModal('os-nueva-modal');
-                        e.target.reset();
-                    }),
-                });
+            // ---------------- Consecutivos (admin) ----------------
+            async function verConsecutivo() {
+                $('c-actual').textContent = 'Consultando...';
+                try {
+                    const u = await DB.rpc('sudi_asea_ultimo_consecutivo', { p_serie: $('c-serie').value });
+                    $('c-actual').textContent = `Último usado: ${u ?? '—'} → el siguiente folio será el ${(u || 0) + 1}.`;
+                    $('c-ultimo').value = u ?? '';
+                } catch (err) { $('c-actual').textContent = err.message; }
+            }
+            $('btn-consecutivos').addEventListener('click', () => {
+                const yy = hoy().slice(2, 4);
+                $('c-serie').innerHTML = ['OP', 'D', 'C'].map((t) => `<option>DI-${t}-${yy}</option>`).join('');
+                verConsecutivo();
+                App.openModal('modal-cons');
             });
+            $('c-serie').addEventListener('change', verConsecutivo);
+            $('c-guardar').addEventListener('click', () => App.withLoading($('c-guardar'), {
+                task: async () => {
+                    try {
+                        await DB.rpc('sudi_asea_ajustar_consecutivo', { p_serie: $('c-serie').value, p_ultimo: Number($('c-ultimo').value) });
+                        toast('Consecutivo actualizado.');
+                        App.closeModal('modal-cons');
+                    } catch (err) { toast(err.message, 'error'); }
+                },
+            }));
 
-            App.initPagination({
-                itemsSelector: '#os-tbody tr.os-row',
-                pageSize: 8,
-                prevBtn: document.getElementById('os-prev'),
-                nextBtn: document.getElementById('os-next'),
-                labelEl: document.getElementById('os-pag-label'),
-            });
+            // ---------------- Arranque ----------------
+            (async () => {
+                try { DB = await App.db(); } catch (err) {
+                    $('tbody').innerHTML = `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-red-400">${esc(err.message)}</td></tr>`;
+                    return;
+                }
+                editor = DB.puedeEditar();
+                admin = DB.esAdmin();
+                if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                if (admin) { $('btn-consecutivos').classList.remove('hidden'); $('btn-consecutivos').classList.add('flex'); }
+                try { await cargarCatalogos(); } catch (err) { toast(err.message, 'error'); }
+                await cargarOrdenes();
+                let t = null;
+                DB.sb.channel('sudi-asea-ordenes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_asea_ordenes' }, () => { clearTimeout(t); t = setTimeout(cargarOrdenes, 600); })
+                    .subscribe();
+            })();
         });
     </script>
-
-</body></html>
+</body>
+</html>

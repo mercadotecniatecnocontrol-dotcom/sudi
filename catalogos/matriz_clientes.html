@@ -202,7 +202,7 @@
                         <tr class="no-clickable"><td colspan="7" class="py-10 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando matriz...</td></tr>
                     </tbody>
                 </table>
-                <p class="text-[11px] text-gray-500 mt-4"><span class="text-emerald-400 font-semibold">AUTO</span> = detectado por actividad (inspecciones SCFI o folios de Operaciones). <span class="text-gray-400 font-semibold">MANUAL</span> = marcado en el formulario del cliente.</p>
+                <p class="text-[11px] text-gray-500 mt-4"><span class="text-emerald-400 font-semibold">AUTO</span> = detectado por actividad (inspecciones SCFI, órdenes ASEA o folios de Operaciones). <span class="text-gray-400 font-semibold">MANUAL</span> = marcado en el formulario del cliente.</p>
             </div>
         </div>
     </main>
@@ -280,7 +280,7 @@
                         <td class="py-3 px-4 text-center"><span class="bg-dark-900 border border-dark-700 px-2.5 py-1 rounded-md text-white font-bold">${r.estaciones}</span></td>
                         <td class="py-3 px-4 text-center">${celda(r.tecnocontrol, r.tec_folios > 0, r.tec_folios ? `${r.tec_folios} folios` : '')}</td>
                         <td class="py-3 px-4 text-center">${celda(r.scfi, r.scfi_inspecciones > 0, r.scfi_inspecciones ? `${r.scfi_inspecciones} insp. · ${fecha(r.scfi_ultima)}` : '')}</td>
-                        <td class="py-3 px-4 text-center">${celda(r.asea, false, '')}</td>
+                        <td class="py-3 px-4 text-center">${celda(r.asea, r.asea_ordenes > 0, r.asea_ordenes ? `${r.asea_ordenes} órd. · ${fecha(r.asea_ultima)}` : '')}</td>
                         <td class="py-3 px-4 text-center"><span class="font-bold ${n >= 2 ? 'text-brand-yellow' : n ? 'text-white' : 'text-gray-600'}">${n}</span></td>
                         <td class="py-3 px-4 text-right"><a href="clientes.html?cliente=${encodeURIComponent(r.id)}" class="text-xs font-semibold text-gray-300 hover:text-brand-yellow inline-flex items-center gap-1"><i class="ph ph-pencil-simple"></i> Editar</a></td>
                     </tr>`;
@@ -306,8 +306,8 @@
             $('mx-buscar').addEventListener('input', pintar);
             $('mx-csv').addEventListener('click', () => {
                 const si = (v) => (v ? 'Sí' : '');
-                const csv = [['Nombre comercial', 'Razón social', 'RFC', 'Estaciones', 'Tecnocontrol', 'Folios Tecnocontrol', 'SCFI', 'Inspecciones SCFI', 'ASEA', 'Servicios']]
-                    .concat(visibles().map((r) => [r.nombre_comercial, r.razon_social, r.rfc, r.estaciones, si(r.tecnocontrol), r.tec_folios, si(r.scfi), r.scfi_inspecciones, si(r.asea), servicios(r)]))
+                const csv = [['Nombre comercial', 'Razón social', 'RFC', 'Estaciones', 'Tecnocontrol', 'Folios Tecnocontrol', 'SCFI', 'Inspecciones SCFI', 'ASEA', 'Órdenes ASEA', 'Servicios']]
+                    .concat(visibles().map((r) => [r.nombre_comercial, r.razon_social, r.rfc, r.estaciones, si(r.tecnocontrol), r.tec_folios, si(r.scfi), r.scfi_inspecciones, si(r.asea), r.asea_ordenes, servicios(r)]))
                     .map((f) => f.map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
@@ -327,6 +327,7 @@
                 DB.sb.channel('sudi-matriz')
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'clientes_catalogo' }, recargar)
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_scfi_inspecciones' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_asea_ordenes' }, recargar)
                     .subscribe();
             })();
         });

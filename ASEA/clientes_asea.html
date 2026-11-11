@@ -1,4 +1,4 @@
-﻿<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
+<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,7 +129,6 @@
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
-        
         <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
                 <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
@@ -137,30 +136,14 @@
                 </button>
                 <div class="min-w-0">
                     <h1 class="text-2xl font-bold text-white tracking-tight truncate">Directorio de Clientes ASEA</h1>
-                    <p class="text-sm text-gray-400 mt-1 truncate">Gestión y consulta de estaciones de servicio</p>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Clic derecho (o <i class="ph ph-dots-three-vertical"></i>) en una tarjeta para ver sus opciones</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <button id="btn-filtrar" data-dropdown-toggle="clientes-filtrar-menu" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-dark-800 border border-dark-700 rounded-lg hover:bg-dark-700 transition-colors shadow-sm">
-                        <i class="ph ph-funnel text-lg"></i> Filtrar
-                    </button>
-                    <div id="clientes-filtrar-menu" data-dropdown="" class="hidden absolute right-0 mt-2 w-56 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20 fade-in">
-                        <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Ordenar por</p>
-                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 hover:text-white transition-colors" data-filtro="nombre">Razón social (A-Z)</button>
-                        <button class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 hover:text-white transition-colors" data-filtro="estaciones">Más estaciones</button>
-                    </div>
-                </div>
-                <button data-modal-open="modal-nuevo-cliente" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
-                    <i class="ph ph-plus-circle text-lg"></i> Nuevo Cliente
-                </button>
-            </div>
+            <button id="btn-nuevo-cliente" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5 shrink-0">
+                <i class="ph ph-plus-circle text-lg"></i> <span class="hidden sm:inline">Nuevo Cliente</span>
+            </button>
         </header>
-
-        <div class="p-8">
-            
-            <!-- Barra superior: Título y Buscador -->
+        <div class="p-4 sm:p-8">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 fade-in">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20 shadow-inner">
@@ -168,487 +151,815 @@
                     </div>
                     <h2 class="text-2xl font-bold text-white tracking-tight uppercase">CLIENTES</h2>
                 </div>
-                
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="clientes-search" placeholder="Buscar por razón social o representante..." class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all shadow-sm">
+                    <input type="text" id="clientes-search" placeholder="Buscar por cliente, RFC, representante o PL..." class="w-full bg-dark-800 border border-dark-700 text-white rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all shadow-sm">
                     <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-xl"></i>
-                    <button class="absolute right-3 top-2.5 p-1.5 rounded-md hover:bg-dark-700 text-gray-400 transition-colors bg-dark-900 border border-dark-600">
-                        <i class="ph ph-magnifying-glass text-sm"></i>
-                    </button>
                 </div>
             </div>
-
-            <p id="clientes-empty" class="hidden text-center text-gray-500 text-sm py-10">No se encontraron clientes con ese criterio de búsqueda.</p>
-
-            <!-- Grid de Tarjetas de Clientes -->
+            <p id="clientes-empty" class="hidden text-center text-gray-500 text-sm py-10"></p>
             <div id="clientes-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-                <!-- Tarjeta 1 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            ESTACION DE SERVICIO TRES HERMANOS SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">ESTACION DE SERVICIO TRES HERMANOS SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">ALEJANDRO ZAMORA SANCHEZ</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:16563794217" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 16563794217
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:agnp@prodigy.net.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">agnp@prodigy.net.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 2 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.15s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            SUPER SERVICIO HERRERA DEL NORTE SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">SUPER SERVICIO HERRERA DEL NORTE SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">RUBEN HERRERA</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566171091" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566171091
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jesus.pacheco@hgasolineras.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="jesus.pacheco@hgasolineras.com.mx">jesus.pacheco@hgasolineras.com.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">20</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 3 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.2s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            DIAZ GAS, S.A. DE C.V.
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">DIAZ GAS, S.A. DE C.V.</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">Alfredo Escalera Baca</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566383535" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566383535
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:salvador.navarro@totalgas.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="salvador.navarro@totalgas.com">salvador.navarro@totalgas.com</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">20</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 4 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.25s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            SERVICIO EL JARUDO SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">SERVICIO EL JARUDO SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">JOSE IGNACIO CASTILLO AVALOS</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566183101" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566183101
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jcortes@distribuidoragasomex.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="jcortes@distribuidoragasomex.com.mx">jcortes@distribuidoragasomex.com.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 5 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.3s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            DISTRIBUIDORA CLARA SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">DISTRIBUIDORA CLARA SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">JOSE IGNACIO CASTILLO AVALOS</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6566183100" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6566183100
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 6 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.35s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            DISTRIBUIDORA GASO MEX SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">DISTRIBUIDORA GASO MEX SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors">José Ignacio Castillo Ávalos</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6562156815" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6562156815
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:jgamboa@gaso-mex.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">jgamboa@gaso-mex.com</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">5</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 7 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.4s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            GILBERTO HERNANDEZ VEGA
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">GILBERTO HERNANDEZ VEGA</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">GILBERTO HERNANDEZ CASTRO</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6366940134" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6366940134
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:factura-ssm@hotmail.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">factura-ssm@hotmail.com</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">0</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 8 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.45s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            SAZA YAPOR SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">SAZA YAPOR SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">FABIAN DELGADO TERRAZAS</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6143633916" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6143633916
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:independencia.1336@rendilitros.com" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block" title="independencia.1336@rendilitros.com">independencia.1336@rendilitros.com</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">1</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta 9 -->
-                <div class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in" style="animation-delay: 0.5s;">
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                    
-                    <div class="mb-6 flex flex-col items-center text-center">
-                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">
-                            COMBUSTIBLES Y LUBRICANTES RACHALI SA DE CV
-                        </h3>
-                    </div>
-                    
-                    <div class="space-y-4 text-sm">
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                            <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">COMBUSTIBLES Y LUBRICANTES RACHALI SA DE CV</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                            <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">ORESTES CHAVEZ GARCIA</span>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                            <a href="tel:6351092109" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                <i class="ph ph-phone text-xs"></i> 6351092109
-                            </a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                            <a href="mailto:rachali@live.com.mx" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">rachali@live.com.mx</a>
-                        </div>
-                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                            <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">-</span>
-                        </div>
-                    </div>
-                </div>
-
+                <p class="col-span-full text-center text-gray-500 text-sm py-10"><i class="ph ph-spinner animate-spin text-lg align-middle"></i> Cargando clientes...</p>
             </div>
-
-            <!-- Paginación -->
-            <div class="flex justify-end items-center gap-4 mt-8 fade-in" style="animation-delay: 0.6s;">
-                <div class="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-xl p-1 shadow-sm">
-                    <button id="clientes-prev" class="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-left text-lg"></i>
-                    </button>
-                    <div class="h-6 w-px bg-dark-700 mx-2"></div>
-                    <button id="clientes-next" class="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-right text-lg"></i>
-                    </button>
-                    <div class="h-6 w-px bg-dark-700 mx-2"></div>
-                    <span id="clientes-pag-label" class="text-sm text-gray-400 px-3 py-1.5">Pág. 1 de 1</span>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mt-10 p-4 bg-dark-800 border border-dark-700 rounded-xl">
+                <div class="text-sm text-gray-500">Mostrando <span id="cli-desde" class="font-medium text-white">0</span> a <span id="cli-hasta" class="font-medium text-white">0</span> de <span id="cli-total" class="font-medium text-white">0</span> clientes</div>
+                <div class="flex items-center gap-2">
+                    <button id="pag-primera" class="p-2 rounded-lg bg-dark-900 border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors"><i class="ph ph-caret-double-left"></i></button>
+                    <button id="pag-prev" class="p-2 rounded-lg bg-dark-900 border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors"><i class="ph ph-caret-left"></i></button>
+                    <button id="pag-next" class="p-2 rounded-lg bg-dark-900 border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors"><i class="ph ph-caret-right"></i></button>
+                    <button id="pag-ultima" class="p-2 rounded-lg bg-dark-900 border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors"><i class="ph ph-caret-double-right"></i></button>
+                    <span id="pag-label" class="text-sm text-gray-400 ml-2">Pág. 1 de 1</span>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- Modal: Nuevo Cliente -->
-    <div id="modal-nuevo-cliente" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <!-- Menú contextual de la tarjeta -->
+    <div id="ctx-menu" class="hidden fixed z-[100] w-52 bg-dark-800 border border-dark-600 rounded-xl shadow-2xl py-1.5 text-sm">
+        <button data-accion="estaciones" class="w-full flex items-center justify-between px-4 py-2.5 text-gray-200 hover:bg-dark-700">Estaciones <i class="ph ph-gas-pump text-lg"></i></button>
+        <button data-accion="editar" data-editor class="w-full flex items-center justify-between px-4 py-2.5 text-gray-200 hover:bg-dark-700">Editar <i class="ph ph-pencil-simple-line text-lg"></i></button>
+        <button data-accion="comentarios" class="w-full flex items-center justify-between px-4 py-2.5 text-gray-200 hover:bg-dark-700">Comentarios <i class="ph ph-chat-centered-text text-lg"></i></button>
+        <button data-accion="eliminar" data-editor class="w-full flex items-center justify-between px-4 py-2.5 text-red-400 hover:bg-red-500/10">Eliminar <i class="ph ph-trash text-lg"></i></button>
+    </div>
+
+    <!-- Modal: Nuevo / Editar cliente -->
+    <div id="modal-cliente" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-white font-bold text-lg">Nuevo Cliente</h3>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 class="text-white font-bold text-xl flex items-center gap-2"><i class="ph ph-users-three text-brand-yellow"></i> <span id="cli-titulo">Editar cliente</span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form id="form-nuevo-cliente" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Razón social</label>
-                    <input type="text" required="" name="razonSocial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
+            <div class="p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label class="lbl">Nombre comercial</label><input id="cli-nombre" class="inp uppercase"></div>
+                    <div><label class="lbl">Razón social *</label><input id="cli-razon" class="inp uppercase"></div>
+                    <div><label class="lbl">RFC</label><input id="cli-rfc" maxlength="13" class="inp uppercase"></div>
                 </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Nombre comercial</label>
-                    <input type="text" name="nombreComercial" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Representante</label>
-                    <input type="text" required="" name="representante" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="inline-block px-4 py-1.5 rounded-lg bg-brand-yellow/10 border border-brand-yellow/30 text-brand-yellow text-sm font-semibold">Contacto principal</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label class="lbl">Representante legal</label><input id="cli-rep" class="inp uppercase"></div>
+                    <div><label class="lbl">Teléfono</label><input id="cli-tel" inputmode="tel" class="inp"></div>
+                    <div><label class="lbl">Correo</label><input id="cli-correo" type="email" class="inp"></div>
                     <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Teléfono</label>
-                        <input type="tel" name="telefono" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5"># Estaciones</label>
-                        <input type="number" min="0" name="estaciones" value="1" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
+                        <label class="lbl">INE del representante legal</label>
+                        <input type="file" id="cli-ine" class="hidden" accept=".pdf,image/*">
+                        <label for="cli-ine" class="inp flex items-center justify-between cursor-pointer text-gray-400"><span id="cli-ine-label" class="truncate">Seleccionar archivo (PDF, JPG, PNG)</span><i class="ph ph-upload-simple"></i></label>
+                        <button type="button" id="cli-ine-ver" class="hidden mt-2 text-xs text-brand-yellow hover:underline items-center gap-1"><i class="ph ph-eye"></i> Ver INE guardada</button>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Correo</label>
-                    <input type="email" name="correo" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" id="btn-guardar-cliente" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 hover:shadow-yellow-500/25 shadow-lg transition-all">Guardar</button>
-                </div>
-            </form>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-white bg-red-500/80 hover:bg-red-500"><i class="ph ph-x"></i> Cancelar</button>
+                <button id="cli-guardar" class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <!-- Modal: Estaciones del cliente -->
+    <div id="modal-estaciones" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-7xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 id="est-titulo" class="text-white font-bold text-xl uppercase truncate"></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="px-6 py-4 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                <button id="est-nueva" data-editor class="self-start flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 rounded-lg"><i class="ph ph-plus"></i> Nueva estación</button>
+                <div class="flex flex-wrap items-end gap-2">
+                    <div><label class="lbl">Buscar por</label>
+                        <select id="est-campo" class="inp !py-2.5 w-48">
+                            <option value="todo">Todos los campos</option>
+                            <option value="numero_estacion">No. estación</option>
+                            <option value="permiso">PL</option>
+                            <option value="tipo">Tipo</option>
+                            <option value="representante">Representante</option>
+                        </select>
+                    </div>
+                    <input id="est-texto" class="inp !py-2.5 w-56" placeholder="Texto a buscar">
+                    <button id="est-buscar" class="w-11 h-11 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center"><i class="ph ph-magnifying-glass text-lg"></i></button>
+                    <button id="est-limpiar" class="w-11 h-11 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center" title="Limpiar y recargar"><i class="ph ph-arrows-clockwise text-lg"></i></button>
+                </div>
+            </div>
+            <div class="px-6 pb-6 overflow-auto">
+                <table class="w-full text-sm min-w-[980px]">
+                    <thead><tr class="text-gray-400 text-xs uppercase tracking-wider border-b border-dark-700">
+                        <th class="py-3 px-3 text-left">No. estación</th><th class="py-3 px-3 text-left">PL</th>
+                        <th class="py-3 px-3 text-left"><i class="ph ph-gas-pump"></i> Tipo</th><th class="py-3 px-3 text-left"><i class="ph ph-user"></i> Representante</th>
+                        <th class="py-3 px-3 text-center">Norma en vigor</th><th class="py-3 px-3 text-center">Dispensarios</th>
+                        <th class="py-3 px-3 text-center">Tanques</th><th class="py-3 px-3 text-center">Acciones</th>
+                    </tr></thead>
+                    <tbody id="est-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nueva / Editar estación -->
+    <div id="modal-estacion" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 id="estf-titulo" class="text-white font-bold text-lg">Nueva estación</h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label class="lbl">Nombre comercial *</label><input id="estf-nombre" class="inp uppercase"></div>
+                <div><label class="lbl">PL (permiso CRE) *</label><input id="estf-permiso" class="inp uppercase" placeholder="PL/0000/EXP/ES/2015"></div>
+                <div><label class="lbl">No. estación</label><input id="estf-numero" class="inp uppercase"></div>
+                <div><label class="lbl">Tipo</label><input id="estf-tipo" list="lst-tipos" class="inp"></div>
+                <div><label class="lbl">Representante</label><input id="estf-rep" class="inp uppercase"></div>
+                <div class="flex items-end"><label class="flex items-center gap-3 text-sm text-gray-200 cursor-pointer pb-3"><input type="checkbox" id="estf-norma" class="w-5 h-5 accent-yellow-500"> Norma en vigor</label></div>
+                <div class="md:col-span-2"><label class="lbl">Dirección</label><input id="estf-direccion" class="inp"></div>
+                <div><label class="lbl">Municipio</label><input id="estf-municipio" class="inp"></div>
+                <div><label class="lbl">Estado</label><input id="estf-estado" class="inp"></div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="estf-guardar" class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
+        </div>
+    </div>
+    <datalist id="lst-tipos"><option value="Estación de servicio"><option value="Autoconsumo"><option value="Gas L.P."><option value="Otro"></datalist>
+
+    <!-- Modal: Tanques -->
+    <div id="modal-tanques" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-cylinder text-brand-yellow"></i> Tanques · <span id="tq-titulo"></span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="p-6 overflow-auto space-y-3">
+                <div class="hidden md:grid grid-cols-[50px_1.2fr_1fr_1fr_1fr_1.5fr_40px] gap-2 text-[11px] uppercase tracking-wider text-gray-500 px-1">
+                    <span>No.</span><span>Producto</span><span>Capacidad (L)</span><span>Pared</span><span>Material</span><span>Observaciones</span><span></span>
+                </div>
+                <div id="tq-lista" class="space-y-2"></div>
+                <button id="tq-agregar" data-editor class="text-sm text-brand-yellow hover:text-yellow-300 flex items-center gap-1"><i class="ph ph-plus-circle"></i> Agregar tanque</button>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cerrar</button>
+                <button id="tq-guardar" data-editor class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar tanques</button>
+            </div>
+        </div>
+    </div>
+    <datalist id="lst-productos"><option value="Magna"><option value="Premium"><option value="Diésel"></datalist>
+
+    <!-- Modal: Mover estación a otro cliente -->
+    <div id="modal-mover" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-white font-bold text-lg">Mover estación a otro cliente</h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <p id="mv-estacion" class="text-sm text-gray-400 mb-4"></p>
+            <input id="mv-buscar" class="inp mb-3" placeholder="Filtrar clientes...">
+            <select id="mv-cliente" size="8" class="inp !p-1"></select>
+            <div class="flex justify-end gap-3 mt-5">
+                <button data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="mv-guardar" class="px-4 py-2 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Mover</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel lateral: Comentarios -->
+    <div id="com-panel" class="hidden fixed inset-0 z-[95]">
+        <div id="com-backdrop" class="absolute inset-0 bg-black/40"></div>
+        <aside class="absolute right-0 top-0 h-full w-full max-w-md bg-dark-800 border-l border-dark-700 shadow-2xl flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 class="text-2xl text-white font-semibold">Comentarios</h3>
+                <button id="com-cerrar" class="text-red-400 hover:text-red-300"><i class="ph ph-x text-2xl"></i></button>
+            </div>
+            <div class="px-6 py-4 border-b border-dark-700"><p id="com-cliente" class="text-white font-bold uppercase truncate"></p></div>
+            <div class="px-6 py-4 space-y-3">
+                <p class="text-xs text-gray-400">Comentarios relacionados con el registro.</p>
+                <textarea id="com-texto" rows="3" class="inp resize-y" placeholder="Agrega un comentario"></textarea>
+                <button id="com-registrar" class="w-full py-2.5 rounded-lg bg-brand-yellow text-dark-900 font-semibold hover:bg-yellow-400 flex items-center justify-center gap-2"><i class="ph ph-arrow-circle-right text-lg"></i> Registrar</button>
+            </div>
+            <div id="com-lista" class="flex-1 overflow-y-auto px-6 pb-6 space-y-3"></div>
+        </aside>
+    </div>
+
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.uppercase { text-transform: uppercase; }
+        .inp.err { border-color: #ef4444; }
+    </style>
+
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
+    <!-- Clientes ASEA: catálogo compartido "clientes_catalogo" (norma ASEA) + "estaciones_servicio".
+         Datos propios de ASEA por estación en "sudi_asea_estaciones"; tanques en "sudi_estacion_tanques" (SQL 0009). -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Buscador de clientes ---
-            App.initSearch(document.getElementById('clientes-search'), '.cliente-card', {
-                emptyStateSelector: '#clientes-empty',
-            });
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const up = (id) => $(id).value.trim().toUpperCase() || null;
+            const txt = (id) => $(id).value.trim() || null;
+            const ahora = () => new Date().toISOString();
+            const nuevoId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+            const toast = (m, t = 'success', ms) => App.toast(m, t, ms);
+            const POR_PAGINA = 6;
+            const CATALOGO = '../catalogos/clientes.html';
+            const EST_COLS = 'id, cliente_id, nombre, nombre_comercial, razon_social, permiso, numero_estacion, encargado, direccion, municipio, estado, numero_dispensarios, numero_tanques, activo';
+            const MARCA_EDICION = 'editó este registro';
 
-            // --- Filtro (mock) ---
-            document.querySelectorAll('#clientes-filtrar-menu [data-filtro]').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    App.toast(`Filtro aplicado: ${btn.textContent.trim()}`, 'info');
+            let DB = null;
+            let editor = false;
+            let clientes = [];
+            let estPorCliente = {};
+            let asea = {};
+            let pagina = 1;
+            let ctxCliente = null;      // cliente del menú contextual
+            let clienteAbierto = null;  // cliente del modal de estaciones
+            let editCliente = null;     // null = nuevo
+            let archivoIne = null;
+            let editEst = null;         // null = nueva
+            let estMover = null;
+            let estTanques = null;
+            let comCliente = null;
+
+            // ----------------------------------------------------------
+            // Datos
+            // ----------------------------------------------------------
+            async function cargarEstaciones() {
+                const mapa = {};
+                for (let desde = 0; ; desde += 1000) {
+                    const { data, error } = await DB.sb.from('estaciones_servicio').select(EST_COLS)
+                        .not('cliente_id', 'is', null).order('id').range(desde, desde + 999);
+                    if (error) throw new Error(DB.mensajeError(error));
+                    (data || []).forEach((e) => { (mapa[e.cliente_id] ||= []).push(e); });
+                    if (!data || data.length < 1000) break;
+                }
+                return mapa;
+            }
+
+            async function cargar() {
+                try {
+                    const [lista, mapa, extra] = await Promise.all([
+                        DB.listar('clientes_catalogo', { orden: 'razon_social', consulta: (q) => q.contains('normas', ['ASEA']) }),
+                        cargarEstaciones(),
+                        DB.listar('sudi_asea_estaciones').catch(() => []),
+                    ]);
+                    clientes = lista.filter((c) => c.activo !== false);
+                    estPorCliente = mapa;
+                    asea = Object.fromEntries(extra.map((a) => [String(a.estacion_id), a]));
+                    render();
+                    if (clienteAbierto && $('modal-estaciones').classList.contains('modal-open')) {
+                        clienteAbierto = clientes.find((c) => c.id === clienteAbierto.id) || clienteAbierto;
+                        pintarEstaciones();
+                    }
+                } catch (err) {
+                    $('clientes-grid').innerHTML = `<p class="col-span-full text-center text-red-400 text-sm py-10">No se pudieron cargar los clientes: ${esc(err.message)}</p>`;
+                }
+            }
+
+            // ----------------------------------------------------------
+            // Tarjetas + búsqueda + paginación
+            // ----------------------------------------------------------
+            function filtrados() {
+                const term = norm($('clientes-search').value.trim());
+                if (!term) return clientes;
+                return clientes.filter((c) => {
+                    const ests = (estPorCliente[c.id] || []).map((e) => [e.permiso, e.numero_estacion, e.nombre_comercial].join(' '));
+                    return norm([c.nombre_comercial, c.razon_social, c.rfc, c.representante, c.telefono, c.correo, ...ests].join(' ')).includes(term);
                 });
-            });
+            }
 
-            // --- Paginación ---
-            App.initPagination({
-                itemsSelector: '.cliente-card',
-                pageSize: 6,
-                container: document.getElementById('clientes-grid'),
-                prevBtn: document.getElementById('clientes-prev'),
-                nextBtn: document.getElementById('clientes-next'),
-                labelEl: document.getElementById('clientes-pag-label'),
-            });
+            function tarjeta(c, i) {
+                const n = (estPorCliente[c.id] || []).length;
+                const fila = (label, valor) => `
+                    <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
+                        <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">${label}</span>${valor}
+                    </div>`;
+                const tel = c.telefono || '';
+                return `
+                <div data-id="${esc(c.id)}" class="cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in cursor-context-menu" style="animation-delay:${0.05 * i}s">
+                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
+                    <button data-kebab class="absolute top-3 right-3 w-8 h-8 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 flex items-center justify-center"><i class="ph ph-dots-three-vertical text-lg"></i></button>
+                    <div class="mb-6 flex flex-col items-center text-center px-6">
+                        <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">${esc(c.razon_social || c.nombre_comercial)}</h3>
+                    </div>
+                    <div class="space-y-4 text-sm">
+                        ${fila('Nombre Comercial', `<span class="text-gray-300 font-medium uppercase">${esc(c.nombre_comercial || '—')}</span>`)}
+                        ${fila('Representante', `<span class="text-gray-300 uppercase">${esc(c.representante || '—')}</span>`)}
+                        ${fila('Teléfono', tel ? `<a href="tel:${esc(tel.replace(/\s+/g, ''))}" class="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1"><i class="ph ph-phone text-xs"></i> ${esc(tel)}</a>` : '<span class="text-gray-500">—</span>')}
+                        ${fila('Correo', c.correo ? `<a href="mailto:${esc(c.correo)}" class="text-brand-yellow hover:text-yellow-400 truncate block">${esc(c.correo)}</a>` : '<span class="text-gray-500">—</span>')}
+                        <div class="grid grid-cols-[120px_1fr] gap-3 items-center">
+                            <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
+                            <button data-ver-est class="bg-dark-900 border border-dark-700 hover:border-brand-yellow px-3 py-1 rounded-md text-white font-bold w-max">${n}</button>
+                        </div>
+                    </div>
+                </div>`;
+            }
 
-            // --- Nuevo Cliente ---
-            const form = document.getElementById('form-nuevo-cliente');
-            form?.addEventListener('submit', (e) => {
+            function render() {
+                const lista = filtrados();
+                const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), total);
+                const ini = (pagina - 1) * POR_PAGINA;
+                const vis = lista.slice(ini, ini + POR_PAGINA);
+                $('clientes-grid').innerHTML = vis.map(tarjeta).join('');
+                const vacio = $('clientes-empty');
+                vacio.textContent = clientes.length ? 'No se encontraron clientes con ese criterio de búsqueda.' : 'Aún no hay clientes ASEA. Agrega uno con “Nuevo Cliente”.';
+                vacio.classList.toggle('hidden', lista.length > 0);
+                $('cli-desde').textContent = lista.length ? ini + 1 : 0;
+                $('cli-hasta').textContent = ini + vis.length;
+                $('cli-total').textContent = lista.length;
+                $('pag-label').textContent = `Pág. ${pagina} de ${total}`;
+                [['pag-primera', pagina <= 1], ['pag-prev', pagina <= 1], ['pag-next', pagina >= total], ['pag-ultima', pagina >= total]]
+                    .forEach(([id, off]) => { $(id).disabled = off; $(id).classList.toggle('opacity-40', off); });
+            }
+
+            $('clientes-search').addEventListener('input', () => { pagina = 1; render(); });
+            $('pag-primera').addEventListener('click', () => { pagina = 1; render(); });
+            $('pag-prev').addEventListener('click', () => { pagina -= 1; render(); });
+            $('pag-next').addEventListener('click', () => { pagina += 1; render(); });
+            $('pag-ultima').addEventListener('click', () => { pagina = 1e6; render(); });
+
+            // ----------------------------------------------------------
+            // Menú contextual (clic derecho o botón ⋮)
+            // ----------------------------------------------------------
+            const menu = $('ctx-menu');
+            function abrirMenu(c, x, y) {
+                ctxCliente = c;
+                menu.classList.remove('hidden');
+                const w = menu.offsetWidth, h = menu.offsetHeight;
+                menu.style.left = `${Math.max(8, Math.min(x, window.innerWidth - w - 8))}px`;
+                menu.style.top = `${Math.max(8, Math.min(y, window.innerHeight - h - 8))}px`;
+            }
+            const cerrarMenu = () => menu.classList.add('hidden');
+            const clienteDe = (el) => clientes.find((c) => c.id === el.closest('.cliente-card')?.dataset.id);
+
+            $('clientes-grid').addEventListener('contextmenu', (e) => {
+                const c = clienteDe(e.target);
+                if (!c) return;
                 e.preventDefault();
-                const data = Object.fromEntries(new FormData(form).entries());
-                const btn = document.getElementById('btn-guardar-cliente');
-                App.withLoading(btn, {
-                    loadingText: 'Guardando...',
-                    task: () => App.fakeRequest(700).then(() => {
-                        const grid = document.getElementById('clientes-grid');
-                        const razon = (data.razonSocial || '').toUpperCase();
-                        const comercial = (data.nombreComercial || data.razonSocial || '').toUpperCase();
-                        const card = document.createElement('div');
-                        card.className = 'cliente-card bg-dark-800 rounded-xl border border-dark-700 p-6 hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 shadow-lg group relative overflow-hidden fade-in';
-                        card.innerHTML = `
-                            <div class="absolute top-0 left-0 right-0 h-1.5 bg-dark-600 group-hover:bg-brand-yellow transition-colors"></div>
-                            <div class="mb-6 flex flex-col items-center text-center">
-                                <h3 class="font-bold text-white text-[15px] tracking-wide line-clamp-2 h-12 flex items-center justify-center uppercase">${razon}</h3>
-                            </div>
-                            <div class="space-y-4 text-sm">
-                                <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                                    <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Nombre Comercial</span>
-                                    <span class="text-gray-300 font-medium group-hover/row:text-white transition-colors uppercase">${comercial}</span>
-                                </div>
-                                <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                                    <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Representante</span>
-                                    <span class="text-gray-300 group-hover/row:text-white transition-colors uppercase">${(data.representante || '').toUpperCase()}</span>
-                                </div>
-                                <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                                    <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Teléfono</span>
-                                    <a href="tel:${data.telefono || ''}" class="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center gap-1">
-                                        <i class="ph ph-phone text-xs"></i> ${data.telefono || 'Sin dato'}
-                                    </a>
-                                </div>
-                                <div class="grid grid-cols-[120px_1fr] gap-3 items-start border-b border-dark-700/50 pb-3 group/row">
-                                    <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider mt-0.5">Correo</span>
-                                    <a href="mailto:${data.correo || ''}" class="text-brand-yellow hover:text-yellow-400 truncate transition-colors block">${data.correo || 'Sin dato'}</a>
-                                </div>
-                                <div class="grid grid-cols-[120px_1fr] gap-3 items-center group/row">
-                                    <span class="text-gray-500 font-medium text-[11px] uppercase tracking-wider">Estaciones</span>
-                                    <span class="bg-dark-900 border border-dark-700 px-3 py-1 rounded-md text-white font-bold w-max">${data.estaciones || '1'}</span>
-                                </div>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                        form.reset();
-                        App.closeModal('modal-nuevo-cliente');
-                        App.toast('Cliente agregado correctamente.', 'success');
-                    }),
+                abrirMenu(c, e.clientX, e.clientY);
+            });
+            $('clientes-grid').addEventListener('click', (e) => {
+                const c = clienteDe(e.target);
+                if (!c) return;
+                if (e.target.closest('[data-kebab]')) {
+                    e.stopPropagation();
+                    const r = e.target.closest('[data-kebab]').getBoundingClientRect();
+                    abrirMenu(c, r.left - 170, r.bottom + 4);
+                } else if (e.target.closest('[data-ver-est]')) {
+                    abrirEstaciones(c);
+                }
+            });
+            document.addEventListener('click', (e) => { if (!menu.contains(e.target)) cerrarMenu(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { cerrarMenu(); cerrarComentarios(); } });
+            document.querySelector('main').addEventListener('scroll', cerrarMenu);
+            menu.addEventListener('click', (e) => {
+                const b = e.target.closest('[data-accion]');
+                if (!b || !ctxCliente) return;
+                cerrarMenu();
+                const c = ctxCliente;
+                ({ estaciones: abrirEstaciones, editar: abrirCliente, comentarios: abrirComentarios, eliminar: quitarDeAsea })[b.dataset.accion](c);
+            });
+
+            // ----------------------------------------------------------
+            // Cliente: nuevo / editar / quitar de ASEA
+            // ----------------------------------------------------------
+            function abrirCliente(c = null) {
+                editCliente = c;
+                archivoIne = null;
+                $('cli-titulo').textContent = c ? 'Editar cliente:' : 'Nuevo cliente';
+                $('cli-nombre').value = c?.nombre_comercial || '';
+                $('cli-razon').value = c?.razon_social || '';
+                $('cli-rfc').value = c?.rfc || '';
+                $('cli-rep').value = c?.representante || '';
+                $('cli-tel').value = c?.telefono || '';
+                $('cli-correo').value = c?.correo || '';
+                $('cli-ine').value = '';
+                $('cli-ine-label').textContent = c?.ine_url ? 'INE guardada · clic para reemplazar' : 'Seleccionar archivo (PDF, JPG, PNG)';
+                $('cli-ine-ver').classList.toggle('hidden', !c?.ine_url);
+                $('cli-ine-ver').classList.toggle('inline-flex', Boolean(c?.ine_url));
+                $('cli-razon').classList.remove('err');
+                App.openModal('modal-cliente');
+            }
+            $('btn-nuevo-cliente').addEventListener('click', () => abrirCliente(null));
+            $('cli-ine').addEventListener('change', (e) => {
+                archivoIne = e.target.files[0] || null;
+                if (archivoIne) $('cli-ine-label').textContent = archivoIne.name;
+            });
+            $('cli-ine-ver').addEventListener('click', async () => {
+                try { window.open(await DB.urlArchivo(editCliente.ine_url), '_blank'); } catch (err) { toast(err.message, 'error'); }
+            });
+
+            $('cli-guardar').addEventListener('click', () => {
+                const razon = up('cli-razon');
+                $('cli-razon').classList.toggle('err', !razon);
+                if (!razon) { toast('La razón social es obligatoria.', 'error'); return; }
+                App.withLoading($('cli-guardar'), {
+                    task: async () => {
+                        const principal = { nombre: up('cli-rep'), telefono: txt('cli-tel'), correo: (txt('cli-correo') || '').toLowerCase() || null, principal: true };
+                        const otros = (editCliente?.contactos || []).filter((k) => !k.principal);
+                        const fila = {
+                            nombre_comercial: up('cli-nombre'), razon_social: razon, rfc: up('cli-rfc'),
+                            representante: principal.nombre, telefono: principal.telefono, correo: principal.correo,
+                            contactos: (principal.nombre || principal.telefono || principal.correo ? [principal] : []).concat(otros),
+                            actualizado_en: ahora(), actualizado_por: DB.perfil?.correo || 'SUDI',
+                        };
+                        try {
+                            if (archivoIne) fila.ine_url = await DB.subirArchivo('clientes/ine', archivoIne);
+                            if (editCliente) {
+                                await DB.actualizar('clientes_catalogo', editCliente.id, fila);
+                                DB.comentarios.crear('clientes_catalogo', editCliente.id, MARCA_EDICION).catch(() => {});
+                                toast('Cliente actualizado.');
+                            } else {
+                                // ¿Ya existe en el catálogo compartido (p. ej. solo SCFI)? → se le agrega ASEA
+                                const { data: existe } = await DB.sb.from('clientes_catalogo').select('id, normas, empresas').ilike('razon_social', razon).limit(1);
+                                if (existe?.length) {
+                                    const x = existe[0];
+                                    await DB.actualizar('clientes_catalogo', x.id, {
+                                        ...fila,
+                                        normas: [...new Set([...(x.normas || []), 'ASEA'])],
+                                        empresas: [...new Set([...(x.empresas || []), 'JOMAR'])],
+                                        activo: true,
+                                    });
+                                    toast('El cliente ya existía en el catálogo; se agregó a ASEA.', 'success', 6000);
+                                } else {
+                                    await DB.crear('clientes_catalogo', { ...fila, normas: ['ASEA'], empresas: ['JOMAR'], activo: true, origen: 'sudi' });
+                                    toast('Cliente creado. Usa clic derecho → Estaciones para registrar sus estaciones.', 'success', 6000);
+                                }
+                            }
+                            App.closeModal('modal-cliente');
+                            await cargar();
+                        } catch (err) {
+                            toast(/repetido|duplicate/i.test(err.message) ? 'Ya existe un cliente con esa razón social o RFC.' : err.message, 'error');
+                        }
+                    },
                 });
             });
+
+            // "Eliminar" en ASEA solo quita la norma ASEA: el cliente sigue en el catálogo compartido (SCFI / Portal)
+            function quitarDeAsea(c) {
+                App.confirmAction({
+                    title: '¿Eliminar cliente de ASEA?',
+                    message: `${c.razon_social} dejará de aparecer en ASEA. Sus estaciones y su registro en SCFI/Portal no se borran.`,
+                    confirmLabel: 'Eliminar',
+                    onConfirm: async () => {
+                        try {
+                            await DB.actualizar('clientes_catalogo', c.id, { normas: (c.normas || []).filter((n) => n !== 'ASEA'), actualizado_en: ahora(), actualizado_por: DB.perfil?.correo || 'SUDI' });
+                            toast('Cliente eliminado de ASEA.');
+                            await cargar();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            }
+
+            // ----------------------------------------------------------
+            // Estaciones del cliente
+            // ----------------------------------------------------------
+            const datosAsea = (e) => asea[String(e.id)] || {};
+            const repEst = (e) => datosAsea(e).representante || e.encargado || '';
+
+            function abrirEstaciones(c) {
+                clienteAbierto = c;
+                $('est-titulo').textContent = c.razon_social || c.nombre_comercial;
+                $('est-campo').value = 'todo';
+                $('est-texto').value = '';
+                pintarEstaciones();
+                App.openModal('modal-estaciones');
+            }
+
+            function pintarEstaciones() {
+                const campo = $('est-campo').value;
+                const term = norm($('est-texto').value.trim());
+                const valor = (e) => ({
+                    numero_estacion: e.numero_estacion, permiso: e.permiso, tipo: datosAsea(e).tipo, representante: repEst(e),
+                    todo: [e.numero_estacion, e.permiso, e.nombre_comercial, datosAsea(e).tipo, repEst(e)].join(' '),
+                }[campo]);
+                const lista = (estPorCliente[clienteAbierto.id] || []).filter((e) => !term || norm(valor(e)).includes(term))
+                    .sort((a, b) => String(a.numero_estacion || a.permiso || '').localeCompare(String(b.numero_estacion || b.permiso || ''), 'es', { numeric: true }));
+                const celda = 'py-3 px-3 bg-dark-900/60 border-y border-dark-700';
+                const contador = (n, attr) => `<button ${attr} class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-dark-700 text-blue-400 font-semibold">${n ? `<span class="text-white">${n}</span><i class="ph ph-pencil-simple"></i>` : '<i class="ph ph-plus text-lg"></i>'}</button>`;
+                $('est-tbody').innerHTML = lista.length ? lista.map((e) => {
+                    const a = datosAsea(e);
+                    return `<tr data-est="${esc(e.id)}" class="no-clickable">
+                        <td class="${celda} rounded-l-lg text-gray-300">${esc(e.numero_estacion || '—')}<div class="text-[11px] text-gray-500 uppercase truncate max-w-[180px]">${esc(e.nombre_comercial || e.nombre || '')}</div></td>
+                        <td class="${celda} text-gray-300">${esc(e.permiso || '—')}</td>
+                        <td class="${celda} text-gray-300">${esc(a.tipo || '—')}</td>
+                        <td class="${celda} text-gray-300 uppercase">${esc(repEst(e) || '—')}</td>
+                        <td class="${celda} text-center">${a.norma_en_vigor ? '<span class="text-emerald-400 font-semibold">Sí</span>' : '<span class="text-gray-400">No</span>'}</td>
+                        <td class="${celda} text-center">${contador(e.numero_dispensarios, 'data-disp')}</td>
+                        <td class="${celda} text-center">${contador(e.numero_tanques, 'data-tanques')}</td>
+                        <td class="${celda} rounded-r-lg text-center whitespace-nowrap">
+                            ${editor ? `<button data-mover title="Mover a otro cliente" class="p-2 rounded-lg hover:bg-dark-700 text-teal-400"><i class="ph ph-arrows-left-right text-xl"></i></button>
+                            <button data-editar title="Editar" class="p-2 rounded-lg hover:bg-dark-700 text-blue-400"><i class="ph ph-note-pencil text-xl"></i></button>
+                            <button data-quitar title="Quitar del cliente" class="p-2 rounded-lg hover:bg-dark-700 text-red-400"><i class="ph ph-x text-xl"></i></button>` : '<span class="text-gray-600">—</span>'}
+                        </td></tr>`;
+                }).join('') : `<tr class="no-clickable"><td colspan="8" class="py-10 text-center text-gray-500">${term ? 'Sin coincidencias.' : 'Este cliente aún no tiene estaciones.'}</td></tr>`;
+            }
+
+            $('est-buscar').addEventListener('click', pintarEstaciones);
+            $('est-texto').addEventListener('keydown', (e) => { if (e.key === 'Enter') pintarEstaciones(); });
+            $('est-limpiar').addEventListener('click', async () => { $('est-texto').value = ''; $('est-campo').value = 'todo'; await cargar(); pintarEstaciones(); });
+            $('est-nueva').addEventListener('click', () => abrirEstacion(null));
+
+            $('est-tbody').addEventListener('click', (e) => {
+                const tr = e.target.closest('tr[data-est]');
+                if (!tr) return;
+                const est = (estPorCliente[clienteAbierto.id] || []).find((x) => String(x.id) === tr.dataset.est);
+                if (!est) return;
+                if (e.target.closest('[data-disp]')) window.location.href = `${CATALOGO}?cliente=${encodeURIComponent(clienteAbierto.id)}&tab=estaciones`;
+                else if (e.target.closest('[data-tanques]')) abrirTanques(est);
+                else if (e.target.closest('[data-editar]')) abrirEstacion(est);
+                else if (e.target.closest('[data-mover]')) abrirMover(est);
+                else if (e.target.closest('[data-quitar]')) quitarEstacion(est);
+            });
+
+            function abrirEstacion(est) {
+                editEst = est;
+                const a = est ? datosAsea(est) : {};
+                $('estf-titulo').textContent = est ? `Editar estación · ${est.permiso || ''}` : 'Nueva estación';
+                $('estf-nombre').value = est?.nombre_comercial || est?.nombre || '';
+                $('estf-permiso').value = est?.permiso || '';
+                $('estf-numero').value = est?.numero_estacion || '';
+                $('estf-tipo').value = a.tipo || '';
+                $('estf-rep').value = a.representante || est?.encargado || '';
+                $('estf-norma').checked = Boolean(a.norma_en_vigor);
+                $('estf-direccion').value = est?.direccion || '';
+                $('estf-municipio').value = est?.municipio || '';
+                $('estf-estado').value = est?.estado || '';
+                ['estf-nombre', 'estf-permiso'].forEach((id) => $(id).classList.remove('err'));
+                App.openModal('modal-estacion');
+            }
+
+            async function guardarAsea(estacionId) {
+                const { error } = await DB.sb.from('sudi_asea_estaciones').upsert({
+                    estacion_id: estacionId, tipo: txt('estf-tipo'), norma_en_vigor: $('estf-norma').checked,
+                    representante: up('estf-rep'), actualizado_en: ahora(), actualizado_por: DB.perfil?.correo || 'SUDI',
+                });
+                if (error) throw new Error(DB.mensajeError(error));
+            }
+
+            $('estf-guardar').addEventListener('click', () => {
+                let falta = false;
+                ['estf-nombre', 'estf-permiso'].forEach((id) => { const v = !$(id).value.trim(); $(id).classList.toggle('err', v); if (v) falta = true; });
+                if (falta) { toast('Nombre comercial y PL son obligatorios.', 'error'); return; }
+                const datos = {
+                    nombre_comercial: up('estf-nombre'), permiso: up('estf-permiso'), numero_estacion: up('estf-numero'),
+                    direccion: txt('estf-direccion'), municipio: txt('estf-municipio'), estado: txt('estf-estado'), actualizado_en: ahora(),
+                };
+                App.withLoading($('estf-guardar'), {
+                    task: async () => {
+                        try {
+                            if (editEst) {
+                                await DB.actualizar('estaciones_servicio', editEst.id, datos);
+                                await guardarAsea(editEst.id);
+                                toast('Estación actualizada.');
+                                App.closeModal('modal-estacion');
+                                await cargar();
+                                return;
+                            }
+                            const { data: existe, error } = await DB.sb.from('estaciones_servicio').select('id, cliente_id').eq('permiso', datos.permiso).limit(1);
+                            if (error) throw new Error(DB.mensajeError(error));
+                            if (existe?.length) {
+                                const x = existe[0];
+                                if (x.cliente_id === clienteAbierto.id) { toast('Esa estación ya pertenece a este cliente.', 'warning'); return; }
+                                const dueño = clientes.find((c) => c.id === x.cliente_id);
+                                App.confirmAction({
+                                    title: 'El PL ya existe en el catálogo',
+                                    message: x.cliente_id ? `Está ligado a ${dueño?.razon_social || 'otro cliente'}. ¿Moverla a ${clienteAbierto.razon_social}?` : `¿Vincularla a ${clienteAbierto.razon_social}?`,
+                                    confirmLabel: 'Vincular', danger: false,
+                                    onConfirm: async () => {
+                                        try {
+                                            await DB.actualizar('estaciones_servicio', x.id, { cliente_id: clienteAbierto.id, razon_social: clienteAbierto.razon_social, actualizado_en: ahora() });
+                                            await guardarAsea(x.id);
+                                            App.closeModal('modal-estacion');
+                                            toast('Estación vinculada al cliente.');
+                                            await cargar();
+                                        } catch (err) { toast(err.message, 'error'); }
+                                    },
+                                });
+                                return;
+                            }
+                            const id = nuevoId();
+                            await DB.crear('estaciones_servicio', {
+                                ...datos, id, nombre: datos.nombre_comercial, cliente_id: clienteAbierto.id, razon_social: clienteAbierto.razon_social,
+                                activo: true, origen: 'sudi', fuente_datos: 'SUDI', creado_en: ahora(),
+                            });
+                            await guardarAsea(id);
+                            toast('Estación registrada.');
+                            App.closeModal('modal-estacion');
+                            await cargar();
+                        } catch (err) { toast(`No se pudo guardar: ${err.message}`, 'error'); }
+                    },
+                });
+            });
+
+            // La estación no se borra del catálogo compartido: solo se desliga del cliente
+            function quitarEstacion(est) {
+                App.confirmAction({
+                    title: '¿Quitar estación del cliente?',
+                    message: `${est.permiso || est.nombre_comercial} quedará sin cliente (no se borra del catálogo de estaciones).`,
+                    confirmLabel: 'Quitar',
+                    onConfirm: async () => {
+                        try {
+                            await DB.actualizar('estaciones_servicio', est.id, { cliente_id: null, actualizado_en: ahora() });
+                            toast('Estación quitada del cliente.');
+                            await cargar();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            }
+
+            // ----------------------------------------------------------
+            // Mover estación a otro cliente
+            // ----------------------------------------------------------
+            function pintarMover() {
+                const term = norm($('mv-buscar').value.trim());
+                $('mv-cliente').innerHTML = clientes.filter((c) => c.id !== clienteAbierto.id && (!term || norm(`${c.razon_social} ${c.nombre_comercial} ${c.rfc}`).includes(term)))
+                    .map((c) => `<option value="${esc(c.id)}" class="py-1.5 px-2">${esc(c.razon_social)}</option>`).join('');
+            }
+            function abrirMover(est) {
+                estMover = est;
+                $('mv-estacion').textContent = `${est.permiso || ''} · ${est.nombre_comercial || est.nombre || ''}`;
+                $('mv-buscar').value = '';
+                pintarMover();
+                App.openModal('modal-mover');
+            }
+            $('mv-buscar').addEventListener('input', pintarMover);
+            $('mv-guardar').addEventListener('click', () => {
+                const destino = clientes.find((c) => c.id === $('mv-cliente').value);
+                if (!destino) { toast('Selecciona el cliente destino.', 'error'); return; }
+                App.withLoading($('mv-guardar'), {
+                    loadingText: 'Moviendo...',
+                    task: async () => {
+                        try {
+                            await DB.actualizar('estaciones_servicio', estMover.id, { cliente_id: destino.id, razon_social: destino.razon_social, actualizado_en: ahora() });
+                            App.closeModal('modal-mover');
+                            toast(`Estación movida a ${destino.razon_social}.`);
+                            await cargar();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            });
+
+            // ----------------------------------------------------------
+            // Tanques
+            // ----------------------------------------------------------
+            function filaTanque(t = {}) {
+                const ro = editor ? '' : 'disabled';
+                const d = document.createElement('div');
+                d.className = 'tq-fila grid grid-cols-2 md:grid-cols-[50px_1.2fr_1fr_1fr_1fr_1.5fr_40px] gap-2 items-center bg-dark-900/50 border border-dark-700 rounded-xl p-2';
+                d.innerHTML = `
+                    <span class="tq-num text-white font-bold text-center"></span>
+                    <input class="inp !py-2 tq-producto" list="lst-productos" placeholder="Producto" value="${esc(t.producto || '')}" ${ro}>
+                    <input class="inp !py-2 tq-capacidad" type="number" min="0" step="any" placeholder="Litros" value="${esc(t.capacidad_litros ?? '')}" ${ro}>
+                    <select class="inp !py-2 tq-pared" ${ro}><option value="">Pared</option>${['Sencilla', 'Doble'].map((p) => `<option ${t.tipo_pared === p ? 'selected' : ''}>${p}</option>`).join('')}</select>
+                    <input class="inp !py-2 tq-material" placeholder="Material" value="${esc(t.material || '')}" ${ro}>
+                    <input class="inp !py-2 tq-obs" placeholder="Observaciones" value="${esc(t.observaciones || '')}" ${ro}>
+                    ${editor ? '<button class="tq-quitar text-red-400 hover:text-red-300"><i class="ph ph-trash text-lg"></i></button>' : '<span></span>'}`;
+                return d;
+            }
+            const numerarTanques = () => [...document.querySelectorAll('#tq-lista .tq-fila')].forEach((f, i) => { f.querySelector('.tq-num').textContent = i + 1; });
+
+            async function abrirTanques(est) {
+                estTanques = est;
+                $('tq-titulo').textContent = est.permiso || est.nombre_comercial || '';
+                $('tq-lista').innerHTML = '<p class="text-gray-500 text-sm"><i class="ph ph-spinner animate-spin"></i> Cargando...</p>';
+                App.openModal('modal-tanques');
+                try {
+                    const lista = await DB.listar('sudi_estacion_tanques', { filtros: { estacion_id: est.id }, orden: 'numero' });
+                    $('tq-lista').innerHTML = '';
+                    lista.forEach((t) => $('tq-lista').appendChild(filaTanque(t)));
+                    if (!lista.length && editor) $('tq-lista').appendChild(filaTanque());
+                    if (!lista.length && !editor) $('tq-lista').innerHTML = '<p class="text-gray-500 text-sm">Sin tanques registrados.</p>';
+                    numerarTanques();
+                } catch (err) {
+                    $('tq-lista').innerHTML = `<p class="text-red-400 text-sm">${esc(err.message)}</p>`;
+                }
+            }
+            $('tq-agregar').addEventListener('click', () => { $('tq-lista').appendChild(filaTanque()); numerarTanques(); });
+            $('tq-lista').addEventListener('click', (e) => { if (e.target.closest('.tq-quitar')) { e.target.closest('.tq-fila').remove(); numerarTanques(); } });
+            $('tq-guardar').addEventListener('click', () => {
+                const filas = [...document.querySelectorAll('#tq-lista .tq-fila')].map((f, i) => {
+                    const cap = f.querySelector('.tq-capacidad').value.trim();
+                    return {
+                        estacion_id: estTanques.id, numero: i + 1,
+                        producto: f.querySelector('.tq-producto').value.trim() || null,
+                        capacidad_litros: cap === '' ? null : Number(cap),
+                        tipo_pared: f.querySelector('.tq-pared').value || null,
+                        material: f.querySelector('.tq-material').value.trim() || null,
+                        observaciones: f.querySelector('.tq-obs').value.trim() || null,
+                    };
+                }).filter((t) => t.producto || t.capacidad_litros != null || t.tipo_pared || t.material || t.observaciones)
+                    .map((t, i) => ({ ...t, numero: i + 1 }));
+                App.withLoading($('tq-guardar'), {
+                    task: async () => {
+                        try {
+                            const { error } = await DB.sb.from('sudi_estacion_tanques').delete().eq('estacion_id', estTanques.id);
+                            if (error) throw new Error(DB.mensajeError(error));
+                            if (filas.length) await DB.crear('sudi_estacion_tanques', filas);
+                            App.closeModal('modal-tanques');
+                            toast(`${filas.length} tanque(s) guardado(s).`);
+                            await cargar();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            });
+
+            // ----------------------------------------------------------
+            // Comentarios (tabla sudi_comentarios, registro = cliente)
+            // ----------------------------------------------------------
+            const fechaLarga = (d) => d.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            const hora = (d) => d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+            async function pintarComentarios() {
+                const cont = $('com-lista');
+                try {
+                    const lista = await DB.comentarios.listar('clientes_catalogo', comCliente.id);
+                    if (!lista.length) { cont.innerHTML = '<p class="text-sm text-gray-500 text-center py-6">Sin comentarios.</p>'; return; }
+                    let dia = '';
+                    cont.innerHTML = lista.map((k) => {
+                        const d = new Date(k.created_at);
+                        const f = fechaLarga(d);
+                        const sep = f !== dia ? `<p class="text-center text-xs text-gray-500 border-b border-dark-700 pb-1 pt-2 capitalize">${esc(f)}</p>` : '';
+                        dia = f;
+                        const autor = (k.autor?.nombre_completo || 'SUDI').split(' ')[0].toUpperCase();
+                        const cuerpo = k.texto === MARCA_EDICION
+                            ? `<p class="text-sm text-gray-200"><b>${esc(autor)}</b> <span class="text-red-400 font-semibold">editó</span> este registro</p>`
+                            : `<p class="text-xs text-gray-400 font-semibold mb-1">${esc(autor)}</p><p class="text-sm text-gray-200 whitespace-pre-wrap break-words">${esc(k.texto)}</p>`;
+                        const borrar = (k.autor_id === DB.perfil?.id || DB.esAdmin()) && k.texto !== MARCA_EDICION
+                            ? `<button data-borrar="${esc(k.id)}" class="text-gray-500 hover:text-red-400" title="Eliminar"><i class="ph ph-trash"></i></button>` : '';
+                        return `${sep}<div class="bg-dark-900/70 border border-dark-700 rounded-xl p-3">
+                            <div class="flex justify-between gap-2"><div class="min-w-0">${cuerpo}</div>${borrar}</div>
+                            <p class="text-[10px] text-gray-500 mt-1">${hora(d)}</p></div>`;
+                    }).join('');
+                } catch (err) {
+                    cont.innerHTML = `<p class="text-sm text-red-400">${esc(err.message)}</p>`;
+                }
+            }
+            function abrirComentarios(c) {
+                comCliente = c;
+                $('com-cliente').textContent = c.razon_social || c.nombre_comercial;
+                $('com-texto').value = '';
+                $('com-lista').innerHTML = '<p class="text-gray-500 text-sm"><i class="ph ph-spinner animate-spin"></i> Cargando...</p>';
+                $('com-panel').classList.remove('hidden');
+                pintarComentarios();
+            }
+            function cerrarComentarios() { $('com-panel').classList.add('hidden'); comCliente = null; }
+            $('com-cerrar').addEventListener('click', cerrarComentarios);
+            $('com-backdrop').addEventListener('click', cerrarComentarios);
+            $('com-registrar').addEventListener('click', () => {
+                const texto = $('com-texto').value.trim();
+                if (!texto) { toast('Escribe un comentario.', 'error'); return; }
+                App.withLoading($('com-registrar'), {
+                    loadingText: 'Registrando...',
+                    task: async () => {
+                        try {
+                            await DB.comentarios.crear('clientes_catalogo', comCliente.id, texto);
+                            $('com-texto').value = '';
+                            await pintarComentarios();
+                        } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            });
+            $('com-lista').addEventListener('click', (e) => {
+                const b = e.target.closest('[data-borrar]');
+                if (!b) return;
+                App.confirmAction({
+                    title: '¿Eliminar comentario?', confirmLabel: 'Eliminar',
+                    onConfirm: async () => {
+                        try { await DB.comentarios.eliminar(b.dataset.borrar); await pintarComentarios(); } catch (err) { toast(err.message, 'error'); }
+                    },
+                });
+            });
+
+            // ----------------------------------------------------------
+            // Arranque
+            // ----------------------------------------------------------
+            (async () => {
+                try {
+                    DB = await App.db();
+                } catch (err) {
+                    $('clientes-grid').innerHTML = `<p class="col-span-full text-center text-red-400 text-sm py-10">${esc(err.message)}</p>`;
+                    return;
+                }
+                editor = DB.puedeEditar();
+                if (!editor) {
+                    $('btn-nuevo-cliente').classList.add('hidden');
+                    document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                }
+                await cargar();
+
+                let t = null;
+                const recargar = () => { clearTimeout(t); t = setTimeout(cargar, 600); };
+                DB.sb.channel('sudi-asea-clientes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'clientes_catalogo' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'estaciones_servicio' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_asea_estaciones' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_comentarios' }, () => { if (comCliente) pintarComentarios(); })
+                    .subscribe();
+            })();
         });
     </script>
-
-</body></html>
+</body>
+</html>

@@ -214,150 +214,31 @@
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
-
-        <!-- Header / Controles Superiores -->
         <header class="py-4 px-4 sm:px-8 border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-20 flex flex-col gap-4">
-
-            <!-- Fila Superior: Título y Filtros -->
             <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-
-                <!-- TÍTULO -->
                 <div class="flex items-center gap-3 shrink-0">
                     <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center">
                         <i class="ph ph-list text-lg"></i>
                     </button>
-
-                    <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5 shrink-0">
-                        <i class="ph ph-chart-line-up text-brand-yellow text-3xl"></i>
-                        <span class="whitespace-nowrap">REPORTE COMISIONES</span>
-                    </h1>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+                            <i class="ph ph-hand-coins text-brand-yellow text-3xl"></i>
+                            <span class="whitespace-nowrap">REPORTE DE COMISIONES</span>
+                        </h1>
+                        <p class="text-xs text-gray-500 mt-1">Inspecciones terminadas por verificador en el mes</p>
+                    </div>
                 </div>
-
-                <!-- FILTROS (Verificador, Mes, Año) Y ACCIONES -->
-                <div class="flex flex-wrap items-center xl:justify-end gap-4">
-
-                    <!-- FILTRO VERIFICADOR -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Verificador</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-48">
-                            <option value="">Selecciona</option>
-                            <option value="1">Carlos Ramírez</option>
-                            <option value="2">Miguel Ángel Torres</option>
-                            <option value="3">Alejandro Garza</option>
-                        </select>
-                    </div>
-
-                    <!-- FILTRO MES -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Mes</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-40">
-                            <option value="1">Enero</option>
-                            <option value="2">Febrero</option>
-                            <option value="3">Marzo</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Mayo</option>
-                            <option value="6">Junio</option>
-                            <option value="7">Julio</option>
-                            <option value="8" selected="">Agosto</option>
-                            <option value="9">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
-                        </select>
-                    </div>
-
-                    <!-- FILTRO AÑO -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Año</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-32">
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026" selected="">2026</option>
-                            <option value="2027">2027</option>
-                        </select>
-                    </div>
-
-                    <!-- Botones de Acción (Buscar y Exportar CSV) -->
-                    <div class="flex items-center gap-2 pt-5">
-                        <button class="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-lg transition-colors" title="Buscar / Filtrar">
-                            <i class="ph ph-magnifying-glass text-lg font-bold"></i>
-                        </button>
-                        <button class="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-lg transition-colors" title="Exportar CSV">
-                            <i class="ph ph-file-csv text-xl font-bold"></i>
-                        </button>
-                    </div>
-
-                </div>
+                <div id="rep-filtros" class="flex flex-wrap items-center xl:justify-end gap-3"></div>
             </div>
-
-            <!-- Fila Inferior: Botones de Selección Masiva -->
-            <div class="flex items-center justify-end gap-3 pt-2">
-                <button onclick="toggleAllCheckboxes(true)" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0E2238] hover:bg-[#122c48] text-white text-xs font-semibold shadow-md transition-all border border-blue-900/50">
-                    <i class="ph ph-check text-sm font-bold"></i> Marcar todo
-                </button>
-                <button onclick="toggleAllCheckboxes(false)" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0E2238] hover:bg-[#122c48] text-white text-xs font-semibold shadow-md transition-all border border-blue-900/50">
-                    <i class="ph ph-x text-sm font-bold"></i> Des-marcar todo
-                </button>
-            </div>
-
         </header>
 
-        <!-- Contenido / Área Central vacía -->
-        <div class="p-6 sm:p-8 max-w-7xl mx-auto w-full space-y-6 fade-in flex-1 flex flex-col justify-between">
-
-            <!-- Contenedor central con mensaje de estado vacío -->
-            <div class="flex-1 flex flex-col items-center justify-center py-16">
-                <p class="text-gray-300 font-medium text-base md:text-lg text-center">No hay estaciones con
-                    verificaciones periódicas pendientes</p>
-            </div>
-
-            <!-- Paginación en 0 -->
-            <div class="py-3 px-6 bg-dark-800 border border-dark-700 rounded-xl flex items-center justify-end gap-2">
-                <button class="w-8 h-8 rounded-lg bg-dark-900 border border-dark-700 text-gray-500 flex items-center justify-center cursor-not-allowed" disabled="">
-                    <i class="ph ph-caret-left"></i>
-                </button>
-                <button class="w-8 h-8 rounded-lg bg-dark-900 border border-dark-700 text-gray-500 flex items-center justify-center cursor-not-allowed" disabled="">
-                    <i class="ph ph-caret-right"></i>
-                </button>
-                <span class="text-xs text-gray-300 font-medium px-2">Pág. 0 de 0</span>
-            </div>
-
+        <!-- Contenido conectado a Supabase (JS/reportes-scfi-ops.js) -->
+        <div class="p-4 sm:p-8">
+            <div id="rep-app"></div>
         </div>
-
     </main>
 
-    <!-- JavaScript para interactividad -->
-    <script>
-        // Toggle Sidebar en móvil
-        const sidebar = document.querySelector('aside');
-        const overlay = document.getElementById('sidebar-overlay');
-        const toggleBtn = document.getElementById('INLINE-DISABLED-sidebar-toggle');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
-        if (overlay) overlay.addEventListener('click', toggleSidebar);
-
-        // Dropdowns del Menú Lateral
-        // Dropdowns gestionados por JS/app.js
-
-        function toggleAllCheckboxes(checked) {
-            // Placeholder para función masiva cuando haya datos
-        }
-    </script>
-    <script src="../../JS/app.js?v=639250641835541270" defer=""></script>
-
-
-</body></html>
+    <script src="../../JS/app.js?v=639250641835541270" defer></script>
+    <script src="../../JS/reportes-scfi-ops.js" data-pantalla="comisiones" defer></script>
+</body>
+</html>

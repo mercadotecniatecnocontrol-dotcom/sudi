@@ -291,543 +291,239 @@
     </aside>
 
     <!-- Contenido Principal -->
-    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
-
-        <!-- Header -->
-        <header
-            class="px-4 sm:px-8 pt-8 pb-6 flex items-start justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 gap-4">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" type="button"
-                    class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
+                <button id="sidebar-toggle" type="button" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
                 <div class="min-w-0">
-                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Dashboard operativo</h1>
-                    <p class="text-sm text-gray-400 mt-1 truncate">Resumen del mes actual y estatus de insumos</p>
+                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Dashboard SCFI</h1>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Inspecciones del periodo y estatus de insumos</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative hidden md:block">
-                    <button type="button" data-dropdown-toggle="periodo-menu"
-                        class="flex bg-dark-800 rounded-lg p-1 border border-dark-700 items-center">
-                        <span
-                            class="px-4 py-1.5 text-sm rounded-md bg-dark-700 text-white shadow-sm flex items-center gap-1">Agosto
-                            <i class="ph ph-caret-down transition-transform duration-200"></i></span>
-                        <span class="px-4 py-1.5 text-sm rounded-md text-gray-400 flex items-center gap-1">2026</span>
-                    </button>
-                    <div id="periodo-menu" data-dropdown=""
-                        class="hidden absolute right-0 mt-2 w-48 bg-dark-800 border border-dark-700 rounded-xl shadow-2xl p-2 z-20">
-                        <p class="text-[10px] uppercase tracking-wider text-gray-500 font-semibold px-2 pt-1 pb-2">Mes
-                        </p>
-                        <button type="button"
-                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-white bg-dark-700">Agosto
-                            2026</button>
-                        <button type="button"
-                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Julio
-                            2026</button>
-                        <button type="button"
-                            class="w-full text-left px-3 py-2 text-sm rounded-lg text-gray-400 hover:bg-dark-700 hover:text-white transition-colors">Junio
-                            2026</button>
-                    </div>
-                </div>
-                <button id="btn-ver-periodo" onclick="window.App.toast('Mostrando periodo actual', 'info')"
-                    type="button"
-                    class="hidden md:flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-dark-700 rounded-lg hover:bg-dark-800 transition-colors">
-                    <i class="ph ph-calendar-blank"></i> Ver periodo
-                </button>
-                <button id="btn-actualizar"
-                    onclick="window.App.withLoading(this, { loadingText: 'Actualizando...', task: () => window.App.fakeRequest(800).then(() => window.App.toast('Dashboard actualizado correctamente', 'success')) })"
-                    type="button"
-                    class="flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
-                    <i class="ph ph-arrows-clockwise"></i> Actualizar
-                </button>
+            <div class="flex items-center gap-2 shrink-0">
+                <select id="p-mes" class="fil w-36"></select>
+                <select id="p-anio" class="fil w-24"></select>
+                <button id="btn-actualizar" title="Actualizar" class="w-10 h-10 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 hover:text-white hover:border-brand-yellow flex items-center justify-center"><i class="ph ph-arrows-clockwise text-lg"></i></button>
             </div>
         </header>
 
-        <!-- Contenedor del Dashboard -->
-        <div class="p-8 space-y-10">
+        <div class="p-4 sm:p-8 space-y-8">
+            <p id="aviso" class="hidden text-sm text-red-400"></p>
 
-            <!-- SECCIÓN 1: INDICADORES DEL MES -->
-            <section class="anim-section">
-                <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-trend-up text-brand-yellow text-xl"></i>
-                    <h2 class="text-lg font-semibold tracking-wide">Indicadores del mes (agosto 2026)</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                    <!-- Tarjeta 1 -->
-                    <div
-                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500"></div>
-                        <div class="flex justify-between items-start mb-2 pl-2">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Inspecciones realizadas</h3>
-                                <p class="text-xs text-gray-500 mt-1">Total del mes actual (SCFI).</p>
-                            </div>
-                            <div
-                                class="p-2 bg-dark-700 rounded-lg text-emerald-400 group-hover:bg-emerald-500/10 transition-colors">
-                                <i class="ph ph-clipboard-text text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4 mb-6 pl-2 flex items-baseline gap-2">
-                            <span class="text-5xl font-extrabold text-white tracking-tight">150</span>
-                            <span class="text-sm text-gray-400 font-medium">Total</span>
-                        </div>
-                        <div class="flex gap-3 pl-2 mt-auto">
-                            <div class="bg-dark-900 rounded-lg py-3 px-4 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">150</span>
-                                <span
-                                    class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">SCFI</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-4 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">150</span>
-                                <span
-                                    class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Total</span>
-                            </div>
-                        </div>
+            <section class="fade-in">
+                <h2 class="sec-tit">Indicadores <span class="periodo"></span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="card">
+                        <div class="flex items-start justify-between"><div><h3 class="card-tit">Inspecciones terminadas</h3><p class="card-sub">Por fecha de inspección</p></div><i class="ph ph-clipboard-text text-2xl text-emerald-400"></i></div>
+                        <p class="mt-4"><span id="k-term" class="text-4xl font-extrabold text-white">0</span> <span class="text-sm text-gray-400">de <b id="k-total" class="text-gray-300">0</b> programadas</span></p>
                     </div>
-
-                    <!-- Tarjeta 2 -->
-                    <div
-                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500"></div>
-                        <div class="flex justify-between items-start mb-2 pl-2">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Hologramas</h3>
-                                <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
-                            </div>
-                            <div
-                                class="p-2 bg-dark-700 rounded-lg text-blue-400 group-hover:bg-blue-500/10 transition-colors">
-                                <i class="ph ph-image text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 pl-2 mt-auto pt-8">
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">480</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">470</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">8478</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <div class="flex items-start justify-between"><div><h3 class="card-tit">Mangueras verificadas</h3><p class="card-sub">En inspecciones terminadas</p></div><i class="ph ph-gas-pump text-2xl text-brand-yellow"></i></div>
+                        <p class="mt-4"><span id="k-mang" class="text-4xl font-extrabold text-white">0</span> <span class="text-sm text-gray-400">mangueras</span></p>
                     </div>
-
-                    <!-- Tarjeta 3 -->
-                    <div
-                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-yellow"></div>
-                        <div class="flex justify-between items-start mb-2 pl-2">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Precintos</h3>
-                                <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
-                            </div>
-                            <div
-                                class="p-2 bg-dark-700 rounded-lg text-brand-yellow group-hover:bg-brand-yellow/10 transition-colors">
-                                <i class="ph ph-tag text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 pl-2 mt-auto pt-8">
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">1044</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">435</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">3576</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <div class="flex items-start justify-between"><div><h3 class="card-tit">Cerradas</h3><p class="card-sub">Con dictamen cerrado</p></div><i class="ph ph-lock-key text-2xl text-sky-400"></i></div>
+                        <p class="mt-4"><span id="k-cerr" class="text-4xl font-extrabold text-white">0</span> <span class="text-sm text-gray-400">· <b id="k-sincerrar" class="text-amber-400">0</b> terminadas sin cerrar</span></p>
                     </div>
-
-                    <!-- Tarjeta 4 -->
-                    <div
-                        class="anim-card bg-dark-800 rounded-xl border border-dark-700 relative overflow-hidden flex flex-col p-6 shadow-lg hover:-translate-y-1 transition-transform duration-300 group">
-                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500"></div>
-                        <div class="flex justify-between items-start mb-2 pl-2">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Flexogramas</h3>
-                                <p class="text-xs text-gray-500 mt-1">Disponibles, asignados y usados.</p>
-                            </div>
-                            <div
-                                class="p-2 bg-dark-700 rounded-lg text-purple-400 group-hover:bg-purple-500/10 transition-colors">
-                                <i class="ph ph-barcode text-xl"></i>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 pl-2 mt-auto pt-8">
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">715</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Disponibles</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">442</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Asignados</span>
-                            </div>
-                            <div class="bg-dark-900 rounded-lg py-3 px-2 flex-1 text-center border border-dark-700">
-                                <span class="block text-white font-bold text-lg">8469</span>
-                                <span
-                                    class="text-[9px] text-gray-500 uppercase tracking-wider font-semibold">Usados</span>
-                            </div>
-                        </div>
+                    <div class="card">
+                        <div class="flex items-start justify-between"><div><h3 class="card-tit">Horario en tiempo</h3><p class="card-sub">Calificación BIEN vs. tiempo de norma</p></div><i class="ph ph-timer text-2xl text-purple-400"></i></div>
+                        <p class="mt-4"><span id="k-calif" class="text-4xl font-extrabold text-white">—</span> <span class="text-sm text-gray-400">· <b id="k-mal" class="text-red-400">0</b> MAL</span></p>
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN 2: GRÁFICAS DEL MES -->
-            <section class="anim-section">
-                <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-chart-line-up text-brand-yellow text-xl"></i>
-                    <h2 class="text-lg font-semibold tracking-wide">Gráficas del mes (agosto 2026)</h2>
-                </div>
+            <section class="fade-in">
+                <h2 class="sec-tit">Insumos <span class="text-sm font-normal text-gray-500">· existencia actual</span></h2>
+                <div id="insumos" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+            </section>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- Gráfica 1 (Inspecciones por día) -->
-                    <div
-                        class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Inspecciones por día</h3>
-                                <p class="text-xs text-gray-500 mt-1">SCFI realizadas</p>
-                            </div>
-                        </div>
-                        <div class="flex-1 w-full relative">
-                            <canvas id="chart-inspecciones-dia"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Gráfica 2 (Uso de insumos por día) -->
-                    <div
-                        class="chart-container bg-dark-800 rounded-2xl p-6 border border-dark-700 flex flex-col h-[340px] shadow-lg">
-                        <div class="flex justify-between items-center mb-4">
-                            <div>
-                                <h3 class="text-white font-bold text-base">Uso de insumos por día</h3>
-                                <p class="text-xs text-gray-500 mt-1">Hologramas, Precintos y Flexogramas</p>
-                            </div>
-                        </div>
-                        <div class="flex-1 w-full relative">
-                            <canvas id="chart-insumos-dia"></canvas>
-                        </div>
-                    </div>
+            <section class="fade-in">
+                <h2 class="sec-tit">Gráficas <span class="periodo"></span></h2>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    <div class="card h-[340px] flex flex-col"><h3 class="card-tit">Inspecciones terminadas por día</h3><p class="card-sub">Por fecha de inspección</p><div class="flex-1 relative mt-3"><canvas id="ch-insp"></canvas></div></div>
+                    <div class="card h-[340px] flex flex-col"><h3 class="card-tit">Uso de insumos por día</h3><p class="card-sub">Folios marcados como usados</p><div class="flex-1 relative mt-3"><canvas id="ch-insumos"></canvas></div></div>
                 </div>
             </section>
 
-            <!-- SECCIÓN 3: SCFI DEL MES -->
-            <section class="anim-section">
-                <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-shield-check text-brand-yellow text-xl"></i>
-                    <h2 class="text-lg font-semibold tracking-wide">SCFI del mes (agosto 2026)</h2>
-                </div>
-
-                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                    <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg">
-                        <div class="mb-5">
-                            <h3 class="text-white font-bold text-base">Estatus de inspecciones</h3>
-                            <p class="text-xs text-gray-500 mt-1">Distribución por estatus</p>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span class="text-xs text-gray-400 font-medium">Pendiente</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">1</span>
-                                <span class="text-xs text-gray-400 font-medium">En proceso</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
-                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 rounded-l-xl"></div>
-                                <span class="block text-2xl font-bold text-white mb-1 pl-2">58</span>
-                                <span class="text-xs text-gray-400 font-medium pl-2">Terminada</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors relative overflow-hidden">
-                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l-xl"></div>
-                                <span class="block text-2xl font-bold text-white mb-1 pl-2">92</span>
-                                <span class="text-xs text-gray-400 font-medium pl-2">Cerrada</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span class="text-xs text-gray-400 font-medium">Vencida</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-800 rounded-2xl p-6 border border-dark-700 shadow-lg">
-                        <div class="mb-5">
-                            <h3 class="text-white font-bold text-base">Tipos de inspección</h3>
-                            <p class="text-xs text-gray-500 mt-1">SCFI por tipo</p>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>1er
-                                    periodo</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">0</span>
-                                <span
-                                    class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>1er
-                                    periodo</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">144</span>
-                                <span class="text-xs text-gray-400 font-medium leading-tight block h-8">Periódica<br>2do
-                                    periodo</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">6</span>
-                                <span
-                                    class="text-xs text-gray-400 font-medium leading-tight block h-8">Extraordinaria<br>2do
-                                    periodo</span>
-                            </div>
-                            <div
-                                class="bg-dark-900 border border-dark-700 rounded-xl p-5 hover:border-dark-600 transition-colors">
-                                <span class="block text-2xl font-bold text-white mb-1">1</span>
-                                <span class="text-xs text-gray-400 font-medium block h-8">Inicial</span>
-                            </div>
-                        </div>
-                    </div>
+            <section class="fade-in">
+                <h2 class="sec-tit">Inspecciones <span class="periodo"></span></h2>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    <div class="card"><h3 class="card-tit">Estatus</h3><p class="card-sub mb-4">Distribución del periodo</p><div id="estatus" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div></div>
+                    <div class="card"><h3 class="card-tit">Tipos de inspección</h3><p class="card-sub mb-4">Terminadas por tipo</p><div id="tipos" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div></div>
                 </div>
             </section>
 
-            <!-- SECCIÓN 4: INSPECTORES DEL MES -->
-            <section class="anim-section">
-                <div class="flex items-center gap-2 text-gray-300 mb-5">
-                    <i class="ph ph-users text-brand-yellow text-xl"></i>
-                    <h2 class="text-lg font-semibold tracking-wide">Inspectores del mes (agosto 2026)</h2>
-                </div>
-
-                <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden">
-                    <div class="p-6 border-b border-dark-700">
-                        <h3 class="text-white font-bold text-base">Inspecciones realizadas por inspector</h3>
-                        <p class="text-xs text-gray-500 mt-1">SCFI</p>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-dark-900/50 text-xs text-gray-500 uppercase tracking-wider">
-                                    <th class="py-4 px-6 font-semibold w-full">Inspector</th>
-                                    <th class="py-4 px-6 font-semibold text-right whitespace-nowrap">SCFI</th>
-                                    <th class="py-4 px-6 font-semibold text-right whitespace-nowrap">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm divide-y divide-dark-700/50">
-                                <tr class="hover:bg-dark-700/30 transition-colors group">
-                                    <td class="py-4 px-6 text-white font-medium">Ejemplo Inspector</td>
-                                    <td class="py-4 px-6 text-right text-gray-300">150</td>
-                                    <td class="py-4 px-6 text-right text-white font-bold">150</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <section class="fade-in">
+                <h2 class="sec-tit">Inspectores <span class="periodo"></span></h2>
+                <div class="card overflow-x-auto"><h3 class="card-tit">Inspecciones terminadas por inspector</h3><p class="card-sub mb-3">Con mangueras verificadas</p><table class="w-full text-sm tb" id="t-insp"></table></div>
             </section>
-
         </div>
     </main>
 
-    <!-- SCRIPT PARA GRÁFICAS (CHART.JS) Y CONTROL RESPONSIVE -->
-    <script>
+    <style>
+        .fil { background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .55rem .8rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .sec-tit { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+        .sec-tit::before { content: ''; width: 6px; height: 20px; border-radius: 4px; background: #EAB308; }
+        .periodo { font-weight: 400; color: #6b7280; font-size: .95rem; }
+        .card { background: #161925; border: 1px solid #232736; border-radius: 1rem; padding: 1.4rem; box-shadow: 0 10px 25px -15px rgba(0,0,0,.6); }
+        .card-tit { color: #fff; font-weight: 700; }
+        .card-sub { color: #6b7280; font-size: .75rem; margin-top: .2rem; }
+        .est { background: #0F111A; border: 1px solid #232736; border-radius: .75rem; padding: .7rem .5rem; text-align: center; }
+        .est b { display: block; color: #fff; font-size: 1.35rem; }
+        .est span { font-size: 9.5px; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; font-weight: 600; }
+        .tb th { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #6b7280; font-weight: 600; padding: .6rem .7rem; border-bottom: 1px solid #232736; background: rgba(15,17,26,.5); }
+        .tb td { padding: .65rem .7rem; border-bottom: 1px solid rgba(35,39,54,.6); color: #d1d5db; }
+        .tb tr:last-child td { border-bottom: 0; }
+    </style>
+
+    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
+    <!-- Dashboard SCFI: vista sudi_v_scfi_insp_lista, vista sudi_v_hologramas_tipo_estado y sudi_scfi_hologramas (usado_en). -->
+    <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            // Dropdowns gestionados por JS/app.js
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const fmt = (n) => Number(n || 0).toLocaleString('es-MX');
+            const pad = (n) => String(n).padStart(2, '0');
+            const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const TIPOS = [['periodica_1', 'Periódica 1er periodo'], ['periodica_2', 'Periódica 2do periodo'], ['extraordinaria_1', 'Extraord. 1er periodo'], ['extraordinaria_2', 'Extraord. 2do periodo'], ['inicial', 'Inicial']];
+            const HOLO = [['flexograma', 'Flexogramas', 'ph-seal-check', '#a78bfa'], ['inicial', 'Flex. iniciales', 'ph-seal-check', '#f472b6'], ['distintivo', 'Distintivos', 'ph-image', '#38bdf8'], ['precinto', 'Precintos', 'ph-lock-key', '#EAB308']];
+            const EST = [['programada', 'Programada', '#3b82f6'], ['en_proceso', 'En proceso', '#f59e0b'], ['terminada', 'Terminada', '#10b981'], ['cerrada', 'Cerrada', '#38bdf8'], ['cancelada', 'Cancelada', '#ef4444']];
 
+            let DB = null, insp = [], usados = [], conteos = [];
+            const charts = {};
+            const diaLocal = (v) => { if (!v) return ''; if (String(v).length === 10) return v; const d = new Date(v); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+            const estadoDe = (i) => (i.estatus === 'cancelada' ? 'cancelada' : i.cerrada ? 'cerrada' : i.estatus);
+            const terminada = (i) => i.estatus === 'terminada' || i.cerrada;
+            const mangueras = (i) => Number(i.mangueras_calc ?? i.mangueras ?? 0) || 0;
 
+            function rango() {
+                const a = Number($('p-anio').value), m = Number($('p-mes').value);
+                if (!m) return [`${a}-01-01`, `${a}-12-31`];
+                return [`${a}-${pad(m)}-01`, `${a}-${pad(m)}-${pad(new Date(a, m, 0).getDate())}`];
+            }
 
-            // Inicialización de Gráficas Chart.js
-            function initDashboardCharts() {
-                if (typeof Chart === 'undefined') {
-                    setTimeout(initDashboardCharts, 50);
-                    return;
+            async function todo(q) {
+                const out = [];
+                for (let d = 0; ; d += 1000) {
+                    const { data, error } = await q().range(d, d + 999);
+                    if (error) throw new Error(DB.mensajeError(error));
+                    out.push(...(data || []));
+                    if (!data || data.length < 1000) break;
                 }
+                return out;
+            }
 
-                Chart.defaults.color = '#9CA3AF';
-                Chart.defaults.font.family = 'Inter, sans-serif';
+            function llenarPeriodos() {
+                const hoy = new Date();
+                $('p-anio').innerHTML = Array.from({ length: 5 }, (_, i) => hoy.getFullYear() - i).map((a) => `<option>${a}</option>`).join('');
+                $('p-mes').innerHTML = '<option value="0">Todo el año</option>' + MESES.map((m, i) => `<option value="${i + 1}">${m}</option>`).join('');
+                $('p-mes').value = hoy.getMonth() + 1;
+            }
 
-                const tooltipStyle = {
-                    backgroundColor: '#161925',
-                    borderColor: '#232736',
-                    borderWidth: 1,
-                    padding: 12,
-                    titleColor: '#FFFFFF',
-                    bodyColor: '#D1D5DB',
-                    titleFont: { size: 13, weight: 'bold' },
-                    bodyFont: { size: 12 },
-                    cornerRadius: 8,
-                };
-
-                const dias = Array.from({ length: 31 }, (_, i) => String(i + 1));
-                const inspeccionesPorDia = [1, 0, 6, 7, 8, 7, 8, 2, 0, 7, 6, 8, 7, 6, 1, 0, 8, 9, 7, 8, 8, 2, 0, 7, 6, 8, 7, 6, 1, 0, 0];
-                const hologramasPorDia = [8, 0, 46, 54, 62, 54, 62, 15, 0, 54, 46, 62, 54, 46, 8, 0, 62, 69, 54, 62, 62, 15, 0, 54, 46, 62, 54, 46, 8, 0, 0];
-                const precintosPorDia = [24, 0, 142, 166, 189, 166, 189, 47, 0, 166, 142, 189, 166, 142, 24, 0, 189, 213, 166, 189, 189, 47, 0, 166, 142, 189, 166, 142, 24, 0, 0];
-                const flexogramasPorDia = [56, 0, 336, 393, 449, 393, 449, 112, 0, 393, 336, 449, 393, 336, 56, 0, 449, 505, 393, 449, 449, 112, 0, 393, 336, 449, 393, 336, 56, 0, 0];
-
-                // 1. Gráfica de Inspecciones por día (SCFI realizadas)
-                const canvasInspecciones = document.getElementById('chart-inspecciones-dia');
-                if (canvasInspecciones) {
-                    const ctx1 = canvasInspecciones.getContext('2d');
-                    const gradiente = ctx1.createLinearGradient(0, 0, 0, 300);
-                    gradiente.addColorStop(0, 'rgba(234, 179, 8, 0.28)');
-                    gradiente.addColorStop(1, 'rgba(234, 179, 8, 0.0)');
-
-                    new Chart(canvasInspecciones, {
-                        type: 'line',
-                        data: {
-                            labels: dias,
-                            datasets: [{
-                                label: 'Inspecciones realizadas',
-                                data: inspeccionesPorDia,
-                                borderColor: '#EAB308',
-                                backgroundColor: gradiente,
-                                fill: true,
-                                tension: 0.35,
-                                borderWidth: 2.5,
-                                pointRadius: 3,
-                                pointHoverRadius: 6,
-                                pointBackgroundColor: '#EAB308',
-                                pointHoverBackgroundColor: '#FFFFFF',
-                                pointBorderColor: '#0F111A',
-                                pointBorderWidth: 1.5,
-                            }],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            animation: { duration: 800, easing: 'easeOutQuart' },
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: tooltipStyle,
-                            },
-                            scales: {
-                                x: {
-                                    grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                                    ticks: { color: '#9CA3AF', stepSize: 2, font: { size: 10 } },
-                                },
-                            },
-                        },
-                    });
-                }
-
-                // 2. Gráfica de Uso de insumos por día
-                const canvasInsumos = document.getElementById('chart-insumos-dia');
-                if (canvasInsumos) {
-                    new Chart(canvasInsumos, {
-                        type: 'bar',
-                        data: {
-                            labels: dias,
-                            datasets: [
-                                {
-                                    label: 'Hologramas',
-                                    data: hologramasPorDia,
-                                    backgroundColor: '#EAB308',
-                                    borderRadius: 4,
-                                    maxBarThickness: 10,
-                                },
-                                {
-                                    label: 'Precintos',
-                                    data: precintosPorDia,
-                                    backgroundColor: '#3B82F6',
-                                    borderRadius: 4,
-                                    maxBarThickness: 10,
-                                },
-                                {
-                                    label: 'Flexogramas',
-                                    data: flexogramasPorDia,
-                                    backgroundColor: '#A855F7',
-                                    borderRadius: 4,
-                                    maxBarThickness: 10,
-                                },
-                            ],
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            animation: { duration: 800, easing: 'easeOutQuart' },
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        boxWidth: 12,
-                                        boxHeight: 12,
-                                        borderRadius: 3,
-                                        useBorderRadius: true,
-                                        padding: 14,
-                                        font: { size: 11 },
-                                        color: '#D1D5DB',
-                                    },
-                                },
-                                tooltip: tooltipStyle,
-                            },
-                            scales: {
-                                x: {
-                                    grid: { display: false },
-                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                                    ticks: { color: '#9CA3AF', font: { size: 10 } },
-                                },
-                            },
-                        },
-                    });
+            async function cargar() {
+                $('aviso').classList.add('hidden');
+                const [desde, hasta] = rango();
+                try {
+                    [insp, usados, conteos] = await Promise.all([
+                        todo(() => DB.sb.from('sudi_v_scfi_insp_lista').select('*').gte('fecha_inspeccion', desde).lte('fecha_inspeccion', hasta)),
+                        todo(() => DB.sb.from('sudi_scfi_hologramas').select('tipo, usado_en').eq('estado', 'usado').gte('usado_en', desde).lte('usado_en', `${hasta}T23:59:59`)),
+                        DB.listar('sudi_v_hologramas_tipo_estado').catch(() => []),
+                    ]);
+                    pintar();
+                } catch (err) {
+                    $('aviso').textContent = `No se pudo cargar el dashboard: ${err.message}`;
+                    $('aviso').classList.remove('hidden');
                 }
             }
 
-            initDashboardCharts();
+            function grafica(id, config) { charts[id]?.destroy(); charts[id] = new Chart($(id), config); }
+            const ejes = (stacked = false) => ({
+                x: { stacked, grid: { display: false }, ticks: { color: '#6b7280' } },
+                y: { stacked, beginAtZero: true, ticks: { precision: 0, color: '#6b7280' }, grid: { color: '#232736' } },
+            });
 
-            // Eventos de botones
-            const btnActualizar = document.getElementById('btn-actualizar');
-            if (btnActualizar) {
-                btnActualizar.addEventListener('click', () => {
-                    window.App.withLoading(btnActualizar, {
-                        loadingText: 'Actualizando...',
-                        task: () => window.App.fakeRequest(800).then(() => {
-                            window.App.toast('Dashboard actualizado correctamente', 'success');
-                        })
-                    });
+            function pintar() {
+                const m = Number($('p-mes').value), a = Number($('p-anio').value);
+                document.querySelectorAll('.periodo').forEach((el) => { el.textContent = `· ${m ? `${MESES[m - 1]} ` : ''}${a}`; });
+
+                const vivas = insp.filter((i) => i.estatus !== 'cancelada');
+                const term = insp.filter(terminada);
+                $('k-total').textContent = fmt(vivas.length);
+                $('k-term').textContent = fmt(term.length);
+                $('k-mang').textContent = fmt(term.reduce((s, i) => s + mangueras(i), 0));
+                $('k-cerr').textContent = fmt(insp.filter((i) => i.cerrada).length);
+                $('k-sincerrar').textContent = fmt(insp.filter((i) => i.estatus === 'terminada' && !i.cerrada).length);
+                const bien = term.filter((i) => i.calificacion === 'BIEN').length, mal = term.filter((i) => i.calificacion === 'MAL').length;
+                $('k-calif').textContent = bien + mal ? `${Math.round((bien * 100) / (bien + mal))}%` : '—';
+                $('k-mal').textContent = fmt(mal);
+
+                // Insumos: existencia por tipo y estado (no depende del periodo)
+                const por = {};
+                conteos.forEach((c) => { (por[c.tipo] ||= {})[c.estado] = Number(c.total) || 0; });
+                $('insumos').innerHTML = HOLO.map(([t, n, ic, c]) => {
+                    const x = por[t] || {};
+                    const usadosMes = usados.filter((h) => h.tipo === t).length;
+                    return `<div class="card">
+                        <div class="flex items-start justify-between"><div><h3 class="card-tit">${n}</h3><p class="card-sub">${fmt(usadosMes)} usados en el periodo</p></div><i class="ph ${ic} text-2xl" style="color:${c}"></i></div>
+                        <div class="grid grid-cols-3 gap-2 mt-4">
+                            <div class="est" style="border-top:2px solid #10b981"><b>${fmt(x.disponible)}</b><span>Disponibles</span></div>
+                            <div class="est" style="border-top:2px solid #3b82f6"><b>${fmt(x.asignado)}</b><span>Asignados</span></div>
+                            <div class="est" style="border-top:2px solid #6b7280"><b>${fmt(x.usado)}</b><span>Usados</span></div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Gráficas: por día (mes) o por mes (año)
+                const n = m ? new Date(a, m, 0).getDate() : 12;
+                const etiquetas = m ? Array.from({ length: n }, (_, i) => String(i + 1)) : MESES.map((x) => x.slice(0, 3));
+                const idx = (f) => (m ? Number(f.slice(8, 10)) - 1 : Number(f.slice(5, 7)) - 1);
+                const vInsp = Array(n).fill(0);
+                term.forEach((i) => { if (i.fecha_inspeccion) vInsp[idx(String(i.fecha_inspeccion))] += 1; });
+                grafica('ch-insp', {
+                    type: 'line',
+                    data: { labels: etiquetas, datasets: [{ label: 'Terminadas', data: vInsp, borderColor: '#EAB308', backgroundColor: 'rgba(234,179,8,.15)', fill: true, tension: .3, pointRadius: 2 }] },
+                    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: ejes() },
                 });
+                grafica('ch-insumos', {
+                    type: 'bar',
+                    data: {
+                        labels: etiquetas,
+                        datasets: HOLO.map(([t, nom, , c]) => {
+                            const v = Array(n).fill(0);
+                            usados.filter((h) => h.tipo === t).forEach((h) => { const f = diaLocal(h.usado_en); if (f) v[idx(f)] += 1; });
+                            return { label: nom, data: v, backgroundColor: c, borderRadius: 3 };
+                        }),
+                    },
+                    options: { maintainAspectRatio: false, plugins: { legend: { labels: { color: '#9ca3af', boxWidth: 12 } } }, scales: ejes(true) },
+                });
+
+                $('estatus').innerHTML = EST.map(([k, t, c]) => `<div class="est" style="border-top:2px solid ${c}"><b>${fmt(insp.filter((i) => estadoDe(i) === k).length)}</b><span>${t}</span></div>`).join('');
+                $('tipos').innerHTML = TIPOS.map(([k, t]) => `<div class="est"><b>${fmt(term.filter((i) => i.tipo === k).length)}</b><span>${t}</span></div>`).join('');
+
+                const porInsp = {};
+                term.forEach((i) => {
+                    const nom = i.realizo || i.inspector || 'Sin inspector';
+                    const r = (porInsp[nom] ||= { n: 0, m: 0 });
+                    r.n += 1; r.m += mangueras(i);
+                });
+                const filas = Object.entries(porInsp).sort((x, y) => y[1].n - x[1].n);
+                $('t-insp').innerHTML = filas.length
+                    ? `<thead><tr><th class="text-left">Inspector</th><th class="text-right">Inspecciones</th><th class="text-right">Mangueras</th></tr></thead><tbody>${filas.map(([nom, r]) => `<tr><td class="uppercase">${esc(nom)}</td><td class="text-right font-bold text-white">${fmt(r.n)}</td><td class="text-right">${fmt(r.m)}</td></tr>`).join('')}</tbody>`
+                    : '<tbody><tr><td class="text-center text-gray-500 py-6">Sin inspecciones terminadas en el periodo.</td></tr></tbody>';
             }
 
-            const btnVerPeriodo = document.getElementById('btn-ver-periodo');
-            if (btnVerPeriodo) {
-                btnVerPeriodo.addEventListener('click', () => {
-                    window.App.toast('Mostrando periodo actual', 'info');
-                });
-            }
+            ['p-mes', 'p-anio'].forEach((id) => $(id).addEventListener('change', cargar));
+            $('btn-actualizar').addEventListener('click', cargar);
+
+            (async () => {
+                if (window.Chart) { Chart.defaults.font.family = 'Inter, sans-serif'; Chart.defaults.color = '#9ca3af'; }
+                llenarPeriodos();
+                try { DB = await App.db(); } catch (err) { $('aviso').textContent = err.message; $('aviso').classList.remove('hidden'); return; }
+                await cargar();
+            })();
         });
     </script>
-    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../JS/table-actions.js" defer=""></script>
-
-
 </body>
-
 </html>

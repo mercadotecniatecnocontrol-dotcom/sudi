@@ -71,7 +71,6 @@
             <i class="ph ph-caret-down text-base text-gray-400 transition-transform duration-200"></i>
         </button>
                     <div id="gerentes-catalogos-menu" data-dropdown="" class="hidden pl-12 pr-4 py-2 space-y-1">
-                        <a href="#" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Check List Operación</a>
                         <a href="petrolifero.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Petrolífero</a>
                         <a href="documentos.html" class="block py-2 text-sm text-gray-500 hover:text-white transition-colors">Documentos</a>
                     </div>
@@ -129,457 +128,340 @@
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
-        
         <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
                 <div class="min-w-0">
                     <h1 class="text-2xl font-bold text-white tracking-tight truncate">Inspecciones ASEA</h1>
-                    <p class="text-sm text-gray-400 mt-1 truncate">Listado general de inspecciones y estatus</p>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Ejecución de las órdenes de servicio: inicio, fin, gerente y resultado</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative hidden md:block">
-                    <input type="text" id="inspecciones-search" placeholder="Buscar por folio, cliente o verificador..." class="w-72 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
-                </div>
-                <button class="flex items-center justify-center w-10 h-10 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors shadow-sm md:hidden">
-                    <i class="ph ph-magnifying-glass text-lg"></i>
-                </button>
-            </div>
+            <a href="orden_servicio.html" data-editor class="hidden sm:flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-300 bg-dark-800 border border-dark-700 rounded-lg hover:border-brand-yellow hover:text-white"><i class="ph ph-file-plus"></i> Nueva orden</a>
         </header>
 
-        <div class="p-8">
+        <div class="p-4 sm:p-8 space-y-5">
+            <div id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 fade-in"></div>
 
-            <!-- Barra superior: Título -->
-            <div class="flex items-center justify-between mb-8 fade-in">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20 shadow-inner">
-                        <i class="ph ph-factory text-2xl text-brand-yellow"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-white tracking-tight uppercase">INSPECCIONES</h2>
+            <div class="flex flex-col lg:flex-row gap-2 fade-in">
+                <div class="relative flex-1">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
+                    <input id="f-texto" class="fil pl-10" placeholder="Folio, seguimiento, PL, razón social, verificador o gerente...">
                 </div>
+                <select id="f-tipo" class="fil lg:w-56">
+                    <option value="">Todos los tipos</option>
+                    <option value="OP">Operación y mantenimiento</option>
+                    <option value="D">Diseño</option>
+                    <option value="C">Construcción</option>
+                </select>
+                <select id="f-estado" class="fil lg:w-48">
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="realizada">Realizada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
             </div>
 
-            <!-- Tabla principal -->
-            <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table id="inspecciones-tabla" class="w-full text-center border-collapse min-w-[1200px]">
-                        <thead>
-                            <tr class="bg-dark-900/80 border-b border-dark-700 text-[11px] text-gray-400 uppercase tracking-wider font-semibold">
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[180px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-hash text-base text-brand-yellow"></i> Solicitud de servicio
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-person-simple-walk text-base text-brand-yellow"></i> F. de seguimiento
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-hash text-base text-brand-yellow"></i> Estación
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[200px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-users text-base text-brand-yellow"></i> Razon social
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-hard-hat text-base text-brand-yellow"></i> Verificador
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[160px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-user-circle text-base text-brand-yellow"></i> Gerente técnico
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[140px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-calendar-plus text-base text-brand-yellow"></i> Fecha inicio
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 border-r border-dark-700/50 min-w-[140px]">
-                                    <div class="flex items-center justify-center gap-1.5">
-                                        <i class="ph ph-calendar-check text-base text-brand-yellow"></i> Fecha fin
-                                    </div>
-                                </th>
-                                <th class="py-4 px-4 w-28">
-                                    <div class="flex items-center justify-center">
-                                        <i class="ph ph-battery-full text-lg text-brand-yellow"></i>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[13px] font-medium divide-y divide-dark-700/50">
-                            
-                            <!-- Row 1 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="1">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-D-26-03-16</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">DISEÑO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">EN PROCESO</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">COMBUSTIBLES Y SERVICIOS REMPEL SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">25 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">07:24</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">25 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">18:04</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 2 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="2">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-C-26-03-6</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">CONSTRUCCIÓN</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">En tramite</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">PABLO ABES MUÑOZ</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">21 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">07:05</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">21 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">20:50</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 3 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="3">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-96-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-96</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/23788/EXP/ES/2021</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">H V GASOLINERA SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">04 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">11:13</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">04 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">14:45</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 4 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="4">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-C-26-03-5</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">CONSTRUCCIÓN</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">CNE/PL/654/EXP/ES/2026</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">Estación de Servicio Rumi, S.A. de C.V.</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">SERGIO MENDOZA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Iván Argenis Aceves Molina</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5 leading-tight">Gerente técnico sustituto</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">19 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">07:12</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">19 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">20:17</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 5 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="5">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-130-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-130</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/7038/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">EL MESTEÑO SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">07 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">10:05</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">07 de Agosto del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">13:36</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 6 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="6">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-110-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-110</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/785/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">CORPORATIVO ARPE SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">29 de Julio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">09:10</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">29 de Julio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">12:45</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 7 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="7">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-109-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-109</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/9418/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">CORPORATIVO ARPE SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">29 de Julio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">14:10</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">29 de Julio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">17:35</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 8 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="8">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-98-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-98</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/5786/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">CARLOS ARTURO MUÑOZ PEREZ</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">IVAN ACEVES</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Sergio Mendoza Becerra</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5">Gerente técnico</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">22 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">12:15</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">22 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">15:27</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 9 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="9">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-OP-26-03-111-1</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5 leading-tight">OPERACIÓN Y<br>MANTENIMIENTO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">DI-OP-26-03-111</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">PL/1169/EXP/ES/2015</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">SERVICIO LINDEROS SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">RICARDO MORIEL</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Ulises Nuñez Alatorre</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5 leading-tight">Gerente técnico sustituto</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">27 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">08:15</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">27 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">11:50</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-blue-600/20 border border-blue-500/50 text-blue-400 hover:bg-blue-600 hover:text-white transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-semibold">Realizada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Row 10 -->
-                            <tr class="inspeccion-row hover:bg-dark-700/30 transition-colors group" data-row="10">
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300 group-hover:text-white transition-colors">DI-D-26-03-15</span>
-                                    <span class="block text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">DISEÑO</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400">Sin folio</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">A</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-300">COMBUSTIBLES 20 ANIVERSARIO SA DE CV</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50 text-gray-400 uppercase">SERGIO MENDOZA</td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-300">Iván Argenis Aceves Molina</span>
-                                    <span class="block text-[10px] text-gray-500 mt-0.5 leading-tight">Gerente técnico sustituto</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">30 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">08:30</span>
-                                </td>
-                                <td class="py-3 px-4 border-r border-dark-700/50">
-                                    <span class="block text-gray-400">30 de Junio del 2026</span>
-                                    <span class="block text-[11px] text-gray-500 mt-0.5">12:15</span>
-                                </td>
-                                <td class="py-3 px-3">
-                                    <button type="button" class="ver-detalle-btn w-full bg-brand-yellow/20 border border-brand-yellow/50 text-brand-yellow hover:bg-brand-yellow hover:text-dark-900 transition-all rounded-lg py-1.5 flex flex-col items-center justify-center gap-0.5 shadow-sm">
-                                        <i class="ph ph-check font-bold"></i>
-                                        <span class="text-[10px] uppercase tracking-wider font-bold">Asignada</span>
-                                    </button>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="flex items-center justify-between px-6 py-4 border-t border-dark-700">
-                    <span class="text-xs text-gray-500">Pág. <span id="insp-pag-label">1</span></span>
-                    <div class="flex gap-2">
-                        <button id="insp-prev" class="w-9 h-9 rounded-lg border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors flex items-center justify-center"><i class="ph ph-caret-left"></i></button>
-                        <button id="insp-next" class="w-9 h-9 rounded-lg border border-dark-700 text-gray-400 hover:text-white hover:bg-dark-700 transition-colors flex items-center justify-center"><i class="ph ph-caret-right"></i></button>
-                    </div>
-                </div>
+            <div class="bg-dark-800 border border-dark-700 rounded-2xl overflow-x-auto fade-in">
+                <table class="w-full text-sm min-w-[1250px]">
+                    <thead class="bg-dark-900/80 text-[11px] text-gray-400 uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-hash text-brand-yellow"></i> Solicitud de servicio</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-person-simple-walk text-brand-yellow"></i> F. de seguimiento</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-hash text-brand-yellow"></i> Estación</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-handshake text-brand-yellow"></i> Razón social</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-identification-badge text-brand-yellow"></i> Verificador</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-user text-brand-yellow"></i> Gerente técnico</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-calendar-plus text-brand-yellow"></i> Fecha inicio</th>
+                            <th class="py-3.5 px-4 text-left"><i class="ph ph-calendar-check text-brand-yellow"></i> Fecha fin</th>
+                            <th class="py-3.5 px-4 text-center w-32"><i class="ph ph-battery-medium text-brand-yellow"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="divide-y divide-dark-700/60">
+                        <tr class="no-clickable"><td colspan="9" class="py-12 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando inspecciones...</td></tr>
+                    </tbody>
+                </table>
             </div>
 
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                <span id="pag-info" class="text-gray-500"></span>
+                <div class="flex items-center gap-2">
+                    <button id="pag-ini" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-double-left"></i></button>
+                    <button id="pag-prev" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-left"></i></button>
+                    <span id="pag-label" class="text-gray-400 px-1"></span>
+                    <button id="pag-next" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-right"></i></button>
+                    <button id="pag-fin" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-double-right"></i></button>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Modal detalle de inspección -->
-    <div id="insp-detalle-modal" data-modal="" class="hidden fixed inset-0 z-[80] flex items-center justify-center px-4">
+    <!-- Modal: Inspección -->
+    <div id="modal-insp" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-white font-bold text-lg">Detalle de inspección</h3>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <div class="min-w-0">
+                    <h3 class="text-white font-bold text-xl flex items-center gap-2"><i class="ph ph-clipboard-text text-brand-yellow"></i> <span id="i-titulo">Inspección</span></h3>
+                    <p id="i-sub" class="text-xs text-gray-500 mt-1 truncate"></p>
+                </div>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <dl id="insp-detalle-body" class="space-y-3 text-sm"></dl>
+            <div class="p-6 overflow-y-auto space-y-5">
+                <div id="i-info" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="lbl">Fecha y hora de inicio</label>
+                        <div class="flex gap-2"><input id="i-inicio" type="datetime-local" class="inp"><button type="button" data-ahora="i-inicio" data-editor class="ahora">Ahora</button></div></div>
+                    <div><label class="lbl">Fecha y hora de fin</label>
+                        <div class="flex gap-2"><input id="i-fin" type="datetime-local" class="inp"><button type="button" data-ahora="i-fin" data-editor class="ahora">Ahora</button></div>
+                        <p class="text-[11px] text-gray-500 mt-1">Al poner la fecha de fin la inspección queda como Realizada.</p></div>
+                    <div><label class="lbl">Gerente técnico (nombre)</label>
+                        <input id="i-gerente" list="lst-gerentes" class="inp uppercase" placeholder="Nombre de quien atendió la inspección" autocomplete="off">
+                        <datalist id="lst-gerentes"></datalist></div>
+                    <div><label class="lbl">Tipo de gerente</label>
+                        <select id="i-tipo-gerente" class="inp"><option value="">Selecciona</option><option>Gerente técnico</option><option>Gerente técnico sustituto</option></select></div>
+                    <div><label class="lbl">¿Cumple con la inspección?</label>
+                        <select id="i-cumple" class="inp"><option value="">Pendiente</option><option value="si">Cumple</option><option value="no">No cumple</option></select></div>
+                    <div><label class="lbl">Estatus</label>
+                        <select id="i-estatus" class="inp"><option value="en_tramite">En trámite</option><option value="realizada">Realizada</option><option value="cancelada">Cancelada</option></select></div>
+                    <div class="md:col-span-2"><label class="lbl">Observaciones</label><textarea id="i-obs" rows="2" class="inp resize-y"></textarea></div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-white bg-red-500/80 hover:bg-red-500"><i class="ph ph-x"></i> Cerrar</button>
+                <button id="i-guardar" data-editor class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; color-scheme: dark; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.err { border-color: #ef4444; }
+        .inp:disabled { opacity: .85; cursor: not-allowed; }
+        .ahora { flex-shrink: 0; padding: 0 .9rem; font-size: .75rem; font-weight: 600; border-radius: .75rem; background: #232736; border: 1px solid #32384e; color: #d1d5db; }
+        .ahora:hover { border-color: #EAB308; color: #fff; }
+        .fil { width: 100%; background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .65rem 1rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .in-row { animation: rowIn .3s ease both; }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    </style>
+
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../JS/table-actions.js" defer=""></script>
+    <!-- Inspecciones ASEA: usa sudi_asea_ordenes (SQL 0011) + fecha_inicio, fecha_fin, gerente_nombre (SQL 0012). -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('inspecciones-search');
-            App.initSearch(searchInput, '#inspecciones-tabla tbody tr.inspeccion-row');
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const toast = (m, t = 'success', ms) => App.toast(m, t, ms);
+            const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const TIPO = { OP: 'Operación y mantenimiento', D: 'Diseño', C: 'Construcción' };
+            const POR_PAGINA = 20;
+            const EST_COLS = 'id, cliente_id, nombre, nombre_comercial, razon_social, permiso, numero_estacion';
+            const dos = (n) => String(n).padStart(2, '0');
 
-            document.querySelectorAll('.ver-detalle-btn').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const row = btn.closest('tr');
-                    const cells = row.querySelectorAll('td');
-                    const label = (i) => cells[i]?.innerText.trim().replace(/\n/g, ' · ') || '—';
-                    document.getElementById('insp-detalle-body').innerHTML = `
-                        <div><dt class="text-gray-500 text-xs uppercase">Solicitud</dt><dd class="text-white">${label(0)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">F. de seguimiento</dt><dd class="text-white">${label(1)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Estación</dt><dd class="text-white">${label(2)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Razón social</dt><dd class="text-white">${label(3)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Verificador</dt><dd class="text-white">${label(4)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Gerente técnico</dt><dd class="text-white">${label(5)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Fecha inicio</dt><dd class="text-white">${label(6)}</dd></div>
-                        <div><dt class="text-gray-500 text-xs uppercase">Fecha fin</dt><dd class="text-white">${label(7)}</dd></div>
-                    `;
-                    App.openModal('insp-detalle-modal');
+            let DB = null, editor = false;
+            let ordenes = [], estMap = {}, clientes = {}, usuarios = {};
+            let pagina = 1, actual = null;
+
+            // ---------------- Fechas ----------------
+            function fechaHora(iso) {
+                if (!iso) return '<span class="text-gray-600">—</span>';
+                const d = new Date(iso);
+                return `<p class="text-gray-200 whitespace-nowrap">${dos(d.getDate())} de ${MESES[d.getMonth()]} del ${d.getFullYear()}</p><p class="text-[11px] text-gray-500">${dos(d.getHours())}:${dos(d.getMinutes())}</p>`;
+            }
+            const aInput = (iso) => { if (!iso) return ''; const d = new Date(iso); return `${d.getFullYear()}-${dos(d.getMonth() + 1)}-${dos(d.getDate())}T${dos(d.getHours())}:${dos(d.getMinutes())}`; };
+            const deInput = (v) => (v ? new Date(v).toISOString() : null);
+
+            // ---------------- Estado ----------------
+            function estado(o) {
+                if (o.estatus === 'cancelada') return 'cancelada';
+                if (o.estatus === 'realizada' || o.fecha_fin) return 'realizada';
+                if (o.fecha_inicio) return 'proceso';
+                return 'pendiente';
+            }
+            const BOTON = {
+                realizada: ['ph-check', 'Realizada', 'bg-[#004b93] text-white'],
+                proceso: ['ph-hourglass-medium', 'En proceso', 'bg-amber-500/15 border border-amber-500/40 text-amber-400'],
+                pendiente: ['ph-clock', 'Pendiente', 'bg-dark-700 border border-dark-600 text-gray-300'],
+                cancelada: ['ph-prohibit', 'Cancelada', 'bg-red-500/10 border border-red-500/30 text-red-400'],
+            };
+
+            // ---------------- Carga ----------------
+            async function todo(tabla, cols, filtro) {
+                const out = [];
+                for (let desde = 0; ; desde += 1000) {
+                    let q = DB.sb.from(tabla).select(cols).range(desde, desde + 999);
+                    if (filtro) q = filtro(q);
+                    const { data, error } = await q;
+                    if (error) throw new Error(DB.mensajeError(error));
+                    out.push(...(data || []));
+                    if (!data || data.length < 1000) break;
+                }
+                return out;
+            }
+            async function cargarCatalogos() {
+                const [ests, clis, usrs] = await Promise.all([
+                    todo('estaciones_servicio', EST_COLS, (q) => q.not('cliente_id', 'is', null).order('id')),
+                    todo('clientes_catalogo', 'id, razon_social, nombre_comercial', (q) => q.order('id')),
+                    DB.listar('sudi_usuarios', { select: 'id, nombre_completo', orden: 'nombre_completo' }),
+                ]);
+                estMap = Object.fromEntries(ests.map((e) => [String(e.id), e]));
+                clientes = Object.fromEntries(clis.map((c) => [c.id, c]));
+                usuarios = Object.fromEntries(usrs.map((u) => [u.id, u]));
+            }
+            async function cargarOrdenes() {
+                try {
+                    ordenes = await todo('sudi_asea_ordenes', '*', (q) => q.order('fecha_solicitud', { ascending: false }).order('consecutivo', { ascending: false, nullsFirst: false }));
+                    pintar();
+                } catch (err) {
+                    const falta = /fecha_inicio|fecha_fin|gerente_nombre/.test(err.message) ? ' Falta correr el SQL 0012.' : '';
+                    $('tbody').innerHTML = `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-red-400">No se pudieron cargar: ${esc(err.message)}${falta}</td></tr>`;
+                }
+            }
+
+            // ---------------- Listado ----------------
+            const estDe = (o) => estMap[String(o.estacion_id)] || null;
+            const razonDe = (o) => clientes[o.cliente_id]?.razon_social || estDe(o)?.razon_social || '—';
+            function filtradas() {
+                const term = norm($('f-texto').value.trim());
+                const tipo = $('f-tipo').value, est = $('f-estado').value;
+                return ordenes.filter((o) => {
+                    if (tipo && o.tipo_verificacion !== tipo) return false;
+                    if (est && estado(o) !== est) return false;
+                    if (!term) return true;
+                    const e = estDe(o);
+                    return norm([o.folio, o.folio_seguimiento, e?.permiso, e?.nombre_comercial, e?.nombre, razonDe(o), usuarios[o.verificador_id]?.nombre_completo, o.gerente_nombre].join(' ')).includes(term);
+                });
+            }
+            function kpis() {
+                const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
+                const c = (s) => ordenes.filter((o) => estado(o) === s).length;
+                $('kpis').innerHTML = k('Pendientes', c('pendiente'), 'ph-clock', 'text-gray-400') + k('En proceso', c('proceso'), 'ph-hourglass-medium', 'text-amber-400')
+                    + k('Realizadas', c('realizada'), 'ph-check-circle', 'text-sky-400') + k('Canceladas', c('cancelada'), 'ph-prohibit', 'text-red-400');
+            }
+            function pintar() {
+                kpis();
+                const lista = filtradas();
+                const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), total);
+                const vis = lista.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+                $('tbody').innerHTML = vis.length ? vis.map((o, i) => {
+                    const e = estDe(o);
+                    const [ic, txt, cls] = BOTON[estado(o)];
+                    const ger = o.gerente_nombre
+                        ? `<p class="text-gray-200 uppercase">${esc(o.gerente_nombre)}</p><p class="text-[11px] text-gray-500">${esc(o.tipo_gerente || '')}</p>`
+                        : `<p class="text-gray-600">—</p><p class="text-[11px] text-gray-500">${esc(o.tipo_gerente || '')}</p>`;
+                    return `<tr data-id="${o.id}" class="in-row no-clickable hover:bg-dark-700/30 cursor-pointer" style="animation-delay:${Math.min(i * 0.02, 0.3)}s">
+                        <td class="py-3 px-4"><p class="text-white font-semibold whitespace-nowrap">${esc(o.folio || '—')}</p><p class="text-[11px] text-gray-500 uppercase">${TIPO[o.tipo_verificacion] || ''}</p></td>
+                        <td class="py-3 px-4 text-gray-400">${esc(o.folio_seguimiento || 'Sin folio')}</td>
+                        <td class="py-3 px-4 text-gray-300 whitespace-nowrap">${esc(e?.permiso || o.estacion_id || '—')}</td>
+                        <td class="py-3 px-4 text-gray-200 uppercase max-w-[240px]">${esc(razonDe(o))}</td>
+                        <td class="py-3 px-4 text-gray-300 uppercase">${esc(usuarios[o.verificador_id]?.nombre_completo || '—')}</td>
+                        <td class="py-3 px-4">${ger}</td>
+                        <td class="py-3 px-4">${fechaHora(o.fecha_inicio)}</td>
+                        <td class="py-3 px-4">${fechaHora(o.fecha_fin)}</td>
+                        <td class="py-2 px-3"><div class="w-full rounded-lg py-2.5 text-xs font-semibold flex flex-col items-center gap-0.5 ${cls}"><i class="ph-bold ${ic} text-base"></i>${txt}</div></td>
+                    </tr>`;
+                }).join('') : `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-gray-500">${ordenes.length ? 'Sin inspecciones con ese filtro.' : 'Aún no hay órdenes de servicio. Créalas en Orden de servicio.'}</td></tr>`;
+                $('pag-info').textContent = `${lista.length} inspección(es)`;
+                $('pag-label').textContent = `Pág. ${pagina} de ${total}`;
+                [['pag-ini', pagina <= 1], ['pag-prev', pagina <= 1], ['pag-next', pagina >= total], ['pag-fin', pagina >= total]].forEach(([id, off]) => { $(id).disabled = off; $(id).classList.toggle('opacity-40', off); });
+            }
+            ['f-tipo', 'f-estado'].forEach((id) => $(id).addEventListener('change', () => { pagina = 1; pintar(); }));
+            $('f-texto').addEventListener('input', () => { pagina = 1; pintar(); });
+            $('pag-ini').addEventListener('click', () => { pagina = 1; pintar(); });
+            $('pag-prev').addEventListener('click', () => { pagina -= 1; pintar(); });
+            $('pag-next').addEventListener('click', () => { pagina += 1; pintar(); });
+            $('pag-fin').addEventListener('click', () => { pagina = 1e9; pintar(); });
+            $('tbody').addEventListener('click', (e) => {
+                const tr = e.target.closest('tr[data-id]');
+                if (tr) abrir(ordenes.find((x) => x.id === tr.dataset.id));
+            });
+
+            // ---------------- Modal ----------------
+            const siNo = (v) => (v === 'si' ? true : v === 'no' ? false : null);
+            const aSiNo = (b) => (b === true ? 'si' : b === false ? 'no' : '');
+            function abrir(o) {
+                actual = o;
+                const e = estDe(o);
+                $('i-titulo').textContent = o.folio || 'Inspección';
+                $('i-sub').textContent = `${TIPO[o.tipo_verificacion] || ''}${o.folio_seguimiento ? ` · Seguimiento ${o.folio_seguimiento}` : ''}`;
+                const dato = (t, v) => `<div class="bg-dark-900/60 border border-dark-700 rounded-xl px-3 py-2.5 min-w-0"><p class="text-[10px] uppercase tracking-wider text-gray-500">${t}</p><p class="text-sm text-gray-200 uppercase truncate" title="${esc(v)}">${esc(v || '—')}</p></div>`;
+                $('i-info').innerHTML = dato('Estación', e?.permiso || o.estacion_id) + dato('Nombre', e?.nombre_comercial || e?.nombre) + dato('Razón social', razonDe(o)) + dato('Verificador', usuarios[o.verificador_id]?.nombre_completo);
+                $('i-inicio').value = aInput(o.fecha_inicio);
+                $('i-fin').value = aInput(o.fecha_fin);
+                $('i-gerente').value = o.gerente_nombre || '';
+                $('i-tipo-gerente').value = o.tipo_gerente || '';
+                $('i-cumple').value = aSiNo(o.cumple);
+                $('i-estatus').value = o.estatus || 'en_tramite';
+                $('i-obs').value = o.observaciones || '';
+                // Sugerencias: gerentes ya usados en esta estación primero
+                const mismos = ordenes.filter((x) => x.gerente_nombre && String(x.estacion_id) === String(o.estacion_id)).map((x) => x.gerente_nombre);
+                const otros = ordenes.filter((x) => x.gerente_nombre).map((x) => x.gerente_nombre);
+                $('lst-gerentes').innerHTML = [...new Set([...mismos, ...otros])].slice(0, 50).map((g) => `<option value="${esc(g)}">`).join('');
+                document.querySelectorAll('#modal-insp .inp').forEach((el) => { el.classList.remove('err'); el.disabled = !editor; });
+                App.openModal('modal-insp');
+            }
+            document.querySelectorAll('[data-ahora]').forEach((b) => b.addEventListener('click', () => {
+                $(b.dataset.ahora).value = aInput(new Date().toISOString());
+                if (b.dataset.ahora === 'i-fin' && $('i-estatus').value === 'en_tramite') $('i-estatus').value = 'realizada';
+            }));
+            $('i-fin').addEventListener('change', () => { if ($('i-fin').value && $('i-estatus').value === 'en_tramite') $('i-estatus').value = 'realizada'; });
+
+            $('i-guardar').addEventListener('click', () => {
+                const ini = $('i-inicio').value, fin = $('i-fin').value;
+                const sinInicio = Boolean(fin) && !ini;
+                const alReves = Boolean(ini && fin) && new Date(fin) < new Date(ini);
+                $('i-inicio').classList.toggle('err', sinInicio);
+                $('i-fin').classList.toggle('err', alReves);
+                if (sinInicio) { toast('Captura primero la fecha de inicio.', 'error'); return; }
+                if (alReves) { toast('La fecha de fin no puede ser antes del inicio.', 'error'); return; }
+                let estatus = $('i-estatus').value;
+                if (fin && estatus === 'en_tramite') estatus = 'realizada';
+                if (!fin && estatus === 'realizada' && ini) { toast('Para marcarla Realizada captura la fecha de fin.', 'warning'); $('i-fin').classList.add('err'); return; }
+                const fila = {
+                    fecha_inicio: deInput(ini),
+                    fecha_fin: deInput(fin),
+                    gerente_nombre: $('i-gerente').value.trim().replace(/\s+/g, ' ').toUpperCase() || null,
+                    tipo_gerente: $('i-tipo-gerente').value || null,
+                    cumple: siNo($('i-cumple').value),
+                    estatus,
+                    observaciones: $('i-obs').value.trim() || null,
+                };
+                App.withLoading($('i-guardar'), {
+                    task: async () => {
+                        try {
+                            await DB.actualizar('sudi_asea_ordenes', actual.id, fila);
+                            toast('Inspección guardada.');
+                            App.closeModal('modal-insp');
+                            await cargarOrdenes();
+                        } catch (err) {
+                            toast(/fecha_inicio|fecha_fin|gerente_nombre/.test(err.message) ? 'Falta correr el SQL 0012 en Supabase.' : err.message, 'error');
+                        }
+                    },
                 });
             });
 
-            App.initPagination({
-                itemsSelector: '#inspecciones-tabla tbody tr.inspeccion-row',
-                pageSize: 8,
-                prevBtn: document.getElementById('insp-prev'),
-                nextBtn: document.getElementById('insp-next'),
-                labelEl: document.getElementById('insp-pag-label'),
-            });
+            // ---------------- Arranque ----------------
+            (async () => {
+                try { DB = await App.db(); } catch (err) {
+                    $('tbody').innerHTML = `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-red-400">${esc(err.message)}</td></tr>`;
+                    return;
+                }
+                editor = DB.puedeEditar();
+                if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                try { await cargarCatalogos(); } catch (err) { toast(err.message, 'error'); }
+                await cargarOrdenes();
+                let t = null;
+                DB.sb.channel('sudi-asea-inspecciones')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_asea_ordenes' }, () => { clearTimeout(t); t = setTimeout(cargarOrdenes, 600); })
+                    .subscribe();
+            })();
         });
     </script>
-
-</body></html>
+</body>
+</html>

@@ -49,6 +49,7 @@
     let pagina = 1, total = 0, filas = [];
     let filtros = { estatus: '', inspector: '', desde: '', hasta: '', texto: '' };
     let inspectores = [];
+    let verificadores = [];         // con firma autorizada (sudi_usuarios.firma_verificador)
     let actual = null;              // inspección abierta (fila de la vista)
     let lados = [];                 // lados en edición
     let foliosInsp = { flexograma: [], inicial: [], distintivo: [], precinto: [] };
@@ -78,9 +79,13 @@
 
         modal('modal-insp-nueva', 'Nueva verificación', 'ph-plus-circle', `
             <form id="nv-form" class="space-y-4">
+                <div class="bg-brand-yellow/10 border border-brand-yellow/40 rounded-xl px-4 py-3 flex items-center justify-between gap-3">
+                    <span class="text-sm text-gray-300">Folio que se asignará</span>
+                    <span id="nv-folio" class="font-mono font-bold text-xl text-brand-yellow">—</span>
+                </div>
                 <div class="relative">
-                    <label class="${LB}">Cliente *</label>
-                    <input id="nv-cliente-buscar" autocomplete="off" class="${IN}" placeholder="Busca por razón social, nombre comercial o RFC">
+                    <label class="${LB}">Cliente o permiso (PL) *</label>
+                    <input id="nv-cliente-buscar" autocomplete="off" class="${IN}" placeholder="Busca por PL, número de estación, razón social o RFC">
                     <div id="nv-cliente-res" class="absolute z-10 left-0 right-0 mt-1 bg-dark-900 border border-dark-700 rounded-lg max-h-56 overflow-y-auto hidden"></div>
                     <p id="nv-cliente-sel" class="text-xs text-brand-yellow mt-1"></p>
                 </div>
@@ -92,12 +97,9 @@
                     <div><label class="${LB}">Fecha de inspección *</label><input id="nv-fecha" type="date" class="${IN}"></div>
                     <div><label class="${LB}">Zona del folio *</label><select id="nv-zona" class="${IN}"></select></div>
                     <div class="flex items-end"><label class="flex items-center gap-2 text-sm text-gray-300 pb-2"><input id="nv-af" type="checkbox" class="accent-yellow-500 w-4 h-4"> Alto flujo (folio AF)</label></div>
-                    <div><label class="${LB}">Mangueras</label><input id="nv-mangueras" type="number" min="0" class="${IN}"></div>
-                    <div><label class="${LB}">Precio por manguera</label><input id="nv-precio" type="number" min="0" step="0.01" class="${IN}"></div>
-                    <div><label class="${LB}">Viáticos</label><input id="nv-viaticos" type="number" min="0" step="0.01" class="${IN}"></div>
                 </div>
                 <div><label class="${LB}">Observaciones</label><textarea id="nv-obs" rows="2" class="${IN}"></textarea></div>
-                <div class="bg-dark-900 border border-dark-700 rounded-lg px-4 py-3 text-sm flex justify-between"><span class="text-gray-400">Folio que se asignará</span><span id="nv-folio" class="font-mono font-bold text-brand-yellow">—</span></div>
+                <p class="text-[11px] text-gray-500">Mangueras, precio por manguera y viáticos se capturan después, en la pestaña General de la verificación.</p>
                 <div class="flex justify-end gap-3">
                     <button type="button" data-modal-close="" class="${BTN} text-gray-300 hover:bg-dark-700">Cancelar</button>
                     <button type="submit" id="nv-guardar" class="${BTNY}"><i class="ph ph-floppy-disk"></i> Crear verificación</button>
@@ -254,7 +256,7 @@
         $('nv-form').reset();
         $('nv-cliente-sel').textContent = '';
         $('nv-estacion').innerHTML = '<option value="">Primero elige el cliente</option>';
-        $('nv-inspector').innerHTML = opcionesUsuarios('Selecciona...');
+        $('nv-inspector').innerHTML = '<option value="">Selecciona...</option>' + verificadores.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join('');
         $('nv-realizo').innerHTML = opcionesUsuarios('El mismo verificador');
         $('nv-fecha').value = hoy();
         const zonas = await DB.listar('sudi_zonas', { filtros: { activo: true }, orden: 'clave' }).catch(() => []);
@@ -267,20 +269,43 @@
     }
 
     let tCli = null;
+    // Busca clientes (razón social, nombre, RFC) y estaciones (PL, número de estación)
     async function buscarCliente() {
         const t = $('nv-cliente-buscar').value.trim().replace(/[,()%*\\]/g, ' ').trim();
         const box = $('nv-cliente-res');
         if (t.length < 2) { box.classList.add('hidden'); return; }
-        const { data, error } = await DB.sb.from('clientes_catalogo').select('id, razon_social, nombre_comercial, rfc')
-            .or(['razon_social', 'nombre_comercial', 'rfc'].map((c) => `${c}.ilike.%${t}%`).join(',')).limit(15);
-        if (error) { box.innerHTML = `<p class="p-3 text-xs text-red-400">${esc(DB.mensajeError(error))}</p>`; box.classList.remove('hidden'); return; }
-        box.innerHTML = data.length ? data.map((c) => `<button type="button" data-cli="${c.id}" class="block w-full text-left px-3 py-2 text-sm hover:bg-dark-700"><span class="text-white">${esc(c.razon_social || c.nombre_comercial)}</span> <span class="text-xs text-gray-500">${esc(c.rfc || '')}</span></button>`).join('')
-            : '<p class="p-3 text-xs text-gray-500">No está en el catálogo. Dalo de alta en Catálogos → Clientes.</p>';
-        box._datos = data;
+        const like = `%${t}%`;
+        const [cli, est] = await Promise.all([
+            DB.sb.from('clientes_catalogo').select('id, razon_social, nombre_comercial, rfc')
+                .or(['razon_social', 'nombre_comercial', 'rfc'].map((c) => `${c}.ilike.${like}`).join(',')).limit(10),
+            DB.sb.from('estaciones_servicio').select('id, cliente_id, nombre, nombre_comercial, permiso, numero_estacion, municipio')
+                .or(['permiso', 'numero_estacion'].map((c) => `${c}.ilike.${like}`).join(',')).not('cliente_id', 'is', null).limit(10),
+        ]);
+        if (cli.error || est.error) { box.innerHTML = `<p class="p-3 text-xs text-red-400">${esc(DB.mensajeError(cli.error || est.error))}</p>`; box.classList.remove('hidden'); return; }
+        // Nombre del cliente de cada estación encontrada
+        const ids = [...new Set(est.data.map((e) => e.cliente_id))];
+        let duenos = [];
+        if (ids.length) {
+            const r = await DB.sb.from('clientes_catalogo').select('id, razon_social, nombre_comercial, rfc').in('id', ids);
+            duenos = r.data || [];
+        }
+        box._cli = cli.data; box._est = est.data; box._duenos = duenos;
+        const itemsEst = est.data.map((e) => {
+            const c = duenos.find((x) => String(x.id) === String(e.cliente_id));
+            return `<button type="button" data-est="${esc(e.id)}" class="block w-full text-left px-3 py-2 text-sm hover:bg-dark-700">
+                <span class="text-brand-yellow font-mono">${esc(e.permiso || e.numero_estacion)}</span>
+                <span class="text-white"> · ${esc(c?.razon_social || c?.nombre_comercial || 'Cliente')}</span>
+                <span class="text-xs text-gray-500"> ${esc(e.nombre_comercial || e.nombre || '')} ${e.municipio ? '· ' + esc(e.municipio) : ''}</span></button>`;
+        });
+        const itemsCli = cli.data.map((c) => `<button type="button" data-cli="${c.id}" class="block w-full text-left px-3 py-2 text-sm hover:bg-dark-700"><span class="text-white">${esc(c.razon_social || c.nombre_comercial)}</span> <span class="text-xs text-gray-500">${esc(c.rfc || '')}</span></button>`);
+        box.innerHTML = itemsEst.length || itemsCli.length
+            ? (itemsEst.length ? `<p class="px-3 pt-2 text-[10px] uppercase text-gray-500">Estaciones (PL)</p>${itemsEst.join('')}` : '')
+              + (itemsCli.length ? `<p class="px-3 pt-2 text-[10px] uppercase text-gray-500">Clientes</p>${itemsCli.join('')}` : '')
+            : '<p class="p-3 text-xs text-gray-500">No está en el catálogo. Dalo de alta en Clientes.</p>';
         box.classList.remove('hidden');
     }
 
-    async function elegirCliente(c) {
+    async function elegirCliente(c, estacionId = '') {
         nvCliente = c;
         $('nv-cliente-res').classList.add('hidden');
         $('nv-cliente-buscar').value = c.razon_social || c.nombre_comercial;
@@ -290,7 +315,8 @@
         nvEstaciones = data || [];
         $('nv-estacion').innerHTML = nvEstaciones.length
             ? '<option value="">Selecciona la estación...</option>' + nvEstaciones.map((e) => `<option value="${esc(e.id)}">${esc(e.permiso || 'Sin PL')} · ${esc(e.nombre_comercial || e.nombre || '')} ${e.municipio ? '· ' + esc(e.municipio) : ''}</option>`).join('')
-            : '<option value="">Este cliente no tiene estaciones (agrégalas en Catálogos → Clientes)</option>';
+            : '<option value="">Este cliente no tiene estaciones (agrégalas en Clientes)</option>';
+        if (estacionId) $('nv-estacion').value = estacionId;
     }
 
     async function crearVerificacion(ev) {
@@ -302,7 +328,6 @@
         if (!$('nv-tipo').value) falta.push('tipo');
         if (!$('nv-fecha').value) falta.push('fecha');
         if (falta.length) { toast(`Falta: ${falta.join(', ')}.`, 'error'); return; }
-        const num = (id) => ($(id).value === '' ? null : Number($(id).value));
         const btn = $('nv-guardar');
         btn.disabled = true;
         try {
@@ -311,9 +336,7 @@
                 cliente_id: nvCliente.id, estacion_id: $('nv-estacion').value,
                 inspector_id: $('nv-inspector').value, realizo_id: $('nv-realizo').value || $('nv-inspector').value,
                 tipo: $('nv-tipo').value, fecha_inspeccion: $('nv-fecha').value, zona: $('nv-zona').value,
-                alto_flujo: $('nv-af').checked, mangueras: num('nv-mangueras') ?? est?.numero_mangueras ?? null,
-                dispensarios: est?.numero_dispensarios ?? null,
-                precio_por_manguera: num('nv-precio'), viaticos: num('nv-viaticos'),
+                alto_flujo: $('nv-af').checked, dispensarios: est?.numero_dispensarios ?? null,
                 observaciones: $('nv-obs').value.trim() || null,
             } });
             App.closeModal('modal-insp-nueva');
@@ -771,12 +794,15 @@
         $('btn-consecutivos')?.addEventListener('click', abrirConsecutivos);
         $('nv-cliente-buscar').addEventListener('input', () => { nvCliente = null; clearTimeout(tCli); tCli = setTimeout(buscarCliente, 300); });
         $('nv-cliente-res').addEventListener('click', (e) => {
-            const b = e.target.closest('[data-cli]'); if (!b) return;
-            elegirCliente(($('nv-cliente-res')._datos || []).find((c) => String(c.id) === b.dataset.cli));
-        });
-        $('nv-estacion').addEventListener('change', () => {
-            const est = nvEstaciones.find((x) => x.id === $('nv-estacion').value);
-            if (est?.numero_mangueras && !$('nv-mangueras').value) $('nv-mangueras').value = est.numero_mangueras;
+            const box = $('nv-cliente-res');
+            const bc = e.target.closest('[data-cli]');
+            const be = e.target.closest('[data-est]');
+            if (bc) elegirCliente((box._cli || []).find((c) => String(c.id) === bc.dataset.cli));
+            if (be) {
+                const est = (box._est || []).find((x) => String(x.id) === be.dataset.est);
+                const c = (box._duenos || []).find((x) => String(x.id) === String(est?.cliente_id));
+                if (c) elegirCliente(c, est.id); else toast('Esa estación no está ligada a un cliente.', 'warning');
+            }
         });
         ['nv-fecha', 'nv-zona', 'nv-af'].forEach((id) => $(id).addEventListener('change', previewFolio));
         $('nv-form').addEventListener('submit', crearVerificacion);
@@ -816,8 +842,14 @@
         try { DB = await App.db(); } catch (err) { $('insp-grid').innerHTML = `<p class="text-red-400">${esc(err.message)}</p>`; return; }
         if (!DB.puedeEditar()) $('btn-nueva-verificacion')?.classList.add('hidden');
         if (!DB.esAdmin()) $('btn-consecutivos')?.classList.add('hidden');
-        inspectores = await DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector', filtros: { activo: true }, orden: 'nombre_completo' }).catch(() => []);
-        if (inspectores.some((u) => u.es_inspector)) inspectores = inspectores.filter((u) => u.es_inspector);
+        const usuarios = await DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector, firma_verificador', filtros: { activo: true }, orden: 'nombre_completo' })
+            .catch(() => DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector', filtros: { activo: true }, orden: 'nombre_completo' }).catch(() => []));
+        inspectores = usuarios.some((u) => u.es_inspector) ? usuarios.filter((u) => u.es_inspector) : usuarios;
+        verificadores = usuarios.filter((u) => u.firma_verificador);
+        if (!verificadores.length) {
+            verificadores = inspectores;
+            if (DB.esAdmin()) toast('Aún no hay verificadores marcados con firma; por ahora se muestran todos los inspectores.', 'warning');
+        }
         $('f-inspector').innerHTML = '<option value="">Todos los inspectores</option>' + inspectores.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join('');
         await cargar();
         // Abrir directo: inspecciones.html?folio=DI-CAL-26-03-701

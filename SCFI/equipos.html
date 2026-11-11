@@ -184,222 +184,255 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-y-auto relative custom-scrollbar">
-
-        <div class="px-6 sm:px-12 pt-8 pb-6 max-w-5xl w-full mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <button id="sidebar-toggle" type="button"
-                    class="lg:hidden shrink-0 text-gray-400 hover:text-white mr-2">
-                    <i class="ph ph-list text-2xl"></i>
-                </button>
-                <i class="ph ph-funnel-fill text-3xl text-white"></i>
-                <h1 class="text-2xl font-bold text-white tracking-wide uppercase">EQUIPOS</h1>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <button id="btn-nuevo-equipo" data-modal-open="modal-nuevo-equipo" type="button"
-                    class="flex items-center gap-2 px-4 py-2.5 bg-dark-700 hover:bg-dark-600 text-gray-200 rounded-xl border border-dark-600 font-medium text-sm transition-colors shadow-sm">
-                    <i class="ph ph-plus text-lg text-gray-300"></i>
-                    <span>Nuevo equipo</span>
-                </button>
-                <div class="relative">
-                    <i
-                        class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                    <input type="text" id="buscador-equipos" placeholder="Buscar equipo..."
-                        class="pl-10 pr-4 py-2.5 bg-dark-700 border border-dark-600 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brand-yellow w-full sm:w-64 transition-colors">
+    <!-- Contenido Principal -->
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
+                <div class="min-w-0">
+                    <h1 class="text-2xl font-bold text-white tracking-tight truncate">Equipos</h1>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Kit de instrumentos de cada verificador y sus calibraciones</p>
                 </div>
             </div>
+            <button id="btn-nuevo" data-editor class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5"><i class="ph ph-plus"></i> <span class="hidden sm:inline">Nuevo equipo</span></button>
+        </header>
+
+        <div class="p-4 sm:p-8 space-y-5 max-w-6xl w-full mx-auto">
+            <div id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 fade-in"></div>
+            <div class="flex flex-col md:flex-row gap-2 fade-in">
+                <div class="relative flex-1">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
+                    <input id="f-texto" class="fil pl-10" placeholder="Buscar equipo o verificador...">
+                </div>
+                <select id="f-estado" class="fil md:w-56"><option value="">Todas las calibraciones</option><option value="vencida">Con calibración vencida</option><option value="porvencer">Por vencer (30 días)</option></select>
+                <select id="f-activo" class="fil md:w-40"><option value="1">Activos</option><option value="0">Inactivos</option><option value="">Todos</option></select>
+            </div>
+            <div id="lista" class="space-y-4"></div>
+            <p class="text-[11px] text-gray-500">Vigencia considerada: 12 meses desde la fecha de calibración. Ámbar = vence en 30 días o menos; rojo = vencida.</p>
         </div>
-
-        <div class="px-6 sm:px-12 pb-24 max-w-5xl w-full mx-auto space-y-6">
-
-            <div class="equipo-card bg-dark-800 rounded-2xl border border-dark-700 p-6 sm:p-7 shadow-xl hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 group fade-in relative overflow-hidden"
-                style="animation-delay: 0.1s;">
-                <h2 class="text-base font-bold text-blue-400 tracking-wider uppercase mb-6">
-                    EQUIPO HORACIO 2026
-                </h2>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 text-sm">
-                    <div class="text-gray-400 font-semibold">Verificador</div>
-                    <div class="text-gray-400 font-semibold">Fecha Volumétrica</div>
-                    <div class="text-gray-400 font-semibold">Fecha Termómetro</div>
-                    <div class="text-gray-400 font-semibold">Fecha Crono</div>
-
-                    <div class="text-blue-300 font-bold tracking-wide uppercase">HORACIO</div>
-                    <div class="text-blue-300 font-bold">7 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">13 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">30 Dic 2025</div>
-                </div>
-            </div>
-
-            <div class="equipo-card bg-dark-800 rounded-2xl border border-dark-700 p-6 sm:p-7 shadow-xl hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 group fade-in relative overflow-hidden"
-                style="animation-delay: 0.18s;">
-                <h2 class="text-base font-bold text-blue-400 tracking-wider uppercase mb-6">
-                    EQUIPO FILIBERTO 2026
-                </h2>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 text-sm">
-                    <div class="text-gray-400 font-semibold">Verificador</div>
-                    <div class="text-gray-400 font-semibold">Fecha Volumétrica</div>
-                    <div class="text-gray-400 font-semibold">Fecha Termómetro</div>
-                    <div class="text-gray-400 font-semibold">Fecha Crono</div>
-
-                    <div class="text-blue-300 font-bold tracking-wide uppercase">FILIBERTO</div>
-                    <div class="text-blue-300 font-bold">7 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">7 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">30 Dic 2025</div>
-                </div>
-            </div>
-
-            <div class="equipo-card bg-dark-800 rounded-2xl border border-dark-700 p-6 sm:p-7 shadow-xl hover:-translate-y-1 hover:border-brand-yellow/50 transition-all duration-300 group fade-in relative overflow-hidden"
-                style="animation-delay: 0.26s;">
-                <h2 class="text-base font-bold text-blue-400 tracking-wider uppercase mb-6">
-                    EQUIPO DENISSE 2026
-                </h2>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 text-sm">
-                    <div class="text-gray-400 font-semibold">Verificador</div>
-                    <div class="text-gray-400 font-semibold">Fecha Volumétrica</div>
-                    <div class="text-gray-400 font-semibold">Fecha Termómetro</div>
-                    <div class="text-gray-400 font-semibold">Fecha Crono</div>
-
-                    <div class="text-blue-300 font-bold tracking-wide uppercase">DENISSE</div>
-                    <div class="text-blue-300 font-bold">15 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">18 Nov 2025</div>
-                    <div class="text-blue-300 font-bold">30 Dic 2025</div>
-                </div>
-            </div>
-
-        </div>
-
-        <div
-            class="fixed bottom-6 right-6 sm:right-12 bg-dark-800/95 backdrop-blur-md border border-dark-700 rounded-xl px-4 py-2.5 flex items-center gap-4 text-sm shadow-2xl z-30">
-            <button type="button" class="text-gray-500 hover:text-white disabled:opacity-30 transition-colors"
-                disabled="">
-                <i class="ph ph-caret-left text-lg"></i>
-            </button>
-            <button type="button" class="text-gray-500 hover:text-white disabled:opacity-30 transition-colors"
-                disabled="">
-                <i class="ph ph-caret-right text-lg"></i>
-            </button>
-            <span class="text-gray-300 font-medium text-xs">Pág. 1 de 1</span>
-        </div>
-
     </main>
 
-    <div id="modal-nuevo-equipo" data-modal=""
-        class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+    <!-- Modal: Equipo -->
+    <div id="modal-equipo" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div
-            class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="px-6 py-4 border-b border-dark-700 flex justify-between items-center bg-dark-900/50">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="ph ph-wrench text-brand-yellow"></i> Nuevo Equipo
-                </h3>
-                <button data-modal-close="" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="ph ph-x text-lg"></i>
-                </button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
+                <h3 class="text-white font-bold text-xl flex items-center gap-2"><i class="ph ph-wrench text-brand-yellow"></i> <span id="e-titulo">Nuevo equipo</span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
-                <form id="form-nuevo-equipo" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Nombre del
-                                equipo</label>
-                            <input type="text"
-                                class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:border-brand-yellow focus:outline-none">
-                        </div>
-                        <div class="space-y-1">
-                            <label
-                                class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Verificador</label>
-                            <input type="text"
-                                class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:border-brand-yellow focus:outline-none">
-                        </div>
-                        <div class="space-y-1 sm:col-span-2">
-                            <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Tiempo de
-                                verificación por manguera</label>
-                            <input type="text"
-                                class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:border-brand-yellow focus:outline-none">
-                        </div>
-                        <div class="space-y-2 sm:col-span-2">
-                            <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Campos
-                                incluidos</label>
-                            <input type="text" id="input-campos"
-                                class="w-full bg-dark-900 border border-dark-700 rounded-lg px-3 py-2 text-sm text-gray-200 focus:border-brand-yellow focus:outline-none"
-                                placeholder="Selecciona los campos con los botones de abajo...">
-                            <div class="flex flex-wrap gap-2 mt-2">
-                                <button type="button"
-                                    onclick="document.getElementById('input-campos').value += (document.getElementById('input-campos').value ? ', ' : '') + 'Volumétricos'"
-                                    class="px-3 py-1.5 text-xs font-medium bg-dark-700 hover:bg-dark-600 rounded-lg border border-dark-600 text-gray-300 transition-colors">Volumétricos</button>
-                                <button type="button"
-                                    onclick="document.getElementById('input-campos').value += (document.getElementById('input-campos').value ? ', ' : '') + 'Termómetro'"
-                                    class="px-3 py-1.5 text-xs font-medium bg-dark-700 hover:bg-dark-600 rounded-lg border border-dark-600 text-gray-300 transition-colors">Termómetro</button>
-                                <button type="button"
-                                    onclick="document.getElementById('input-campos').value += (document.getElementById('input-campos').value ? ', ' : '') + 'Crono'"
-                                    class="px-3 py-1.5 text-xs font-medium bg-dark-700 hover:bg-dark-600 rounded-lg border border-dark-600 text-gray-300 transition-colors">Crono</button>
-                                <button type="button"
-                                    onclick="document.getElementById('input-campos').value += (document.getElementById('input-campos').value ? ', ' : '') + 'Mesa'"
-                                    class="px-3 py-1.5 text-xs font-medium bg-dark-700 hover:bg-dark-600 rounded-lg border border-dark-600 text-gray-300 transition-colors">Mesa</button>
-                                <button type="button"
-                                    onclick="document.getElementById('input-campos').value += (document.getElementById('input-campos').value ? ', ' : '') + 'Embudo'"
-                                    class="px-3 py-1.5 text-xs font-medium bg-dark-700 hover:bg-dark-600 rounded-lg border border-dark-600 text-gray-300 transition-colors">Embudo</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <div class="p-6 overflow-y-auto space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div><label class="lbl">Nombre del equipo *</label><input id="e-nombre" class="inp uppercase" placeholder="EQUIPO HORACIO 2026" autocomplete="off"></div>
+                    <div><label class="lbl">Verificador *</label><select id="e-verificador" class="inp"></select></div>
+                    <div><label class="lbl">Tiempo por manguera (min)</label><input id="e-tiempo" type="number" min="0" class="inp" placeholder="Ej. 15"></div>
+                </div>
+                <div>
+                    <label class="lbl">Instrumentos incluidos</label>
+                    <div id="e-chips" class="flex flex-wrap gap-2 mb-3"></div>
+                    <div id="e-inst" class="space-y-2"></div>
+                </div>
             </div>
-            <div class="px-6 py-4 border-t border-dark-700 bg-dark-900/50 flex justify-end gap-3">
-                <button data-modal-close=""
-                    class="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:bg-dark-700 transition-colors">
-                    Cancelar
-                </button>
-                <button type="button"
-                    onclick="window.App.closeModal('modal-nuevo-equipo'); window.App.toast('Equipo creado correctamente', 'success');"
-                    class="px-4 py-2 rounded-lg text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-500 transition-colors">
-                    Continuar
-                </button>
+            <div class="flex justify-end gap-3 px-6 py-4 border-t border-dark-700 bg-dark-900/40">
+                <button data-modal-close="" class="px-5 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="e-guardar" class="px-5 py-2.5 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const sidebar = document.querySelector('aside');
-        const sidebarToggle = document.getElementById('INLINE-DISABLED-sidebar-toggle');
-        const sidebarOverlay = document.getElementById('sidebar-overlay');
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; color-scheme: dark; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.err { border-color: #ef4444; }
+        .fil { width: 100%; background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .65rem 1rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .chip-i { padding: .4rem .8rem; font-size: .75rem; font-weight: 600; border-radius: .6rem; border: 1px solid #32384e; background: #232736; color: #9ca3af; transition: all .15s; }
+        .chip-i.on { background: rgba(234,179,8,.12); border-color: #EAB308; color: #EAB308; }
+        .eq-card { animation: rowIn .35s ease both; }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    </style>
 
-        if (sidebarToggle && sidebar && sidebarOverlay) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
-                sidebarOverlay.classList.toggle('hidden');
-            });
-
-            sidebarOverlay.addEventListener('click', () => {
-                sidebar.classList.add('-translate-x-full');
-                sidebarOverlay.classList.add('hidden');
-            });
-        }
-
+    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
+    <!-- Equipos SCFI: sudi_scfi_equipos (SQL 0014). instrumentos = { clave: { fecha, serie, certificado } } -->
+    <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.App && window.App.initSearch) {
-                window.App.initSearch(
-                    document.getElementById('buscador-equipos'),
-                    '.equipo-card'
-                );
-            } else {
-                setTimeout(() => {
-                    if (window.App && window.App.initSearch) {
-                        window.App.initSearch(
-                            document.getElementById('buscador-equipos'),
-                            '.equipo-card'
-                        );
-                    }
-                }, 500);
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const toast = (m, t = 'success') => App.toast(m, t);
+            const MES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            const INST = [['volumetrico', 'Volumétrica', 'ph-beaker'], ['termometro', 'Termómetro', 'ph-thermometer'], ['crono', 'Crono', 'ph-timer'], ['mesa', 'Mesa', 'ph-table'], ['embudo', 'Embudo', 'ph-funnel']];
+            const VIGENCIA_DIAS = 365, AVISO_DIAS = 30;
+
+            let DB = null, editor = false, equipos = [], usuarios = {}, editando = null, sel = {};
+
+            const fechaCorta = (f) => { if (!f) return '—'; const [a, m, d] = f.split('-'); return `${Number(d)} ${MES[Number(m) - 1]} ${a}`; };
+            function vence(f) {
+                if (!f) return null;
+                const v = new Date(`${f}T12:00:00`); v.setDate(v.getDate() + VIGENCIA_DIAS);
+                return Math.ceil((v - new Date()) / 86400000);
             }
+            function estadoInst(f) {
+                const d = vence(f);
+                if (d === null) return ['text-gray-500', 'Sin fecha'];
+                if (d < 0) return ['text-red-400', `Vencida hace ${-d} día(s)`];
+                if (d <= AVISO_DIAS) return ['text-amber-400', `Vence en ${d} día(s)`];
+                return ['text-sky-300', `Vigente · ${d} días`];
+            }
+            const incluidos = (e) => INST.filter(([k]) => e.instrumentos?.[k]);
+            const peor = (e) => {
+                const ds = incluidos(e).map(([k]) => vence(e.instrumentos[k].fecha)).filter((d) => d !== null);
+                if (ds.some((d) => d < 0)) return 'vencida';
+                if (ds.some((d) => d <= AVISO_DIAS)) return 'porvencer';
+                return 'ok';
+            };
+
+            async function cargar() {
+                try {
+                    const [eqs, us] = await Promise.all([
+                        DB.listar('sudi_scfi_equipos', { orden: 'nombre' }),
+                        DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector, firma_verificador, activo', orden: 'nombre_completo' }),
+                    ]);
+                    equipos = eqs;
+                    usuarios = Object.fromEntries(us.map((u) => [u.id, u]));
+                    let vs = us.filter((u) => u.activo !== false && (u.es_inspector || u.firma_verificador));
+                    if (!vs.length) vs = us.filter((u) => u.activo !== false);
+                    $('e-verificador').innerHTML = '<option value="">Selecciona</option>' + vs.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join('');
+                    pintar();
+                } catch (err) {
+                    const falta = /sudi_scfi_equipos/.test(err.message) ? ' Falta correr el SQL 0014.' : '';
+                    $('lista').innerHTML = `<p class="text-center text-red-400 text-sm py-10">${esc(err.message)}${falta}</p>`;
+                }
+            }
+
+            function pintar() {
+                const vivos = equipos.filter((e) => e.activo !== false);
+                const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
+                $('kpis').innerHTML = k('Equipos activos', vivos.length, 'ph-wrench', 'text-gray-400')
+                    + k('Vigentes', vivos.filter((e) => peor(e) === 'ok').length, 'ph-check-circle', 'text-sky-400')
+                    + k('Por vencer', vivos.filter((e) => peor(e) === 'porvencer').length, 'ph-hourglass-medium', 'text-amber-400')
+                    + k('Con vencidas', vivos.filter((e) => peor(e) === 'vencida').length, 'ph-warning', 'text-red-400');
+
+                const term = norm($('f-texto').value), st = $('f-estado').value, act = $('f-activo').value;
+                const lista = equipos.filter((e) => (act === '' || String(Number(e.activo !== false)) === act)
+                    && (!st || peor(e) === st)
+                    && (!term || norm(`${e.nombre} ${usuarios[e.verificador_id]?.nombre_completo}`).includes(term)));
+
+                $('lista').innerHTML = lista.length ? lista.map((e, i) => {
+                    const inc = incluidos(e);
+                    const p = peor(e);
+                    const borde = p === 'vencida' ? 'border-red-500/40' : p === 'porvencer' ? 'border-amber-500/40' : 'border-dark-700';
+                    const acc = editor ? `<div class="flex items-center gap-1">
+                        <button data-acc="editar" title="Editar" class="p-2 rounded-lg text-gray-400 hover:text-brand-yellow hover:bg-dark-700"><i class="ph ph-pencil-simple text-lg"></i></button>
+                        <button data-acc="activo" title="${e.activo !== false ? 'Desactivar' : 'Activar'}" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700"><i class="ph ${e.activo !== false ? 'ph-eye' : 'ph-eye-slash'} text-lg"></i></button>
+                        <button data-acc="borrar" title="Eliminar" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-dark-700"><i class="ph ph-trash text-lg"></i></button></div>` : '';
+                    return `<div data-id="${e.id}" class="eq-card bg-dark-800 rounded-2xl border ${borde} p-6 shadow-xl hover:border-brand-yellow/50 transition-colors ${e.activo === false ? 'opacity-60' : ''}" style="animation-delay:${Math.min(i * 0.05, 0.4)}s">
+                        <div class="flex items-start justify-between gap-3 mb-5">
+                            <div>
+                                <h2 class="text-base font-bold text-blue-400 tracking-wider uppercase">${esc(e.nombre)}</h2>
+                                <p class="text-xs text-gray-500 mt-1"><i class="ph ph-identification-badge"></i> ${esc(usuarios[e.verificador_id]?.nombre_completo || 'Sin verificador')}${e.tiempo_manguera_min != null ? ` · <i class="ph ph-clock"></i> ${e.tiempo_manguera_min} min por manguera` : ''}</p>
+                            </div>${acc}
+                        </div>
+                        ${inc.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">${inc.map(([key, n, ic]) => {
+                            const d = e.instrumentos[key];
+                            const [c, t] = estadoInst(d.fecha);
+                            return `<div class="bg-dark-900/60 border border-dark-700 rounded-xl p-3">
+                                <p class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold flex items-center gap-1"><i class="ph ${ic}"></i> ${n}</p>
+                                <p class="font-bold mt-1 ${c}">${fechaCorta(d.fecha)}</p>
+                                <p class="text-[10px] ${c} opacity-80">${t}</p>
+                                ${d.serie || d.certificado ? `<p class="text-[10px] text-gray-500 mt-1 truncate" title="${esc(`${d.serie || ''} ${d.certificado || ''}`)}">${esc([d.serie && `S/N ${d.serie}`, d.certificado && `Cert. ${d.certificado}`].filter(Boolean).join(' · '))}</p>` : ''}
+                            </div>`;
+                        }).join('')}</div>` : '<p class="text-sm text-gray-500">Sin instrumentos registrados.</p>'}
+                    </div>`;
+                }).join('') : `<p class="text-center text-gray-500 text-sm py-16"><i class="ph ph-wrench text-4xl block mb-2 opacity-40"></i>${equipos.length ? 'Sin equipos con ese filtro.' : 'Aún no hay equipos. Agrega el primero.'}</p>`;
+            }
+
+            // ---------------- Modal ----------------
+            function pintarInst() {
+                $('e-chips').innerHTML = INST.map(([k, n, ic]) => `<button type="button" data-inst="${k}" class="chip-i ${sel[k] ? 'on' : ''}"><i class="ph ${ic}"></i> ${n}</button>`).join('');
+                const on = INST.filter(([k]) => sel[k]);
+                $('e-inst').innerHTML = on.length ? on.map(([k, n, ic]) => `
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end bg-dark-900/50 border border-dark-700 rounded-xl p-3" data-fila="${k}">
+                        <p class="text-sm font-semibold text-white flex items-center gap-1.5 sm:pb-3"><i class="ph ${ic} text-brand-yellow"></i> ${n}</p>
+                        <div><label class="lbl">Fecha de calibración</label><input data-k="fecha" type="date" value="${esc(sel[k].fecha || '')}" class="inp"></div>
+                        <div><label class="lbl">No. de serie</label><input data-k="serie" value="${esc(sel[k].serie || '')}" class="inp uppercase"></div>
+                        <div><label class="lbl">Certificado</label><input data-k="certificado" value="${esc(sel[k].certificado || '')}" class="inp uppercase"></div>
+                    </div>`).join('') : '<p class="text-xs text-gray-500">Marca arriba los instrumentos que trae el equipo.</p>';
+            }
+            function leerInst() {
+                document.querySelectorAll('#e-inst [data-fila]').forEach((f) => {
+                    const k = f.dataset.fila;
+                    f.querySelectorAll('[data-k]').forEach((inp) => { sel[k][inp.dataset.k] = inp.value.trim().toUpperCase() || ''; });
+                    sel[k].fecha = f.querySelector('[data-k="fecha"]').value || '';
+                });
+            }
+            $('e-chips').addEventListener('click', (ev) => {
+                const b = ev.target.closest('[data-inst]');
+                if (!b) return;
+                leerInst();
+                const k = b.dataset.inst;
+                if (sel[k]) delete sel[k]; else sel[k] = { fecha: '', serie: '', certificado: '' };
+                pintarInst();
+            });
+
+            function abrir(e = null) {
+                editando = e;
+                $('e-titulo').textContent = e ? `Editar ${e.nombre}` : 'Nuevo equipo';
+                $('e-nombre').value = e?.nombre || '';
+                $('e-verificador').value = e?.verificador_id || '';
+                $('e-tiempo').value = e?.tiempo_manguera_min ?? '';
+                sel = e ? JSON.parse(JSON.stringify(e.instrumentos || {})) : Object.fromEntries(INST.slice(0, 3).map(([k]) => [k, { fecha: '', serie: '', certificado: '' }]));
+                ['e-nombre', 'e-verificador'].forEach((id) => $(id).classList.remove('err'));
+                pintarInst();
+                App.openModal('modal-equipo');
+            }
+
+            function guardar() {
+                leerInst();
+                const nombre = $('e-nombre').value.trim().replace(/\s+/g, ' ').toUpperCase();
+                const verif = $('e-verificador').value;
+                [['e-nombre', !nombre], ['e-verificador', !verif]].forEach(([id, mal]) => $(id).classList.toggle('err', mal));
+                if (!nombre || !verif) { toast('Nombre y verificador son obligatorios.', 'error'); return; }
+                if (equipos.some((x) => x.id !== editando?.id && norm(x.nombre) === norm(nombre))) { $('e-nombre').classList.add('err'); toast('Ya existe un equipo con ese nombre.', 'warning'); return; }
+                const t = $('e-tiempo').value;
+                const fila = { nombre, verificador_id: verif, tiempo_manguera_min: t === '' ? null : Number(t), instrumentos: sel };
+                App.withLoading($('e-guardar'), {
+                    task: async () => {
+                        try {
+                            if (editando) await DB.actualizar('sudi_scfi_equipos', editando.id, fila);
+                            else await DB.crear('sudi_scfi_equipos', { ...fila, activo: true, created_by: DB.perfil?.id || null });
+                            toast(editando ? 'Equipo actualizado.' : 'Equipo agregado.');
+                            App.closeModal('modal-equipo');
+                            await cargar();
+                        } catch (err) { toast(/duplicate|unique/i.test(err.message) ? 'Ya existe un equipo con ese nombre.' : err.message, 'error'); }
+                    },
+                });
+            }
+
+            $('btn-nuevo').addEventListener('click', () => abrir(null));
+            $('e-guardar').addEventListener('click', guardar);
+            ['f-estado', 'f-activo'].forEach((id) => $(id).addEventListener('change', pintar));
+            $('f-texto').addEventListener('input', pintar);
+            $('lista').addEventListener('click', (ev) => {
+                const b = ev.target.closest('[data-acc]');
+                if (!b) return;
+                const e = equipos.find((x) => x.id === b.closest('[data-id]').dataset.id);
+                if (b.dataset.acc === 'editar') abrir(e);
+                else if (b.dataset.acc === 'activo') DB.actualizar('sudi_scfi_equipos', e.id, { activo: e.activo === false }).then(cargar).catch((err) => toast(err.message, 'error'));
+                else App.confirmAction({
+                    title: '¿Eliminar equipo?', message: e.nombre, confirmLabel: 'Eliminar',
+                    onConfirm: async () => { try { await DB.eliminar('sudi_scfi_equipos', e.id); toast('Equipo eliminado.'); await cargar(); } catch (err) { toast(err.message, 'error'); } },
+                });
+            });
+
+            (async () => {
+                try { DB = await App.db(); } catch (err) { $('lista').innerHTML = `<p class="text-center text-red-400 text-sm py-10">${esc(err.message)}</p>`; return; }
+                editor = DB.puedeEditar();
+                if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                await cargar();
+            })();
         });
     </script>
-    <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-
-
 </body>
-
 </html>

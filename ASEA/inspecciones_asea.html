@@ -215,11 +215,11 @@
                     <div><label class="lbl">Fecha y hora de fin</label>
                         <div class="flex gap-2"><input id="i-fin" type="datetime-local" class="inp"><button type="button" data-ahora="i-fin" data-editor class="ahora">Ahora</button></div>
                         <p class="text-[11px] text-gray-500 mt-1">Al poner la fecha de fin la inspección queda como Realizada.</p></div>
-                    <div><label class="lbl">Gerente técnico (nombre)</label>
-                        <input id="i-gerente" list="lst-gerentes" class="inp uppercase" placeholder="Nombre de quien atendió la inspección" autocomplete="off">
-                        <datalist id="lst-gerentes"></datalist></div>
+                    <div><label class="lbl">Gerente técnico</label>
+                        <select id="i-gerente" class="inp"></select>
+                        <p class="text-[11px] text-gray-500 mt-1">Se da de alta en <a href="gerentes.html" class="text-brand-yellow hover:underline">Gerentes</a>.</p></div>
                     <div><label class="lbl">Tipo de gerente</label>
-                        <select id="i-tipo-gerente" class="inp"><option value="">Selecciona</option><option>Gerente técnico</option><option>Gerente técnico sustituto</option></select></div>
+                        <input id="i-tipo-gerente" class="inp" readonly tabindex="-1" placeholder="Se toma del gerente"></div>
                     <div><label class="lbl">¿Cumple con la inspección?</label>
                         <select id="i-cumple" class="inp"><option value="">Pendiente</option><option value="si">Cumple</option><option value="no">No cumple</option></select></div>
                     <div><label class="lbl">Estatus</label>
@@ -249,7 +249,7 @@
     </style>
 
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <!-- Inspecciones ASEA: usa sudi_asea_ordenes (SQL 0011) + fecha_inicio, fecha_fin, gerente_nombre (SQL 0012). -->
+    <!-- Inspecciones ASEA: usa sudi_asea_ordenes (SQL 0011) + fecha_inicio, fecha_fin (SQL 0012) + gerente_id → sudi_asea_gerentes (SQL 0013). -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
             'use strict';
@@ -264,7 +264,7 @@
             const dos = (n) => String(n).padStart(2, '0');
 
             let DB = null, editor = false;
-            let ordenes = [], estMap = {}, clientes = {}, usuarios = {};
+            let ordenes = [], estMap = {}, clientes = {}, usuarios = {}, gerentes = {};
             let pagina = 1, actual = null;
 
             // ---------------- Fechas ----------------
@@ -304,11 +304,13 @@
                 return out;
             }
             async function cargarCatalogos() {
-                const [ests, clis, usrs] = await Promise.all([
+                const [ests, clis, usrs, gers] = await Promise.all([
                     todo('estaciones_servicio', EST_COLS, (q) => q.not('cliente_id', 'is', null).order('id')),
                     todo('clientes_catalogo', 'id, razon_social, nombre_comercial', (q) => q.order('id')),
                     DB.listar('sudi_usuarios', { select: 'id, nombre_completo', orden: 'nombre_completo' }),
+                    DB.listar('sudi_asea_gerentes', { orden: 'nombre' }).catch(() => []),
                 ]);
+                gerentes = Object.fromEntries(gers.map((g) => [g.id, g]));
                 estMap = Object.fromEntries(ests.map((e) => [String(e.id), e]));
                 clientes = Object.fromEntries(clis.map((c) => [c.id, c]));
                 usuarios = Object.fromEntries(usrs.map((u) => [u.id, u]));
@@ -318,7 +320,7 @@
                     ordenes = await todo('sudi_asea_ordenes', '*', (q) => q.order('fecha_solicitud', { ascending: false }).order('consecutivo', { ascending: false, nullsFirst: false }));
                     pintar();
                 } catch (err) {
-                    const falta = /fecha_inicio|fecha_fin|gerente_nombre/.test(err.message) ? ' Falta correr el SQL 0012.' : '';
+                    const falta = /fecha_inicio|fecha_fin/.test(err.message) ? ' Falta correr el SQL 0012.' : /gerente_id/.test(err.message) ? ' Falta correr el SQL 0013.' : '';
                     $('tbody').innerHTML = `<tr class="no-clickable"><td colspan="9" class="py-12 text-center text-red-400">No se pudieron cargar: ${esc(err.message)}${falta}</td></tr>`;
                 }
             }
@@ -326,6 +328,8 @@
             // ---------------- Listado ----------------
             const estDe = (o) => estMap[String(o.estacion_id)] || null;
             const razonDe = (o) => clientes[o.cliente_id]?.razon_social || estDe(o)?.razon_social || '—';
+            const gerenteDe = (o) => gerentes[o.gerente_id]?.nombre || o.gerente_nombre || '';
+            const tipoGerenteDe = (o) => gerentes[o.gerente_id]?.tipo || o.tipo_gerente || '';
             function filtradas() {
                 const term = norm($('f-texto').value.trim());
                 const tipo = $('f-tipo').value, est = $('f-estado').value;
@@ -334,7 +338,7 @@
                     if (est && estado(o) !== est) return false;
                     if (!term) return true;
                     const e = estDe(o);
-                    return norm([o.folio, o.folio_seguimiento, e?.permiso, e?.nombre_comercial, e?.nombre, razonDe(o), usuarios[o.verificador_id]?.nombre_completo, o.gerente_nombre].join(' ')).includes(term);
+                    return norm([o.folio, o.folio_seguimiento, e?.permiso, e?.nombre_comercial, e?.nombre, razonDe(o), usuarios[o.verificador_id]?.nombre_completo, gerenteDe(o)].join(' ')).includes(term);
                 });
             }
             function kpis() {
@@ -352,9 +356,7 @@
                 $('tbody').innerHTML = vis.length ? vis.map((o, i) => {
                     const e = estDe(o);
                     const [ic, txt, cls] = BOTON[estado(o)];
-                    const ger = o.gerente_nombre
-                        ? `<p class="text-gray-200 uppercase">${esc(o.gerente_nombre)}</p><p class="text-[11px] text-gray-500">${esc(o.tipo_gerente || '')}</p>`
-                        : `<p class="text-gray-600">—</p><p class="text-[11px] text-gray-500">${esc(o.tipo_gerente || '')}</p>`;
+                    const ger = `<p class="${gerenteDe(o) ? 'text-gray-200' : 'text-gray-600'}">${esc(gerenteDe(o) || '—')}</p><p class="text-[11px] text-gray-500">${esc(tipoGerenteDe(o))}</p>`;
                     return `<tr data-id="${o.id}" class="in-row no-clickable hover:bg-dark-700/30 cursor-pointer" style="animation-delay:${Math.min(i * 0.02, 0.3)}s">
                         <td class="py-3 px-4"><p class="text-white font-semibold whitespace-nowrap">${esc(o.folio || '—')}</p><p class="text-[11px] text-gray-500 uppercase">${TIPO[o.tipo_verificacion] || ''}</p></td>
                         <td class="py-3 px-4 text-gray-400">${esc(o.folio_seguimiento || 'Sin folio')}</td>
@@ -394,15 +396,18 @@
                 $('i-info').innerHTML = dato('Estación', e?.permiso || o.estacion_id) + dato('Nombre', e?.nombre_comercial || e?.nombre) + dato('Razón social', razonDe(o)) + dato('Verificador', usuarios[o.verificador_id]?.nombre_completo);
                 $('i-inicio').value = aInput(o.fecha_inicio);
                 $('i-fin').value = aInput(o.fecha_fin);
-                $('i-gerente').value = o.gerente_nombre || '';
-                $('i-tipo-gerente').value = o.tipo_gerente || '';
+                // Activos agrupados por tipo; el tipo pedido en la orden va primero. Si el asignado ya está inactivo, se conserva.
+                const disponibles = Object.values(gerentes).filter((g) => g.activo || g.id === o.gerente_id);
+                const tipos = ['Gerente técnico', 'Gerente técnico sustituto'].sort((a, b) => (b === o.tipo_gerente) - (a === o.tipo_gerente));
+                $('i-gerente').innerHTML = '<option value="">Selecciona</option>' + tipos.map((t) => {
+                    const gs = disponibles.filter((g) => g.tipo === t).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+                    return gs.length ? `<optgroup label="${t}">${gs.map((g) => `<option value="${g.id}">${esc(g.nombre)}${g.activo ? '' : ' (inactivo)'}</option>`).join('')}</optgroup>` : '';
+                }).join('');
+                $('i-gerente').value = o.gerente_id || '';
+                $('i-tipo-gerente').value = tipoGerenteDe(o);
                 $('i-cumple').value = aSiNo(o.cumple);
                 $('i-estatus').value = o.estatus || 'en_tramite';
                 $('i-obs').value = o.observaciones || '';
-                // Sugerencias: gerentes ya usados en esta estación primero
-                const mismos = ordenes.filter((x) => x.gerente_nombre && String(x.estacion_id) === String(o.estacion_id)).map((x) => x.gerente_nombre);
-                const otros = ordenes.filter((x) => x.gerente_nombre).map((x) => x.gerente_nombre);
-                $('lst-gerentes').innerHTML = [...new Set([...mismos, ...otros])].slice(0, 50).map((g) => `<option value="${esc(g)}">`).join('');
                 document.querySelectorAll('#modal-insp .inp').forEach((el) => { el.classList.remove('err'); el.disabled = !editor; });
                 App.openModal('modal-insp');
             }
@@ -410,6 +415,7 @@
                 $(b.dataset.ahora).value = aInput(new Date().toISOString());
                 if (b.dataset.ahora === 'i-fin' && $('i-estatus').value === 'en_tramite') $('i-estatus').value = 'realizada';
             }));
+            $('i-gerente').addEventListener('change', () => { $('i-tipo-gerente').value = gerentes[$('i-gerente').value]?.tipo || ''; });
             $('i-fin').addEventListener('change', () => { if ($('i-fin').value && $('i-estatus').value === 'en_tramite') $('i-estatus').value = 'realizada'; });
 
             $('i-guardar').addEventListener('click', () => {
@@ -426,8 +432,9 @@
                 const fila = {
                     fecha_inicio: deInput(ini),
                     fecha_fin: deInput(fin),
-                    gerente_nombre: $('i-gerente').value.trim().replace(/\s+/g, ' ').toUpperCase() || null,
-                    tipo_gerente: $('i-tipo-gerente').value || null,
+                    gerente_id: $('i-gerente').value || null,
+                    gerente_nombre: gerentes[$('i-gerente').value]?.nombre || null,
+                    tipo_gerente: gerentes[$('i-gerente').value]?.tipo || actual.tipo_gerente || null,
                     cumple: siNo($('i-cumple').value),
                     estatus,
                     observaciones: $('i-obs').value.trim() || null,
@@ -440,7 +447,7 @@
                             App.closeModal('modal-insp');
                             await cargarOrdenes();
                         } catch (err) {
-                            toast(/fecha_inicio|fecha_fin|gerente_nombre/.test(err.message) ? 'Falta correr el SQL 0012 en Supabase.' : err.message, 'error');
+                            toast(/fecha_inicio|fecha_fin/.test(err.message) ? 'Falta correr el SQL 0012 en Supabase.' : /gerente_id/.test(err.message) ? 'Falta correr el SQL 0013 en Supabase.' : err.message, 'error');
                         }
                     },
                 });

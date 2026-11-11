@@ -127,169 +127,224 @@
 </aside>
 
     <!-- Contenido Principal -->
-    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
-        
-        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 gap-4">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
                 <div class="min-w-0">
                     <h1 class="text-2xl font-bold text-white tracking-tight truncate">Catálogo de Gerentes</h1>
-                    <p class="text-sm text-gray-400 mt-1 truncate">Gestión de gerentes técnicos y sustitutos</p>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Gerentes técnicos y sustitutos que firman las inspecciones ASEA</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative hidden sm:block">
-                    <input type="text" id="gerentes-search" placeholder="Buscar gerente..." class="w-56 bg-dark-800 border border-dark-700 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
-                </div>
-                <button data-modal-open="modal-nuevo-gerente" class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5">
-                    <i class="ph ph-plus"></i> Nuevo gerente tecnico
-                </button>
-            </div>
+            <button id="btn-nuevo" data-editor class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5"><i class="ph ph-plus"></i> <span class="hidden sm:inline">Nuevo gerente</span></button>
         </header>
 
-        <div class="p-8 max-w-7xl mx-auto w-full">
-
-            <!-- Barra superior: Título -->
-            <div class="flex items-center gap-3 mb-8 fade-in">
-                <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
-                    <i class="ph ph-user-list text-2xl text-brand-yellow"></i>
+        <div class="p-4 sm:p-8 space-y-5 max-w-6xl w-full mx-auto">
+            <div id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 fade-in"></div>
+            <div class="flex flex-col md:flex-row gap-2 fade-in">
+                <div class="relative flex-1">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
+                    <input id="f-texto" class="fil pl-10" placeholder="Buscar gerente...">
                 </div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">GERENTES</h2>
+                <select id="f-tipo" class="fil md:w-60">
+                    <option value="">Todos los tipos</option>
+                    <option>Gerente técnico</option>
+                    <option>Gerente técnico sustituto</option>
+                </select>
+                <select id="f-activo" class="fil md:w-44">
+                    <option value="1">Activos</option>
+                    <option value="0">Inactivos</option>
+                    <option value="">Todos</option>
+                </select>
             </div>
 
-            <!-- Tabla de Gerentes -->
-            <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-center border-collapse">
-                        <thead>
-                            <tr class="bg-dark-900/80 border-b border-dark-700 text-sm text-gray-400 uppercase tracking-wider font-semibold">
-                                <th class="py-5 px-6 border-r border-dark-700/50 w-1/2">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-user text-lg text-brand-yellow"></i> Nombre
-                                    </div>
-                                </th>
-                                <th class="py-5 px-6 w-1/2">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-identification-badge text-lg text-brand-yellow"></i> Tipo
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="gerentes-tbody" class="text-[15px] font-medium divide-y divide-dark-700/50">
-                            <tr class="gerente-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">Ulises Nuñez Alatorre</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">Gerente tecnico sustituto</td>
-                            </tr>
-                            <tr class="gerente-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">Ricardo Salvador Moriel Sáenz</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">Gerente tecnico</td>
-                            </tr>
-                            <tr class="gerente-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">Iván Argenis Aceves Molina</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">Gerente tecnico sustituto</td>
-                            </tr>
-                            <tr class="gerente-row hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">Sergio Mendoza Becerra</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">Gerente tecnico</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p id="gerentes-empty" class="hidden text-center text-gray-500 text-sm py-8">No se encontraron gerentes con ese criterio de búsqueda.</p>
+            <div class="bg-dark-800 border border-dark-700 rounded-2xl overflow-x-auto fade-in">
+                <table class="w-full text-sm min-w-[720px]">
+                    <thead class="bg-dark-900/80 text-[11px] text-gray-400 uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3.5 px-5 text-left"><i class="ph ph-user text-brand-yellow"></i> Nombre</th>
+                            <th class="py-3.5 px-5 text-left"><i class="ph ph-identification-badge text-brand-yellow"></i> Tipo</th>
+                            <th class="py-3.5 px-5 text-center"><i class="ph ph-clipboard-text text-brand-yellow"></i> Inspecciones</th>
+                            <th class="py-3.5 px-5 text-center">Estado</th>
+                            <th class="py-3.5 px-5 text-center w-36" data-editor></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="divide-y divide-dark-700/60">
+                        <tr><td colspan="5" class="py-12 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando gerentes...</td></tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Paginación -->
-            <div class="flex flex-col md:flex-row justify-end items-center gap-4 mt-6 fade-in" style="animation-delay: 0.2s;">
-                <div class="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-xl p-2 shadow-sm">
-                    <button id="gerentes-prev" class="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-left text-lg"></i>
-                    </button>
-                    <button id="gerentes-next" class="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-right text-lg"></i>
-                    </button>
-                    <div class="h-5 w-px bg-dark-700 mx-1"></div>
-                    <span id="gerentes-pag-label" class="text-sm text-gray-400 px-2">Pág. 1 de 1</span>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                <span id="pag-info" class="text-gray-500"></span>
+                <div class="flex items-center gap-2">
+                    <button id="pag-prev" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-left"></i></button>
+                    <span id="pag-label" class="text-gray-400 px-1"></span>
+                    <button id="pag-next" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-right"></i></button>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- Modal: Nuevo Gerente -->
-    <div id="modal-nuevo-gerente" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <!-- Modal: Gerente -->
+    <div id="modal-gerente" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-white font-bold text-lg">Nuevo gerente técnico</h3>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-user-list text-brand-yellow"></i> <span id="g-titulo">Nuevo gerente</span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form id="form-nuevo-gerente" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Nombre</label>
-                    <input type="text" required="" name="nombre" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider mb-1.5">Tipo</label>
-                    <select name="tipo" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                        <option value="Gerente tecnico">Gerente técnico</option>
-                        <option value="Gerente tecnico sustituto">Gerente técnico sustituto</option>
-                    </select>
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" id="btn-guardar-gerente" class="px-5 py-2 text-sm rounded-lg font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 hover:shadow-yellow-500/25 shadow-lg transition-all">Guardar</button>
-                </div>
-            </form>
+            <div><label class="lbl">Nombre completo *</label><input id="g-nombre" class="inp" autocomplete="off" placeholder="Ej. Ricardo Salvador Moriel Sáenz"></div>
+            <div><label class="lbl">Tipo *</label>
+                <select id="g-tipo" class="inp"><option>Gerente técnico</option><option>Gerente técnico sustituto</option></select></div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="g-guardar" class="px-5 py-2 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.err { border-color: #ef4444; }
+        .fil { width: 100%; background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .65rem 1rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .g-row { animation: rowIn .3s ease both; }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    </style>
+
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../JS/table-actions.js" defer=""></script>
+    <!-- Gerentes ASEA: sudi_asea_gerentes (SQL 0013). Se usan en Inspecciones (sudi_asea_ordenes.gerente_id). -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            App.initSearch(document.getElementById('gerentes-search'), '.gerente-row', {
-                emptyStateSelector: '#gerentes-empty',
-            });
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const toast = (m, t = 'success') => App.toast(m, t);
+            const POR_PAGINA = 15;
 
-            App.initPagination({
-                itemsSelector: '.gerente-row',
-                pageSize: 10,
-                container: document.getElementById('gerentes-tbody'),
-                prevBtn: document.getElementById('gerentes-prev'),
-                nextBtn: document.getElementById('gerentes-next'),
-                labelEl: document.getElementById('gerentes-pag-label'),
-            });
+            let DB = null, editor = false;
+            let gerentes = [], usos = {}, pagina = 1, editando = null;
 
-            const form = document.getElementById('form-nuevo-gerente');
-            form?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const data = Object.fromEntries(new FormData(form).entries());
-                const btn = document.getElementById('btn-guardar-gerente');
-                App.withLoading(btn, {
-                    loadingText: 'Guardando...',
-                    task: () => App.fakeRequest(600).then(() => {
-                        const tbody = document.getElementById('gerentes-tbody');
-                        const row = document.createElement('tr');
-                        row.className = 'gerente-row hover:bg-dark-700/30 transition-colors group';
-                        const tipoLabel = data.tipo === 'Gerente tecnico sustituto' ? 'Gerente tecnico sustituto' : 'Gerente tecnico';
-                        row.innerHTML = `
-                            <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">${data.nombre}</td>
-                            <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">${tipoLabel}</td>
-                        `;
-                        tbody.appendChild(row);
-                        form.reset();
-                        App.closeModal('modal-nuevo-gerente');
-                        App.toast('Gerente agregado correctamente.', 'success');
-                    }),
+            async function cargar() {
+                try {
+                    const [g, o] = await Promise.all([
+                        DB.listar('sudi_asea_gerentes', { orden: 'nombre' }),
+                        DB.listar('sudi_asea_ordenes', { select: 'gerente_id' }).catch(() => []),
+                    ]);
+                    gerentes = g.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+                    usos = {};
+                    o.forEach((r) => { if (r.gerente_id) usos[r.gerente_id] = (usos[r.gerente_id] || 0) + 1; });
+                    pintar();
+                } catch (err) {
+                    const falta = /sudi_asea_gerentes/.test(err.message) ? ' Falta correr el SQL 0013.' : '';
+                    $('tbody').innerHTML = `<tr><td colspan="5" class="py-12 text-center text-red-400">${esc(err.message)}${falta}</td></tr>`;
+                }
+            }
+
+            function filtrados() {
+                const term = norm($('f-texto').value), tipo = $('f-tipo').value, act = $('f-activo').value;
+                return gerentes.filter((g) => (!tipo || g.tipo === tipo) && (act === '' || String(Number(g.activo)) === act) && (!term || norm(g.nombre).includes(term)));
+            }
+
+            function pintar() {
+                const vivos = gerentes.filter((g) => g.activo);
+                const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
+                $('kpis').innerHTML = k('Activos', vivos.length, 'ph-users', 'text-gray-400')
+                    + k('Técnicos', vivos.filter((g) => g.tipo === 'Gerente técnico').length, 'ph-seal-check', 'text-sky-400')
+                    + k('Sustitutos', vivos.filter((g) => g.tipo === 'Gerente técnico sustituto').length, 'ph-arrows-left-right', 'text-amber-400')
+                    + k('Inactivos', gerentes.length - vivos.length, 'ph-eye-slash', 'text-gray-500');
+
+                const lista = filtrados();
+                const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), total);
+                const vis = lista.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+                $('tbody').innerHTML = vis.length ? vis.map((g, i) => {
+                    const sust = g.tipo === 'Gerente técnico sustituto';
+                    const acc = editor ? `<td class="py-2 px-5 text-center whitespace-nowrap">
+                        <button data-acc="editar" title="Editar" class="p-2 rounded-lg text-gray-400 hover:text-brand-yellow hover:bg-dark-700"><i class="ph ph-pencil-simple text-lg"></i></button>
+                        <button data-acc="activo" title="${g.activo ? 'Desactivar' : 'Activar'}" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700"><i class="ph ${g.activo ? 'ph-eye' : 'ph-eye-slash'} text-lg"></i></button>
+                        <button data-acc="borrar" title="Eliminar" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-dark-700"><i class="ph ph-trash text-lg"></i></button></td>` : '';
+                    return `<tr data-id="${g.id}" class="g-row hover:bg-dark-700/30" style="animation-delay:${Math.min(i * 0.02, 0.3)}s">
+                        <td class="py-3.5 px-5 font-medium ${g.activo ? 'text-gray-200' : 'text-gray-500 line-through'}">${esc(g.nombre)}</td>
+                        <td class="py-3.5 px-5"><span class="text-[11px] font-semibold px-2.5 py-1 rounded-md border ${sust ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-sky-500/10 text-sky-400 border-sky-500/30'}">${esc(g.tipo)}</span></td>
+                        <td class="py-3.5 px-5 text-center text-gray-300">${usos[g.id] || 0}</td>
+                        <td class="py-3.5 px-5 text-center">${g.activo ? '<span class="text-emerald-400 text-xs font-semibold">Activo</span>' : '<span class="text-gray-500 text-xs">Inactivo</span>'}</td>
+                        ${acc}
+                    </tr>`;
+                }).join('') : `<tr><td colspan="5" class="py-12 text-center text-gray-500">${gerentes.length ? 'Sin gerentes con ese filtro.' : 'Aún no hay gerentes. Agrega el primero.'}</td></tr>`;
+                $('pag-info').textContent = `${lista.length} gerente(s)`;
+                $('pag-label').textContent = `Pág. ${pagina} de ${total}`;
+                [['pag-prev', pagina <= 1], ['pag-next', pagina >= total]].forEach(([id, off]) => { $(id).disabled = off; $(id).classList.toggle('opacity-40', off); });
+            }
+
+            function abrir(g = null) {
+                editando = g;
+                $('g-titulo').textContent = g ? 'Editar gerente' : 'Nuevo gerente';
+                $('g-nombre').value = g?.nombre || '';
+                $('g-tipo').value = g?.tipo || 'Gerente técnico';
+                $('g-nombre').classList.remove('err');
+                App.openModal('modal-gerente');
+                setTimeout(() => $('g-nombre').focus(), 150);
+            }
+
+            function guardar() {
+                const nombre = $('g-nombre').value.trim().replace(/\s+/g, ' ');
+                if (!nombre) { $('g-nombre').classList.add('err'); toast('Escribe el nombre.', 'error'); return; }
+                if (gerentes.some((g) => g.id !== editando?.id && norm(g.nombre) === norm(nombre))) { $('g-nombre').classList.add('err'); toast('Ese gerente ya existe.', 'warning'); return; }
+                const fila = { nombre, tipo: $('g-tipo').value };
+                App.withLoading($('g-guardar'), {
+                    task: async () => {
+                        try {
+                            if (editando) await DB.actualizar('sudi_asea_gerentes', editando.id, fila);
+                            else await DB.crear('sudi_asea_gerentes', { ...fila, created_by: DB.perfil?.id || null });
+                            toast(editando ? 'Gerente actualizado.' : 'Gerente agregado.');
+                            App.closeModal('modal-gerente');
+                            await cargar();
+                        } catch (err) { toast(/duplicate|unique/i.test(err.message) ? 'Ese gerente ya existe.' : err.message, 'error'); }
+                    },
+                });
+            }
+
+            $('btn-nuevo').addEventListener('click', () => abrir(null));
+            $('g-guardar').addEventListener('click', guardar);
+            $('g-nombre').addEventListener('keydown', (e) => { if (e.key === 'Enter') guardar(); });
+            ['f-tipo', 'f-activo'].forEach((id) => $(id).addEventListener('change', () => { pagina = 1; pintar(); }));
+            $('f-texto').addEventListener('input', () => { pagina = 1; pintar(); });
+            $('pag-prev').addEventListener('click', () => { pagina -= 1; pintar(); });
+            $('pag-next').addEventListener('click', () => { pagina += 1; pintar(); });
+
+            $('tbody').addEventListener('click', (e) => {
+                const b = e.target.closest('[data-acc]');
+                if (!b) return;
+                const g = gerentes.find((x) => x.id === b.closest('[data-id]').dataset.id);
+                if (b.dataset.acc === 'editar') { abrir(g); return; }
+                if (b.dataset.acc === 'activo') {
+                    DB.actualizar('sudi_asea_gerentes', g.id, { activo: !g.activo }).then(cargar).then(() => toast(g.activo ? 'Gerente desactivado.' : 'Gerente activado.')).catch((err) => toast(err.message, 'error'));
+                    return;
+                }
+                if (usos[g.id]) { toast(`Tiene ${usos[g.id]} inspección(es); mejor desactívalo para conservar el historial.`, 'warning'); return; }
+                App.confirmAction({
+                    title: '¿Eliminar gerente?', message: g.nombre, confirmLabel: 'Eliminar',
+                    onConfirm: async () => {
+                        try { await DB.eliminar('sudi_asea_gerentes', g.id); toast('Gerente eliminado.'); await cargar(); } catch (err) { toast(err.message, 'error'); }
+                    },
                 });
             });
+
+            (async () => {
+                try { DB = await App.db(); } catch (err) {
+                    $('tbody').innerHTML = `<tr><td colspan="5" class="py-12 text-center text-red-400">${esc(err.message)}</td></tr>`;
+                    return;
+                }
+                editor = DB.puedeEditar();
+                if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                await cargar();
+            })();
         });
     </script>
-
-</body></html>
+</body>
+</html>

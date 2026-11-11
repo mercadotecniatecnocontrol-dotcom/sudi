@@ -521,6 +521,29 @@
         </div>
     </div>
 
+    <!-- Dispensarios y mangueras de una estación (tablas sudi_estacion_dispensarios / sudi_dispensario_mangueras) -->
+    <div id="modal-dispensarios" class="hidden fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm flex items-start md:items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-dark-800 border border-dark-600 rounded-3xl w-full max-w-4xl p-6 md:p-8 relative my-8">
+            <button type="button" id="disp-cerrar-x" class="absolute top-5 right-5 p-2 rounded-xl text-gray-400 hover:text-white hover:bg-dark-700 transition-colors" title="Cerrar"><i class="ph ph-x text-xl"></i></button>
+            <div class="pr-12 mb-6">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2"><i class="ph ph-gas-pump text-brand-yellow"></i> Dispensarios</h2>
+                <p id="disp-subtitulo" class="text-gray-400 text-sm mt-1"></p>
+                <p id="disp-resumen" class="text-xs text-brand-yellow mt-2 font-semibold"></p>
+            </div>
+            <div id="disp-lista" class="space-y-4"></div>
+            <button type="button" id="disp-agregar"
+                class="mt-4 w-full py-3 rounded-xl border border-dashed border-dark-600 text-gray-400 hover:text-brand-yellow hover:border-brand-yellow transition-colors flex items-center justify-center gap-2 font-medium">
+                <i class="ph ph-plus-circle text-lg"></i> Agregar dispensario
+            </button>
+            <p class="text-xs text-gray-500 mt-3">Al agregar uno nuevo se copian marca, modelo, aprobación y lados del último; solo cambia la serie. El # de dispensarios y mangueras de la estación se calcula solo.</p>
+            <div class="flex justify-end pt-6 mt-6 border-t border-dark-700">
+                <button type="button" id="disp-cerrar" class="px-6 py-3 rounded-xl border border-dark-600 text-gray-300 hover:bg-dark-700 hover:text-white transition-all font-semibold">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    <datalist id="dl-marcas"></datalist>
+    <datalist id="dl-combustibles"></datalist>
+
     <!-- Catálogo de clientes COMPARTIDO con el Portal Operativo (Operaciones → Clientes):
          clientes en "clientes_catalogo"; estaciones en "estaciones_servicio" (cliente_id = id del cliente).
          La conexión y la sesión vienen de JS/supabase-client.js (lo carga JS/app.js). -->
@@ -870,6 +893,7 @@
                             <p class="text-xs text-gray-400 truncate">${esc(e.permiso || 'Sin permiso')} ${e.municipio ? '· ' + esc(e.municipio) : ''} ${e.lat && e.lng ? '· <i class="ph ph-map-pin text-emerald-400"></i>' : ''}</p>
                         </div>
                         <div class="flex items-center gap-1 shrink-0">
+                            <button type="button" data-est-disp="${esc(e.id)}" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-dark-600 text-gray-300 hover:text-brand-yellow hover:border-brand-yellow transition-colors flex items-center gap-1" title="Dispensarios y mangueras"><i class="ph ph-gas-pump"></i> ${e.numero_dispensarios ?? 0} disp. · ${e.numero_mangueras ?? 0} mang.</button>
                             <button type="button" data-est-editar="${esc(e.id)}" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700 transition-colors" title="Editar estación"><i class="ph ph-pencil-simple"></i></button>
                             <button type="button" data-est-quitar="${esc(e.id)}" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors" title="Desvincular del cliente"><i class="ph ph-link-break"></i></button>
                         </div>
@@ -880,7 +904,9 @@
             $('est-lista').addEventListener('click', (e) => {
                 const editar = e.target.closest('[data-est-editar]');
                 const quitar = e.target.closest('[data-est-quitar]');
+                const disp = e.target.closest('[data-est-disp]');
                 const ests = estPorCliente[editando?.id] || [];
+                if (disp) abrirDispensarios(ests.find((x) => x.id === disp.dataset.estDisp));
                 if (editar) abrirFormEst(ests.find((x) => x.id === editar.dataset.estEditar));
                 if (quitar) {
                     const est = ests.find((x) => x.id === quitar.dataset.estQuitar);
@@ -1067,6 +1093,247 @@
                 }
             }
             $('est-guardar').addEventListener('click', guardarEst);
+
+            // ----------------------------------------------------------
+            // Dispensarios y mangueras de la estación (punto 10)
+            // ----------------------------------------------------------
+            const IN = 'w-full bg-dark-800 border border-dark-600 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-yellow disabled:opacity-60';
+            const LB = 'block text-[11px] font-semibold text-gray-400 mb-1';
+            let dispEst = null;          // estación abierta
+            let dispFilas = [];          // dispensarios con sus mangueras
+            let catalogosDisp = false;
+
+            async function cargarCatalogosDisp() {
+                if (catalogosDisp) return;
+                try {
+                    const [marcas, prods] = await Promise.all([
+                        DB.listar('sudi_scfi_marcas', { select: 'marca', filtros: { activo: true } }).catch(() => []),
+                        DB.listar('sudi_scfi_productos', { select: 'nombre', filtros: { activo: true } }).catch(() => []),
+                    ]);
+                    const unicos = (arr) => [...new Set(arr.map((x) => String(x || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'es'));
+                    $('dl-marcas').innerHTML = unicos([...marcas.map((m) => m.marca), 'WAYNE', 'Gilbarco', 'Bennett', 'Tokheim', 'Supramax', 'Liquid Controls'])
+                        .map((m) => `<option value="${esc(m)}">`).join('');
+                    $('dl-combustibles').innerHTML = unicos([...prods.map((p) => p.nombre), 'Magna', 'Premium', 'Diesel', 'Regular'])
+                        .map((p) => `<option value="${esc(p)}">`).join('');
+                    catalogosDisp = true;
+                } catch (_) { /* los datalist son solo ayuda */ }
+            }
+
+            function siguienteLado(mangueras) {
+                const usados = mangueras.map((m) => m.lado);
+                for (let c = 65; c <= 90; c++) { const l = String.fromCharCode(c); if (!usados.includes(l)) return l; }
+                return '';
+            }
+
+            function pintarResumenDisp() {
+                const guardados = dispFilas.filter((d) => d.id);
+                const mang = guardados.reduce((s, d) => s + d.mangueras.length, 0);
+                $('disp-resumen').textContent = `${guardados.length} dispensario(s) · ${mang} manguera(s) · ${mang * 25} min estimados según la norma`;
+            }
+
+            function htmlManguera(m, di, mi, ro) {
+                return `
+                    <div class="flex items-center gap-2" data-mi="${mi}">
+                        <input ${ro} data-m="lado" value="${esc(m.lado)}" maxlength="3" class="${IN} w-16 text-center uppercase" placeholder="A">
+                        <input ${ro} data-m="combustible" value="${esc(m.combustible)}" list="dl-combustibles" class="${IN}" placeholder="Combustible">
+                        ${ro ? '' : `<button type="button" data-quitar-m="${di}:${mi}" class="p-2 rounded-lg text-gray-500 hover:text-red-400 hover:bg-red-500/10" title="Quitar lado"><i class="ph ph-minus-circle"></i></button>`}
+                    </div>`;
+            }
+
+            function pintarDispensarios() {
+                const ro = DB.puedeEditar() ? '' : 'disabled';
+                $('disp-agregar').classList.toggle('hidden', Boolean(ro));
+                $('disp-lista').innerHTML = dispFilas.length ? dispFilas.map((d, di) => `
+                    <div class="bg-dark-900 border ${d.id ? 'border-dark-600' : 'border-brand-yellow/50'} rounded-2xl p-5" data-di="${di}">
+                        <div class="flex items-center justify-between mb-4">
+                            <p class="text-white font-bold">Dispensario ${esc(d.numero)} ${d.id ? '' : '<span class="ml-2 text-[10px] uppercase text-brand-yellow">sin guardar</span>'}</p>
+                            ${ro ? '' : `<div class="flex items-center gap-1">
+                                <button type="button" data-disp-guardar="${di}" class="px-3 py-1.5 rounded-lg bg-brand-yellow text-dark-900 text-xs font-bold hover:bg-yellow-400 flex items-center gap-1"><i class="ph ph-floppy-disk"></i> Guardar</button>
+                                <button type="button" data-disp-eliminar="${di}" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10" title="Eliminar dispensario"><i class="ph ph-trash"></i></button>
+                            </div>`}
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div><label class="${LB}">Número *</label><input ${ro} data-f="numero" type="number" min="1" value="${esc(d.numero)}" class="${IN}"></div>
+                            <div><label class="${LB}">Tipo</label>
+                                <select ${ro} data-f="tipo_instrumento" class="${IN}">
+                                    <option value="dispensario" ${d.tipo_instrumento === 'dispensario' ? 'selected' : ''}>Dispensario</option>
+                                    <option value="medidor_alto_flujo" ${d.tipo_instrumento === 'medidor_alto_flujo' ? 'selected' : ''}>Medidor alto flujo</option>
+                                </select></div>
+                            <div><label class="${LB}">Marca *</label><input ${ro} data-f="marca" list="dl-marcas" value="${esc(d.marca)}" class="${IN}" placeholder="WAYNE"></div>
+                            <div><label class="${LB}">Modelo *</label><input ${ro} data-f="modelo" value="${esc(d.modelo)}" class="${IN}" placeholder="H(N/LU)22-22RV"></div>
+                            <div><label class="${LB}">Serie *</label><input ${ro} data-f="serie" value="${esc(d.serie)}" class="${IN}" placeholder="19449E"></div>
+                            <div class="md:col-span-2"><label class="${LB}">Número de aprobación</label><input ${ro} data-f="numero_aprobacion" value="${esc(d.numero_aprobacion)}" class="${IN}" placeholder="DGN.312.01.2014.2872"></div>
+                            <div><label class="${LB}">Año de aprobación</label><input ${ro} data-f="anio_aprobacion" type="number" min="1950" max="2100" value="${esc(d.anio_aprobacion)}" class="${IN}"></div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="${LB}">Lados / mangueras (${d.mangueras.length})</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                ${d.mangueras.map((m, mi) => htmlManguera(m, di, mi, ro)).join('')}
+                            </div>
+                            ${ro ? '' : `<button type="button" data-agregar-m="${di}" class="mt-2 text-xs font-semibold text-gray-400 hover:text-brand-yellow flex items-center gap-1"><i class="ph ph-plus"></i> Agregar lado</button>`}
+                        </div>
+                    </div>`).join('')
+                    : '<p class="text-gray-500 text-sm bg-dark-900 border border-dashed border-dark-600 rounded-xl p-6 text-center">Esta estación aún no tiene dispensarios capturados.</p>';
+                pintarResumenDisp();
+            }
+
+            // Lee lo escrito en una tarjeta y lo guarda en dispFilas[di]
+            function leerTarjeta(di) {
+                const card = document.querySelector(`#disp-lista [data-di="${di}"]`);
+                const d = dispFilas[di];
+                if (!card || !d) return d;
+                card.querySelectorAll('[data-f]').forEach((el) => { d[el.dataset.f] = el.value.trim(); });
+                d.mangueras = [...card.querySelectorAll('[data-mi]')].map((row) => ({
+                    lado: row.querySelector('[data-m="lado"]').value.trim().toUpperCase(),
+                    combustible: row.querySelector('[data-m="combustible"]').value.trim(),
+                }));
+                return d;
+            }
+            const leerTodas = () => dispFilas.forEach((_, i) => leerTarjeta(i));
+
+            async function abrirDispensarios(est) {
+                dispEst = est;
+                $('disp-subtitulo').textContent = `${nombreEst(est)} · ${est.permiso || 'Sin permiso'}`;
+                $('disp-lista').innerHTML = '<p class="text-xs text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando dispensarios...</p>';
+                $('modal-dispensarios').classList.remove('hidden');
+                cargarCatalogosDisp();
+                try {
+                    const filas = await DB.listar('sudi_estacion_dispensarios', {
+                        select: '*, mangueras:sudi_dispensario_mangueras(id, lado, combustible, orden)',
+                        filtros: { estacion_id: est.id, activo: true },
+                        orden: 'numero',
+                    });
+                    dispFilas = filas.map((d) => ({ ...d, mangueras: (d.mangueras || []).sort((a, b) => a.orden - b.orden || a.lado.localeCompare(b.lado)) }));
+                    pintarDispensarios();
+                } catch (err) {
+                    $('disp-lista').innerHTML = `<p class="text-sm text-red-400">${esc(err.message)}</p>`;
+                }
+            }
+
+            function cerrarDispensarios() {
+                leerTodas();
+                const pendientes = dispFilas.filter((d) => !d.id).length;
+                const cerrar = () => { $('modal-dispensarios').classList.add('hidden'); dispEst = null; dispFilas = []; };
+                if (pendientes && DB.puedeEditar()) {
+                    App.confirmAction({
+                        title: 'Dispensarios sin guardar',
+                        message: `Hay ${pendientes} dispensario(s) sin guardar. ¿Cerrar de todos modos?`,
+                        confirmLabel: 'Cerrar sin guardar',
+                        onConfirm: cerrar,
+                    });
+                } else cerrar();
+            }
+            $('disp-cerrar').addEventListener('click', cerrarDispensarios);
+            $('disp-cerrar-x').addEventListener('click', cerrarDispensarios);
+
+            $('disp-agregar').addEventListener('click', () => {
+                leerTodas();
+                const ultimo = dispFilas[dispFilas.length - 1];
+                const numero = dispFilas.reduce((mx, d) => Math.max(mx, Number(d.numero) || 0), 0) + 1;
+                dispFilas.push({
+                    id: null, numero,
+                    tipo_instrumento: ultimo?.tipo_instrumento || 'dispensario',
+                    marca: ultimo?.marca || '', modelo: ultimo?.modelo || '', serie: '',
+                    numero_aprobacion: ultimo?.numero_aprobacion || '', anio_aprobacion: ultimo?.anio_aprobacion || '',
+                    mangueras: ultimo ? ultimo.mangueras.map((m) => ({ lado: m.lado, combustible: m.combustible }))
+                        : [{ lado: 'A', combustible: '' }, { lado: 'B', combustible: '' }],
+                });
+                pintarDispensarios();
+                const nueva = document.querySelector(`#disp-lista [data-di="${dispFilas.length - 1}"]`);
+                nueva?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                nueva?.querySelector('[data-f="serie"]')?.focus();
+            });
+
+            $('disp-lista').addEventListener('click', (e) => {
+                const agregarM = e.target.closest('[data-agregar-m]');
+                const quitarM = e.target.closest('[data-quitar-m]');
+                const guardar = e.target.closest('[data-disp-guardar]');
+                const eliminar = e.target.closest('[data-disp-eliminar]');
+                if (agregarM) {
+                    leerTodas();
+                    const d = dispFilas[Number(agregarM.dataset.agregarM)];
+                    d.mangueras.push({ lado: siguienteLado(d.mangueras), combustible: '' });
+                    pintarDispensarios();
+                }
+                if (quitarM) {
+                    leerTodas();
+                    const [di, mi] = quitarM.dataset.quitarM.split(':').map(Number);
+                    dispFilas[di].mangueras.splice(mi, 1);
+                    pintarDispensarios();
+                }
+                if (guardar) guardarDispensario(Number(guardar.dataset.dispGuardar), guardar);
+                if (eliminar) {
+                    leerTodas();
+                    const di = Number(eliminar.dataset.dispEliminar);
+                    const d = dispFilas[di];
+                    if (!d.id) { dispFilas.splice(di, 1); pintarDispensarios(); return; }
+                    App.confirmAction({
+                        title: 'Eliminar dispensario',
+                        message: `¿Eliminar el dispensario ${d.numero} (serie ${d.serie || 'sin serie'}) y sus ${d.mangueras.length} lado(s)?`,
+                        confirmLabel: 'Eliminar',
+                        onConfirm: async () => {
+                            try {
+                                await DB.eliminar('sudi_estacion_dispensarios', d.id);
+                                dispFilas.splice(di, 1);
+                                pintarDispensarios();
+                                await refrescarConteos();
+                                toast('Dispensario eliminado.');
+                            } catch (err) { toast(err.message, 'error'); }
+                        },
+                    });
+                }
+            });
+
+            async function refrescarConteos() {
+                await cargarEstaciones();
+                pintar();
+                pintarEstaciones();
+            }
+
+            async function guardarDispensario(di, btn) {
+                leerTodas();
+                const d = dispFilas[di];
+                const numero = parseInt(d.numero, 10);
+                const anio = d.anio_aprobacion === '' || d.anio_aprobacion == null ? null : parseInt(d.anio_aprobacion, 10);
+                const errores = [];
+                if (!(numero > 0)) errores.push('número de dispensario');
+                if (dispFilas.some((x, i) => i !== di && Number(x.numero) === numero)) errores.push('número repetido en esta estación');
+                if (!d.marca) errores.push('marca');
+                if (!d.modelo) errores.push('modelo');
+                if (!d.serie) errores.push('serie');
+                if (anio !== null && !(anio >= 1950 && anio <= 2100)) errores.push('año de aprobación');
+                const mangueras = d.mangueras.filter((m) => m.lado || m.combustible);
+                if (!mangueras.length) errores.push('al menos un lado');
+                if (mangueras.some((m) => !/^[A-Z0-9]{1,3}$/.test(m.lado) || !m.combustible)) errores.push('lado (A, B, C…) y combustible en cada manguera');
+                const llaves = mangueras.map((m) => `${m.lado}|${m.combustible.toLowerCase()}`);
+                if (new Set(llaves).size !== llaves.length) errores.push('lados repetidos');
+                if (errores.length) { toast(`Revisa: ${errores.join(', ')}.`, 'error'); return; }
+
+                const datos = {
+                    estacion_id: dispEst.id, numero, tipo_instrumento: d.tipo_instrumento || 'dispensario',
+                    marca: d.marca, modelo: d.modelo, serie: d.serie.toUpperCase(),
+                    numero_aprobacion: d.numero_aprobacion || null, anio_aprobacion: anio,
+                };
+                if (btn) btn.disabled = true;
+                try {
+                    const guardado = d.id ? await DB.actualizar('sudi_estacion_dispensarios', d.id, datos)
+                        : await DB.crear('sudi_estacion_dispensarios', datos);
+                    // Lados: se reemplazan completos (borrar y volver a crear)
+                    const { error: errDel } = await DB.sb.from('sudi_dispensario_mangueras').delete().eq('dispensario_id', guardado.id);
+                    if (errDel) throw new Error(DB.mensajeError(errDel));
+                    const nuevas = await DB.crear('sudi_dispensario_mangueras', mangueras.map((m, i) => ({
+                        dispensario_id: guardado.id, lado: m.lado, combustible: m.combustible, orden: i,
+                    })));
+                    dispFilas[di] = { ...guardado, mangueras: nuevas };
+                    pintarDispensarios();
+                    await refrescarConteos();
+                    toast(`Dispensario ${numero} guardado.`);
+                } catch (err) {
+                    toast(err.message, 'error');
+                } finally {
+                    if (btn) btn.disabled = false;
+                }
+            }
 
             // ----------------------------------------------------------
             // Arranque

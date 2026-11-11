@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/reportes/scfi/:file", "destination": "/reportes/SCFI/:file" },
+    { "source": "/reportes/asea/inspecciones_trimestrales.html", "destination": "/reportes/ASEA/Inspecciones_trimestrales.html" },
+    { "source": "/reportes/ASEA/inspecciones_trimestrales.html", "destination": "/reportes/ASEA/Inspecciones_trimestrales.html" },
+    { "source": "/reportes/asea/:file", "destination": "/reportes/ASEA/:file" },
+    { "source": "/scfi/:path*", "destination": "/SCFI/:path*" },
+    { "source": "/asea/:path*", "destination": "/ASEA/:path*" }
+  ]
+}

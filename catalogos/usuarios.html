@@ -134,6 +134,8 @@
                                 <th class="py-4 px-4 font-semibold">E-mail</th>
                                 <th class="py-4 px-4 font-semibold">Perfil</th>
                                 <th class="py-4 px-4 font-semibold">Género</th>
+                                <th class="py-4 px-4 font-semibold text-center">Inspector</th>
+                                <th class="py-4 px-4 font-semibold text-center">Firma verificador</th>
                                 <th class="py-4 px-4 font-semibold">Estado</th>
                                 <th class="py-4 px-4 font-semibold rounded-tr-xl text-right">Acciones</th>
                                 
@@ -184,6 +186,17 @@
                         <option value="gerente">Gerente</option>
                         <option value="tecnico_verificador">Técnico Verificador</option>
                     </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <label class="flex items-center gap-3 bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 cursor-pointer">
+                        <input id="u-inspector" type="checkbox" class="accent-yellow-500 w-5 h-5">
+                        <span><span class="block text-sm font-semibold text-gray-200">Es inspector</span><span class="block text-xs text-gray-500">Aparece en inspecciones y hologramas</span></span>
+                    </label>
+                    <label class="flex items-center gap-3 bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 cursor-pointer">
+                        <input id="u-firma" type="checkbox" class="accent-yellow-500 w-5 h-5">
+                        <span><span class="block text-sm font-semibold text-gray-200">Firma como verificador</span><span class="block text-xs text-gray-500">Aparece en "Verificador SUDI (firma)"</span></span>
+                    </label>
                 </div>
 
                 <hr class="border-dark-700 my-6">
@@ -251,8 +264,9 @@
             const btnGuardar = $('btn-guardar-usuario');
             let DB = null;
             let miAuthId = null;
+            let extra = {};   // es_inspector / firma_verificador de sudi_usuarios, por auth_id y por correo
 
-            const filaMensaje = (txt) => `<tr class="no-clickable empty-state-row"><td colspan="6" class="py-10 text-center text-gray-500">${txt}</td></tr>`;
+            const filaMensaje = (txt) => `<tr class="no-clickable empty-state-row"><td colspan="8" class="py-10 text-center text-gray-500">${txt}</td></tr>`;
             const abrir = () => { form.reset(); modal.classList.remove('hidden'); setTimeout(() => $('u-correo').focus(), 50); };
             const cerrar = () => modal.classList.add('hidden');
 
@@ -274,6 +288,9 @@
                     const activo = u.activo !== false;
                     const genero = GENEROS[u.genero] || '';
                     const esYo = u.auth_id === miAuthId;
+                    const x = extra[u.auth_id] || extra[String(u.correo || u.email_auth || '').toLowerCase()] || u;
+                    const casilla = (campo, on, titulo) => `<button type="button" data-accion="marca" data-campo="${campo}" data-id="${esc(u.auth_id)}" data-valor="${on ? '0' : '1'}" data-nombre="${esc(nombre)}" title="${titulo}"
+                        class="w-9 h-9 rounded-lg border inline-flex items-center justify-center transition-colors ${on ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400' : 'bg-dark-900 border-dark-600 text-gray-600 hover:text-gray-300'}"><i class="ph${on ? '-bold ph-check' : ' ph-minus'}"></i></button>`;
                     return `
                     <tr class="no-clickable border-b border-dark-700 hover:bg-dark-800/50 transition-colors ${activo ? '' : 'opacity-50'}">
                         <td class="py-4 px-4 font-medium text-white">
@@ -285,6 +302,8 @@
                         <td class="py-4 px-4 text-gray-400 lowercase">${esc(correo)}</td>
                         <td class="py-4 px-4">${esc(PERFILES[u.perfil] || u.perfil || '')}</td>
                         <td class="py-4 px-4">${genero ? `<span class="px-2 py-1 rounded text-xs border bg-blue-500/10 text-blue-400 border-blue-500/20 font-semibold">${genero}</span>` : ''}</td>
+                        <td class="py-4 px-4 text-center">${casilla('es_inspector', Boolean(x.es_inspector), 'Es inspector')}</td>
+                        <td class="py-4 px-4 text-center">${casilla('firma_verificador', Boolean(x.firma_verificador), 'Firma como verificador')}</td>
                         <td class="py-4 px-4">
                             <span class="px-2 py-1 rounded text-xs border font-semibold ${activo ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}">${activo ? 'Activo' : 'Inactivo'}</span>
                         </td>
@@ -300,7 +319,15 @@
 
             async function cargar() {
                 try {
-                    const lista = await DB.rpc('sudi_listar_usuarios');
+                    const [lista, filas] = await Promise.all([
+                        DB.rpc('sudi_listar_usuarios'),
+                        DB.listar('sudi_usuarios').catch(() => []),
+                    ]);
+                    extra = {};
+                    filas.forEach((f) => {
+                        if (f.auth_id) extra[f.auth_id] = f;
+                        if (f.correo) extra[String(f.correo).toLowerCase()] = f;
+                    });
                     lista.sort((a, b) => (a.activo === false) - (b.activo === false) || nombreDe(a).localeCompare(nombreDe(b), 'es'));
                     pintar(lista);
                 } catch (err) {
@@ -327,6 +354,11 @@
                 btnGuardar.classList.add('opacity-60');
                 try {
                     const r = await DB.rpc('sudi_crear_usuario', datos);
+                    const ins = $('u-inspector').checked, fir = $('u-firma').checked;
+                    if (ins || fir) {
+                        const authId = r?.auth_id || (await DB.rpc('sudi_listar_usuarios')).find((u) => String(u.correo || u.email_auth || '').toLowerCase() === datos.p_correo)?.auth_id;
+                        if (authId) await DB.rpc('sudi_marcar_verificador', { p_auth_id: authId, p_es_inspector: true, p_firma: fir });
+                    }
                     toast(r?.cuenta_existente
                         ? 'Usuario agregado. Ya tenía cuenta: entra con su contraseña actual.'
                         : 'Usuario creado. Ya puede iniciar sesión.');
@@ -351,6 +383,14 @@
                         if (!confirm(`¿${activar ? 'Activar' : 'Desactivar'} a ${nombre}?`)) return;
                         await DB.rpc('sudi_activar_usuario', { p_auth_id: id, p_activo: activar });
                         toast(activar ? 'Usuario activado.' : 'Usuario desactivado.');
+                    } else if (accion === 'marca') {
+                        const on = btn.dataset.valor === '1';
+                        const campo = btn.dataset.campo;
+                        const args = { p_auth_id: id, p_es_inspector: null, p_firma: null };
+                        if (campo === 'firma_verificador') { args.p_firma = on; if (on) args.p_es_inspector = true; }
+                        else { args.p_es_inspector = on; if (!on) args.p_firma = false; }
+                        await DB.rpc('sudi_marcar_verificador', args);
+                        toast(`${nombre}: ${campo === 'firma_verificador' ? (on ? 'ya firma como verificador.' : 'ya no firma como verificador.') : (on ? 'marcado como inspector.' : 'ya no es inspector.')}`);
                     } else if (accion === 'password') {
                         const pass = prompt(`Nueva contraseña para ${nombre} (mínimo 8 caracteres).\nSi también usa el Portal Tecnocontrol, cambia ahí también.`);
                         if (pass === null) return;

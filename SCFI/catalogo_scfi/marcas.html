@@ -183,314 +183,231 @@
 </aside>
 
     <!-- Contenido Principal -->
-    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 min-w-0">
-
-        <header class="py-4 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 gap-4 flex-wrap">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 min-w-0 custom-scrollbar">
+        <header class="h-20 px-4 sm:px-8 flex items-center justify-between border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-10 shrink-0 fade-in gap-4">
             <div class="flex items-center gap-3 min-w-0">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
+                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white"><i class="ph ph-list text-lg"></i></button>
                 <div class="min-w-0">
                     <h1 class="text-2xl font-bold text-white tracking-tight truncate">Catálogo de Marcas</h1>
-                    <p class="text-sm text-gray-400 mt-1 hidden sm:block truncate">Gestión de marcas de equipos y certificaciones DGN</p>
+                    <p class="text-sm text-gray-400 mt-1 truncate">Marcas de dispensarios y su certificación DGN</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-3 w-full sm:w-auto mt-2 sm:mt-0">
-                <div class="relative flex-1 sm:flex-none">
-                    <input type="text" id="marcas-search" placeholder="Buscar por clave o marca..." class="w-full sm:w-64 bg-dark-800 border border-dark-700 text-white rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                </div>
-                <button data-modal-open="modal-nueva-marca" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5 shrink-0">
-                    <i class="ph ph-plus"></i> <span class="hidden sm:inline">Nueva marca</span><span class="sm:hidden">Nuevo</span>
-                </button>
-            </div>
+            <button id="btn-nueva" data-editor class="flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all hover:-translate-y-0.5"><i class="ph ph-plus"></i> <span class="hidden sm:inline">Nueva marca</span></button>
         </header>
 
-        <div class="p-8 max-w-7xl mx-auto w-full">
-
-            <!-- Barra superior: Título -->
-            <div class="flex items-center gap-3 mb-8 fade-in">
-                <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
-                    <i class="ph ph-factory text-2xl text-brand-yellow"></i>
+        <div class="p-4 sm:p-8 space-y-5 max-w-7xl w-full mx-auto">
+            <div id="kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 fade-in"></div>
+            <div class="flex flex-col md:flex-row gap-2 fade-in">
+                <div class="relative flex-1">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
+                    <input id="f-texto" class="fil pl-10" placeholder="Buscar por clave, marca o folio DGN...">
                 </div>
-                <h2 class="text-2xl font-bold text-white tracking-tight">MARCAS</h2>
+                <select id="f-dgn" class="fil md:w-52"><option value="">Con y sin DGN</option><option value="1">Con certificación DGN</option><option value="0">Sin certificación</option></select>
+                <select id="f-activo" class="fil md:w-40"><option value="1">Activas</option><option value="0">Inactivas</option><option value="">Todas</option></select>
             </div>
 
-            <!-- Tabla de Marcas -->
-            <div class="bg-dark-800 rounded-2xl border border-dark-700 shadow-lg overflow-hidden fade-in" style="animation-delay: 0.1s;">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-center border-collapse">
-                        <thead>
-                            <tr class="bg-dark-900/80 border-b border-dark-700 text-sm text-gray-400 uppercase tracking-wider font-semibold">
-                                <th class="py-5 px-6 w-32 border-r border-dark-700/50">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-hash text-lg text-brand-yellow"></i> Clave
-                                    </div>
-                                </th>
-                                <th class="py-5 px-6 border-r border-dark-700/50 w-1/3">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-list-dashes text-lg text-brand-yellow"></i> Marca
-                                    </div>
-                                </th>
-                                <th class="py-5 px-6">
-                                    <div class="flex items-center justify-center gap-2">
-                                        <i class="ph ph-certificate text-lg text-brand-yellow"></i> DGN
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="marcas-tbody" class="text-[15px] font-medium divide-y divide-dark-700/50">
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    64</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.07.2006.5268</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    65</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.07.2006.5267</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    66</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2008.3237</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    142</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2014.2872
-                                    2014-09-29</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    143</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2014.2947
-                                    2014-10-03</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    144</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2014.2948
-                                    2014-10-03</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    145</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Bennett</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2014.2949
-                                    2014-10-03</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    3</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Digikrönen</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2006.7200</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    112</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Dresse Wayne</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2014.2872</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    113</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Dresser Wayne</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2006.6503</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    114</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Dresser Wayne</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.01.2006.6505</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/30 transition-colors group">
-                                <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">
-                                    115</td>
-                                <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">
-                                    Dresser Wayne</td>
-                                <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">DGN.312.07.2007.7765</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="bg-dark-800 border border-dark-700 rounded-2xl overflow-x-auto fade-in">
+                <table class="w-full text-sm min-w-[760px]">
+                    <thead class="bg-dark-900/80 text-[11px] text-gray-400 uppercase tracking-wider">
+                        <tr>
+                            <th class="py-3.5 px-5 text-left w-28"><i class="ph ph-hash text-brand-yellow"></i> Clave</th>
+                            <th class="py-3.5 px-5 text-left"><i class="ph ph-tag text-brand-yellow"></i> Marca</th>
+                            <th class="py-3.5 px-5 text-center">DGN</th>
+                            <th class="py-3.5 px-5 text-left"><i class="ph ph-certificate text-brand-yellow"></i> Folio de certificación</th>
+                            <th class="py-3.5 px-5 text-left"><i class="ph ph-calendar text-brand-yellow"></i> Fecha</th>
+                            <th class="py-3.5 px-5 text-center w-36" data-editor></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody" class="divide-y divide-dark-700/60">
+                        <tr><td colspan="6" class="py-12 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando marcas...</td></tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Estado vacío (buscador) -->
-            <p id="marcas-empty-state" class="hidden text-center text-gray-500 text-sm py-6">No se encontraron marcas
-                con ese criterio de búsqueda.</p>
-
-            <!-- Paginación -->
-            <div class="flex flex-col md:flex-row justify-end items-center gap-4 mt-6 fade-in" style="animation-delay: 0.2s;">
-                <div class="flex items-center gap-2 bg-dark-800 border border-dark-700 rounded-xl p-2 shadow-sm">
-                    <button id="marcas-prev" class="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-left text-lg"></i>
-                    </button>
-                    <button id="marcas-next" class="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-dark-700 transition-colors">
-                        <i class="ph ph-caret-right text-lg"></i>
-                    </button>
-                    <div class="h-5 w-px bg-dark-700 mx-1"></div>
-                    <span id="marcas-page-label" class="text-sm text-gray-400 px-2">Pág. 1 de 1</span>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-sm">
+                <span id="pag-info" class="text-gray-500"></span>
+                <div class="flex items-center gap-2">
+                    <button id="pag-prev" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-left"></i></button>
+                    <span id="pag-label" class="text-gray-400 px-1"></span>
+                    <button id="pag-next" class="p-2 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white"><i class="ph ph-caret-right"></i></button>
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- Modal: Nueva marca -->
-    <div id="modal-nueva-marca" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
+    <!-- Modal: Marca -->
+    <div id="modal-marca" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-sm p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-white font-bold text-lg">Nueva marca</h3>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-tag text-brand-yellow"></i> <span id="m-titulo">Nueva marca</span></h3>
+                <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
             </div>
-            <form id="form-nueva-marca" novalidate="" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1.5">Clave
-                        *</label>
-                    <input type="text" name="clave" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <p class="hidden text-xs text-red-400 mt-1 field-error">Este campo es obligatorio.</p>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1.5">Marca
-                        *</label>
-                    <input type="text" name="marca" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    <p class="hidden text-xs text-red-400 mt-1 field-error">Este campo es obligatorio.</p>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1.5">¿Certificación
-                        DGN? *</label>
-                    <select name="certificacion" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                        <option value="">Selecciona una opción</option>
-                        <option value="si">Sí</option>
-                        <option value="no">No</option>
-                    </select>
-                    <p class="hidden text-xs text-red-400 mt-1 field-error">Este campo es obligatorio.</p>
-                </div>
-                <div id="marca-dgn-folio-wrapper" class="hidden">
-                    <label class="block text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1.5">Folio
-                        DGN</label>
-                    <input type="text" name="dgnFolio" placeholder="DGN.312.01.2026.0001" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-4 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors">Cancelar</button>
-                    <button type="submit" id="btn-guardar-marca" class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-brand-yellow to-yellow-600 rounded-lg shadow-lg hover:shadow-yellow-500/25 transition-all">Guardar</button>
-                </div>
-            </form>
+            <div class="grid grid-cols-3 gap-3">
+                <div><label class="lbl">Clave *</label><input id="m-clave" class="inp uppercase" autocomplete="off"></div>
+                <div class="col-span-2"><label class="lbl">Marca *</label><input id="m-marca" list="lst-marcas" class="inp" autocomplete="off"><datalist id="lst-marcas"></datalist></div>
+            </div>
+            <div><label class="lbl">¿Certificación DGN? *</label>
+                <select id="m-dgn" class="inp"><option value="si">Sí</option><option value="no">No</option></select></div>
+            <div id="m-dgn-campos" class="grid grid-cols-3 gap-3">
+                <div class="col-span-2"><label class="lbl">Folio de certificación *</label><input id="m-folio" class="inp uppercase" placeholder="DGN.312.01.2014.2872" autocomplete="off"></div>
+                <div><label class="lbl">Fecha</label><input id="m-fecha" type="date" class="inp"></div>
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button data-modal-close="" class="px-4 py-2 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                <button id="m-guardar" class="px-5 py-2 text-sm rounded-lg font-medium text-dark-900 bg-brand-yellow hover:bg-yellow-400">Guardar</button>
+            </div>
         </div>
     </div>
 
+    <style>
+        .lbl { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #9ca3af; margin-bottom: .35rem; }
+        .inp { width: 100%; background: #0F111A; border: 1px solid #32384e; color: #fff; border-radius: .75rem; padding: .7rem 1rem; outline: none; transition: border-color .15s; color-scheme: dark; }
+        .inp:focus { border-color: #EAB308; }
+        .inp.err { border-color: #ef4444; }
+        .fil { width: 100%; background: #1a1d2d; border: 1px solid #232736; color: #fff; border-radius: .75rem; padding: .65rem 1rem; outline: none; font-size: .875rem; }
+        .fil:focus { border-color: #EAB308; }
+        .m-row { animation: rowIn .3s ease both; }
+        @keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    </style>
+
     <script src="../../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../../JS/table-actions.js" defer=""></script>
+    <!-- Marcas SCFI: sudi_scfi_marcas (SQL 0014). Alimenta la lista de marcas de dispensarios en Catálogos → Clientes. -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Control de menús desplegables del Sidebar ---
-            // Dropdowns (.menu-desplegable-btn) gestionados por JS/app.js
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+            const toast = (m, t = 'success') => App.toast(m, t);
+            const dmy = (f) => { if (!f) return ''; const [a, m, d] = f.split('-'); return `${d}/${m}/${a}`; };
+            const POR_PAGINA = 20;
 
-            // --- Control robusto del Sidebar móvil ---
-            const sidebar = document.querySelector('aside');
-            const sidebarToggle = document.getElementById('INLINE-DISABLED-sidebar-toggle');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            let DB = null, editor = false, marcas = [], pagina = 1, editando = null;
 
-            function toggleSidebar() {
-                sidebar.classList.toggle('-translate-x-full');
-                sidebarOverlay.classList.toggle('hidden');
+            const ordenar = (l) => l.sort((a, b) => String(a.marca).localeCompare(String(b.marca), 'es') || String(a.clave || '').localeCompare(String(b.clave || ''), 'es', { numeric: true }));
+
+            async function cargar() {
+                try {
+                    marcas = ordenar(await DB.listar('sudi_scfi_marcas'));
+                    pintar();
+                } catch (err) {
+                    const falta = /clave|certificacion_dgn|folio_dgn/.test(err.message) ? ' Falta correr el SQL 0014.' : '';
+                    $('tbody').innerHTML = `<tr><td colspan="6" class="py-12 text-center text-red-400">${esc(err.message)}${falta}</td></tr>`;
+                }
             }
 
-            sidebarToggle?.addEventListener('click', toggleSidebar);
-            sidebarOverlay?.addEventListener('click', toggleSidebar);
+            function filtradas() {
+                const term = norm($('f-texto').value), dgn = $('f-dgn').value, act = $('f-activo').value;
+                return marcas.filter((m) => (dgn === '' || String(Number(Boolean(m.certificacion_dgn))) === dgn)
+                    && (act === '' || String(Number(m.activo !== false)) === act)
+                    && (!term || norm(`${m.clave} ${m.marca} ${m.folio_dgn}`).includes(term)));
+            }
 
-            const tbody = document.getElementById('marcas-tbody');
+            function pintar() {
+                const vivas = marcas.filter((m) => m.activo !== false);
+                const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
+                $('kpis').innerHTML = k('Registros activos', vivas.length, 'ph-list-numbers', 'text-gray-400')
+                    + k('Marcas distintas', new Set(vivas.map((m) => norm(m.marca))).size, 'ph-tag', 'text-brand-yellow')
+                    + k('Con DGN', vivas.filter((m) => m.certificacion_dgn).length, 'ph-certificate', 'text-emerald-400')
+                    + k('Sin DGN', vivas.filter((m) => !m.certificacion_dgn).length, 'ph-seal-warning', 'text-amber-400');
+                const lista = filtradas();
+                const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+                pagina = Math.min(Math.max(1, pagina), total);
+                $('tbody').innerHTML = lista.length ? lista.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA).map((m, i) => {
+                    const act = m.activo !== false;
+                    const acc = editor ? `<td class="py-2 px-5 text-center whitespace-nowrap">
+                        <button data-acc="editar" title="Editar" class="p-2 rounded-lg text-gray-400 hover:text-brand-yellow hover:bg-dark-700"><i class="ph ph-pencil-simple text-lg"></i></button>
+                        <button data-acc="activo" title="${act ? 'Desactivar' : 'Activar'}" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-700"><i class="ph ${act ? 'ph-eye' : 'ph-eye-slash'} text-lg"></i></button>
+                        <button data-acc="borrar" title="Eliminar" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-dark-700"><i class="ph ph-trash text-lg"></i></button></td>` : '';
+                    return `<tr data-id="${m.id}" class="m-row hover:bg-dark-700/30" style="animation-delay:${Math.min(i * 0.015, 0.3)}s">
+                        <td class="py-3 px-5 text-gray-500 font-mono">${esc(m.clave || '—')}</td>
+                        <td class="py-3 px-5 font-medium ${act ? 'text-gray-200' : 'text-gray-500 line-through'}">${esc(m.marca)}</td>
+                        <td class="py-3 px-5 text-center">${m.certificacion_dgn ? '<i class="ph-fill ph-check-circle text-emerald-400 text-lg" title="Sí"></i>' : '<i class="ph ph-minus-circle text-gray-600 text-lg" title="No"></i>'}</td>
+                        <td class="py-3 px-5 text-gray-300 font-mono text-xs">${esc(m.folio_dgn || '')}</td>
+                        <td class="py-3 px-5 text-gray-400">${dmy(m.fecha_dgn)}</td>
+                        ${acc}
+                    </tr>`;
+                }).join('') : `<tr><td colspan="6" class="py-12 text-center text-gray-500">${marcas.length ? 'Sin marcas con ese filtro.' : 'Aún no hay marcas. Agrega la primera.'}</td></tr>`;
+                $('pag-info').textContent = `${lista.length} registro(s)`;
+                $('pag-label').textContent = `Pág. ${pagina} de ${total}`;
+                [['pag-prev', pagina <= 1], ['pag-next', pagina >= total]].forEach(([id, off]) => { $(id).disabled = off; $(id).classList.toggle('opacity-40', off); });
+            }
 
-            // --- Buscador en vivo ---
-            App.initSearch(document.getElementById('marcas-search'), '#marcas-tbody tr', {
-                emptyStateSelector: '#marcas-empty-state',
-            });
+            function siguienteClave() {
+                const nums = marcas.map((m) => Number(m.clave)).filter(Number.isFinite);
+                return nums.length ? String(Math.max(...nums) + 1) : '1';
+            }
+            function toggleDgn() { $('m-dgn-campos').classList.toggle('hidden', $('m-dgn').value !== 'si'); }
 
-            // --- Paginación real sobre las filas existentes ---
-            const initMarcasPager = () => App.initPagination({
-                itemsSelector: '#marcas-tbody tr',
-                pageSize: 6,
-                prevBtn: document.getElementById('marcas-prev'),
-                nextBtn: document.getElementById('marcas-next'),
-                labelEl: document.getElementById('marcas-page-label'),
-            });
-            let marcasPager = initMarcasPager();
+            function abrir(m = null) {
+                editando = m;
+                $('m-titulo').textContent = m ? 'Editar marca' : 'Nueva marca';
+                $('m-clave').value = m ? (m.clave || '') : siguienteClave();
+                $('m-marca').value = m?.marca || '';
+                $('m-dgn').value = m ? (m.certificacion_dgn ? 'si' : 'no') : 'si';
+                $('m-folio').value = m?.folio_dgn || '';
+                $('m-fecha').value = m?.fecha_dgn || '';
+                $('lst-marcas').innerHTML = [...new Set(marcas.map((x) => x.marca))].map((x) => `<option value="${esc(x)}">`).join('');
+                document.querySelectorAll('#modal-marca .inp').forEach((el) => el.classList.remove('err'));
+                toggleDgn();
+                App.openModal('modal-marca');
+                setTimeout(() => $('m-marca').focus(), 150);
+            }
 
-            // --- Modal: Nueva marca ---
-            const form = document.getElementById('form-nueva-marca');
-            const btnGuardar = document.getElementById('btn-guardar-marca');
-            const dgnFolioWrapper = document.getElementById('marca-dgn-folio-wrapper');
-
-            form.elements.certificacion.addEventListener('change', (e) => {
-                dgnFolioWrapper.classList.toggle('hidden', e.target.value !== 'si');
-            });
-
-            form?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                let valid = true;
-                ['clave', 'marca', 'certificacion'].forEach((name) => {
-                    const input = form.elements[name];
-                    const errorEl = input.closest('div').querySelector('.field-error');
-                    const filled = input.value.trim() !== '';
-                    input.classList.toggle('border-red-500', !filled);
-                    errorEl?.classList.toggle('hidden', filled);
-                    if (!filled) valid = false;
+            function guardar() {
+                const clave = $('m-clave').value.trim().toUpperCase();
+                const marca = $('m-marca').value.trim().replace(/\s+/g, ' ');
+                const dgn = $('m-dgn').value === 'si';
+                const folio = dgn ? $('m-folio').value.trim().toUpperCase() : '';
+                const malos = [['m-clave', !clave], ['m-marca', !marca], ['m-folio', dgn && !folio]];
+                malos.forEach(([id, mal]) => $(id).classList.toggle('err', mal));
+                if (malos.some(([, mal]) => mal)) { toast('Completa los campos obligatorios.', 'error'); return; }
+                if (marcas.some((m) => m.id !== editando?.id && String(m.clave || '').toUpperCase() === clave)) { $('m-clave').classList.add('err'); toast('Esa clave ya existe.', 'warning'); return; }
+                if (folio && marcas.some((m) => m.id !== editando?.id && String(m.folio_dgn || '').toUpperCase() === folio)) { $('m-folio').classList.add('err'); toast('Ese folio DGN ya está registrado.', 'warning'); return; }
+                const fila = { clave, marca, certificacion_dgn: dgn, folio_dgn: folio || null, fecha_dgn: dgn ? ($('m-fecha').value || null) : null };
+                App.withLoading($('m-guardar'), {
+                    task: async () => {
+                        try {
+                            if (editando) await DB.actualizar('sudi_scfi_marcas', editando.id, fila);
+                            else await DB.crear('sudi_scfi_marcas', { ...fila, activo: true, created_by: DB.perfil?.id || null });
+                            toast(editando ? 'Marca actualizada.' : 'Marca agregada.');
+                            App.closeModal('modal-marca');
+                            await cargar();
+                        } catch (err) { toast(/duplicate|unique/i.test(err.message) ? 'Ya existe un registro igual (clave o marca repetida).' : err.message, 'error'); }
+                    },
                 });
-                if (!valid) return;
+            }
 
-                App.withLoading(btnGuardar, {
-                    loadingText: 'Guardando...',
-                    task: () => App.fakeRequest(700).then(() => {
-                        const clave = form.elements.clave.value.trim();
-                        const marca = form.elements.marca.value.trim();
-                        const certificacion = form.elements.certificacion.value === 'si'
-                            ? (form.elements.dgnFolio.value.trim() || 'Certificada (folio pendiente)')
-                            : 'Sin certificación DGN';
-                        const row = document.createElement('tr');
-                        row.className = 'hover:bg-dark-700/30 transition-colors group';
-                        row.innerHTML = `
-                            <td class="py-4 px-6 text-gray-500 border-r border-dark-700/50 group-hover:text-gray-400">${clave}</td>
-                            <td class="py-4 px-6 text-gray-300 border-r border-dark-700/50 group-hover:text-white">${marca}</td>
-                            <td class="py-4 px-6 text-gray-400 group-hover:text-gray-300">${certificacion}</td>
-                        `;
-                        tbody.appendChild(row);
-                        form.reset();
-                        dgnFolioWrapper.classList.add('hidden');
-                        form.querySelectorAll('.border-red-500').forEach((el) => el.classList.remove('border-red-500'));
-                        form.querySelectorAll('.field-error').forEach((el) => el.classList.add('hidden'));
-
-                        marcasPager = initMarcasPager();
-                        marcasPager?.goTo(9999);
-
-                        App.closeModal('modal-nueva-marca');
-                        App.toast('Marca agregada correctamente.', 'success');
-                    }),
-                });
+            $('btn-nueva').addEventListener('click', () => abrir(null));
+            $('m-dgn').addEventListener('change', toggleDgn);
+            $('m-guardar').addEventListener('click', guardar);
+            ['f-dgn', 'f-activo'].forEach((id) => $(id).addEventListener('change', () => { pagina = 1; pintar(); }));
+            $('f-texto').addEventListener('input', () => { pagina = 1; pintar(); });
+            $('pag-prev').addEventListener('click', () => { pagina -= 1; pintar(); });
+            $('pag-next').addEventListener('click', () => { pagina += 1; pintar(); });
+            $('tbody').addEventListener('click', (e) => {
+                const b = e.target.closest('[data-acc]');
+                if (!b) return;
+                const m = marcas.find((x) => x.id === b.closest('[data-id]').dataset.id);
+                if (b.dataset.acc === 'editar') abrir(m);
+                else if (b.dataset.acc === 'activo') {
+                    DB.actualizar('sudi_scfi_marcas', m.id, { activo: m.activo === false }).then(cargar).catch((err) => toast(err.message, 'error'));
+                } else {
+                    App.confirmAction({
+                        title: '¿Eliminar marca?', message: `${m.clave || ''} · ${m.marca}${m.folio_dgn ? ` · ${m.folio_dgn}` : ''}`, confirmLabel: 'Eliminar',
+                        onConfirm: async () => { try { await DB.eliminar('sudi_scfi_marcas', m.id); toast('Marca eliminada.'); await cargar(); } catch (err) { toast(err.message, 'error'); } },
+                    });
+                }
             });
+
+            (async () => {
+                try { DB = await App.db(); } catch (err) { $('tbody').innerHTML = `<tr><td colspan="6" class="py-12 text-center text-red-400">${esc(err.message)}</td></tr>`; return; }
+                editor = DB.puedeEditar();
+                if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
+                await cargar();
+            })();
         });
     </script>
-
-
-</body></html>
+</body>
+</html>

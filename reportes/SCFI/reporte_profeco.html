@@ -1,4 +1,4 @@
-﻿<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
+<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased">﻿
 
 
 
@@ -214,266 +214,31 @@
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
-
-        <!-- Header / Controles Superiores -->
         <header class="py-4 px-4 sm:px-8 border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-20 flex flex-col gap-4">
-
-            <!-- Fila Superior: Título y Filtros -->
             <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-
-                <!-- TÍTULO -->
                 <div class="flex items-center gap-3 shrink-0">
                     <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center">
                         <i class="ph ph-list text-lg"></i>
                     </button>
-
-                    <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5 shrink-0">
-                        <i class="ph ph-user-gear text-brand-yellow text-3xl"></i>
-                        <span class="whitespace-nowrap">REPORTE PROFECO</span>
-                    </h1>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+                            <i class="ph ph-file-text text-brand-yellow text-3xl"></i>
+                            <span class="whitespace-nowrap">REPORTE PROFECO</span>
+                        </h1>
+                        <p class="text-xs text-gray-500 mt-1">Un renglón por lado verificado, por quincena</p>
+                    </div>
                 </div>
-
-                <!-- FILTROS (Mes, Periodo, Año) Y ACCIONES -->
-                <div class="flex flex-wrap items-center xl:justify-end gap-4">
-
-                    <!-- FILTRO MES -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Mes</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-44">
-                            <option value="1">Enero</option>
-                            <option value="2">Febrero</option>
-                            <option value="3">Marzo</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Mayo</option>
-                            <option value="6">Junio</option>
-                            <option value="7">Julio</option>
-                            <option value="8">Agosto</option>
-                            <option value="9" selected="">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11">Noviembre</option>
-                            <option value="12">Diciembre</option>
-                        </select>
-                    </div>
-
-                    <!-- FILTRO PERIODO -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Periodo</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-40">
-                            <option value="1" selected="">Del 1 al 15</option>
-                            <option value="2">Del 16 al 31</option>
-                        </select>
-                    </div>
-
-                    <!-- FILTRO AÑO -->
-                    <div class="flex flex-col">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Año</span>
-                            <i class="ph ph-info text-gray-500 text-xs cursor-help"></i>
-                        </div>
-                        <select class="bg-dark-800 border border-dark-700 rounded-lg px-3 py-2 text-sm font-medium text-white focus:outline-none focus:border-gray-500 w-32">
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026" selected="">2026</option>
-                            <option value="2027">2027</option>
-                        </select>
-                    </div>
-
-                    <!-- Botones de Acción (Buscar y Exportar CSV) -->
-                    <div class="flex items-center gap-2 pt-5">
-                        <button class="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-lg transition-colors" title="Buscar / Filtrar">
-                            <i class="ph ph-magnifying-glass text-lg font-bold"></i>
-                        </button>
-                        <button class="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow-lg transition-colors" title="Exportar CSV">
-                            <i class="ph ph-file-csv text-xl font-bold"></i>
-                        </button>
-                    </div>
-
-                </div>
+                <div id="rep-filtros" class="flex flex-wrap items-center xl:justify-end gap-3"></div>
             </div>
-
         </header>
 
-        <!-- Contenido / Tabla de Reporte Profeco -->
-        <div class="p-6 sm:p-8 max-w-full mx-auto w-full space-y-6 fade-in flex-1 flex flex-col justify-between">
-
-            <!-- Tabla de Reporte Profeco (Con scroll horizontal por cantidad de columnas) -->
-            <div class="bg-dark-800 rounded-xl border border-dark-700 shadow-xl overflow-hidden flex-1">
-                <div class="overflow-x-auto max-h-[600px]">
-                    <table class="w-full text-left border-collapse whitespace-nowrap">
-                        <thead>
-                            <tr class="border-b border-dark-700 text-gray-400 text-xs uppercase tracking-wider bg-dark-900/80 sticky top-0 z-10">
-                                <th class="py-4 px-4 font-semibold">No. de UVIM</th>
-                                <th class="py-4 px-4 font-semibold">No. reporte trimestral</th>
-                                <th class="py-4 px-4 font-semibold">Referencia</th>
-                                <th class="py-4 px-4 font-semibold">Tipo de solicitud</th>
-                                <th class="py-4 px-4 font-semibold">Fecha de la visita</th>
-                                <th class="py-4 px-4 font-semibold">PL de estación</th>
-                                <th class="py-4 px-4 font-semibold">Razón social</th>
-                                <th class="py-4 px-4 font-semibold">Calle y número</th>
-                                <th class="py-4 px-4 font-semibold">Colonia</th>
-                                <th class="py-4 px-4 font-semibold">Municipio/Delegación</th>
-                                <th class="py-4 px-4 font-semibold">Entidad federativa</th>
-                                <th class="py-4 px-4 font-semibold">Código postal</th>
-                                <th class="py-4 px-4 font-semibold">Tipo instrumento verificado</th>
-                                <th class="py-4 px-4 font-semibold">Tipo de báscula</th>
-                                <th class="py-4 px-4 font-semibold">Marca</th>
-                                <th class="py-4 px-4 font-semibold">Modelo</th>
-                                <th class="py-4 px-4 font-semibold">Serie</th>
-                                <th class="py-4 px-4 font-semibold">Lado</th>
-                                <th class="py-4 px-4 font-semibold">Tipo de combustible</th>
-                                <th class="py-4 px-4 font-semibold">Folio del holograma</th>
-                                <th class="py-4 px-4 font-semibold">Folio de la etiqueta UVA</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-dark-700/60 text-sm">
-                            <tr class="hover:bg-dark-700/40 transition-colors">
-                                <td class="py-4 px-4 font-medium text-white">UVIM 131</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">202609-1</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">DI-CAL-26-01-737</td>
-                                <td class="py-4 px-4 text-gray-300">Periódica</td>
-                                <td class="py-4 px-4 text-gray-300">4/09/2026</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">PL/23734/EXP/ES/2021</td>
-                                <td class="py-4 px-4 font-semibold text-white">COMBUSTIBLES PACHECO SA DE CV</td>
-                                <td class="py-4 px-4 text-gray-300">AV CARLOS PACHECO NO. 3 ESQUINA CON CALLE DEFENSA
-                                    POPULAR</td>
-                                <td class="py-4 px-4 text-gray-300">2 DE OCTUBRE</td>
-                                <td class="py-4 px-4 text-gray-300">Chihuahua</td>
-                                <td class="py-4 px-4 text-gray-300">CHIHUAHUA</td>
-                                <td class="py-4 px-4 text-gray-300">31375</td>
-                                <td class="py-4 px-4 text-gray-300">Dispensario</td>
-                                <td class="py-4 px-4 text-gray-400 italic">N/A</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">WAYNE</td>
-                                <td class="py-4 px-4 text-gray-300">H (N/LU)</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">22-22RV22176E</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">K20A</td>
-                                <td class="py-4 px-4 text-gray-300">Regular</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">U20260220163030</td>
-                                <td class="py-4 px-4 text-brand-yellow font-mono font-semibold">09313</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/40 transition-colors">
-                                <td class="py-4 px-4 font-medium text-white">UVIM 131</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">202609-1</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">DI-CAL-26-01-737</td>
-                                <td class="py-4 px-4 text-gray-300">Periódica</td>
-                                <td class="py-4 px-4 text-gray-300">4/09/2026</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">PL/23734/EXP/ES/2021</td>
-                                <td class="py-4 px-4 font-semibold text-white">COMBUSTIBLES PACHECO SA DE CV</td>
-                                <td class="py-4 px-4 text-gray-300">AV CARLOS PACHECO NO. 3 ESQUINA CON CALLE DEFENSA
-                                    POPULAR</td>
-                                <td class="py-4 px-4 text-gray-300">2 DE OCTUBRE</td>
-                                <td class="py-4 px-4 text-gray-300">Chihuahua</td>
-                                <td class="py-4 px-4 text-gray-300">CHIHUAHUA</td>
-                                <td class="py-4 px-4 text-gray-300">31375</td>
-                                <td class="py-4 px-4 text-gray-300">Dispensario</td>
-                                <td class="py-4 px-4 text-gray-400 italic">N/A</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">WAYNE</td>
-                                <td class="py-4 px-4 text-gray-300">H (N/LU)</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">22-22RV22176E</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">K20B</td>
-                                <td class="py-4 px-4 text-gray-300">Plus</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">U20260220163031</td>
-                                <td class="py-4 px-4 text-brand-yellow font-mono font-semibold">09314</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/40 transition-colors">
-                                <td class="py-4 px-4 font-medium text-white">UVIM 131</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">202609-1</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">DI-CAL-26-01-737</td>
-                                <td class="py-4 px-4 text-gray-300">Periódica</td>
-                                <td class="py-4 px-4 text-gray-300">4/09/2026</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">PL/23734/EXP/ES/2021</td>
-                                <td class="py-4 px-4 font-semibold text-white">COMBUSTIBLES PACHECO SA DE CV</td>
-                                <td class="py-4 px-4 text-gray-300">AV CARLOS PACHECO NO. 3 ESQUINA CON CALLE DEFENSA
-                                    POPULAR</td>
-                                <td class="py-4 px-4 text-gray-300">2 DE OCTUBRE</td>
-                                <td class="py-4 px-4 text-gray-300">Chihuahua</td>
-                                <td class="py-4 px-4 text-gray-300">CHIHUAHUA</td>
-                                <td class="py-4 px-4 text-gray-300">31375</td>
-                                <td class="py-4 px-4 text-gray-300">Dispensario</td>
-                                <td class="py-4 px-4 text-gray-400 italic">N/A</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">WAYNE</td>
-                                <td class="py-4 px-4 text-gray-300">H (N/LU)</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">22-22RV22176E</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">K20C</td>
-                                <td class="py-4 px-4 text-gray-300">Regular</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">U20260220163032</td>
-                                <td class="py-4 px-4 text-brand-yellow font-mono font-semibold">09315</td>
-                            </tr>
-                            <tr class="hover:bg-dark-700/40 transition-colors">
-                                <td class="py-4 px-4 font-medium text-white">UVIM 131</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">202609-1</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">DI-CAL-26-01-737</td>
-                                <td class="py-4 px-4 text-gray-300">Periódica</td>
-                                <td class="py-4 px-4 text-gray-300">4/09/2026</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">PL/23734/EXP/ES/2021</td>
-                                <td class="py-4 px-4 font-semibold text-white">COMBUSTIBLES PACHECO SA DE CV</td>
-                                <td class="py-4 px-4 text-gray-300">AV CARLOS PACHECO NO. 3 ESQUINA CON CALLE DEFENSA
-                                    POPULAR</td>
-                                <td class="py-4 px-4 text-gray-300">2 DE OCTUBRE</td>
-                                <td class="py-4 px-4 text-gray-300">Chihuahua</td>
-                                <td class="py-4 px-4 text-gray-300">CHIHUAHUA</td>
-                                <td class="py-4 px-4 text-gray-300">31375</td>
-                                <td class="py-4 px-4 text-gray-300">Dispensario</td>
-                                <td class="py-4 px-4 text-gray-400 italic">N/A</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">WAYNE</td>
-                                <td class="py-4 px-4 text-gray-300">H (N/LU)</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">22-22RV22176E</td>
-                                <td class="py-4 px-4 text-gray-300 font-semibold">K20D</td>
-                                <td class="py-4 px-4 text-gray-300">Plus</td>
-                                <td class="py-4 px-4 text-gray-300 font-mono">U20260220163033</td>
-                                <td class="py-4 px-4 text-brand-yellow font-mono font-semibold">09316</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Paginación -->
-                <div class="py-3 px-6 bg-dark-900/80 border-t border-dark-700 flex items-center justify-between">
-                    <span class="text-xs text-gray-400">Mostrando 4 de 4 registros</span>
-                    <div class="flex items-center gap-2">
-                        <button class="w-8 h-8 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white flex items-center justify-center transition-colors disabled:opacity-50" disabled="">
-                            <i class="ph ph-caret-double-left"></i>
-                        </button>
-                        <button class="w-8 h-8 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white flex items-center justify-center transition-colors disabled:opacity-50" disabled="">
-                            <i class="ph ph-caret-left"></i>
-                        </button>
-                        <span class="text-xs text-gray-300 font-medium px-2">Pág. 1 de 1</span>
-                        <button class="w-8 h-8 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white flex items-center justify-center transition-colors disabled:opacity-50" disabled="">
-                            <i class="ph ph-caret-right"></i>
-                        </button>
-                        <button class="w-8 h-8 rounded-lg bg-dark-800 border border-dark-700 text-gray-400 hover:text-white flex items-center justify-center transition-colors disabled:opacity-50" disabled="">
-                            <i class="ph ph-caret-double-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
+        <!-- Contenido conectado a Supabase (JS/reportes-scfi.js) -->
+        <div class="p-4 sm:p-8">
+            <div id="rep-app"></div>
         </div>
-
     </main>
 
-    <script>
-        const sidebar = document.querySelector('aside');
-        const overlay = document.getElementById('sidebar-overlay');
-        const toggleBtn = document.getElementById('INLINE-DISABLED-sidebar-toggle');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        if (toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
-        if (overlay) overlay.addEventListener('click', toggleSidebar);
-
-        // Dropdowns gestionados por JS/app.js
-    </script>
-    <script src="../../JS/app.js?v=639250641835541270" defer=""></script>
-    <script src="../../JS/table-actions.js" defer=""></script>
-
-
-</body></html>
+    <script src="../../JS/app.js?v=639250641835541270" defer></script>
+    <script src="../../JS/reportes-scfi.js" data-pantalla="profeco" defer></script>
+</body>
+</html>

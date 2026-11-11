@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de clientes - Catálogos SUDI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: {
+                        dark: { 900: '#11131e', 800: '#1a1d2d', 700: '#232736', 600: '#32384e' },
+                        brand: { yellow: '#EAB308' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #232736 transparent;
+        }
+
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: #32384e;
+            border-radius: 4px;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background: #EAB308;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #EAB308;
+            color: #EAB308;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">
+
+    <!-- Sidebar Lateral -->
+    <aside
+        class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
+                <img src="../img/JOMARLOGO.png" alt="Jomar Logo"
+                    class="h-10 w-auto object-contain drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
+            </div>
+
+            <nav class="p-4 space-y-2 mt-2">
+                <a href="../index.html"
+                    class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4">
+                    <i
+                        class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Ir al Menú Principal</span>
+                </a>
+
+                <a href="clientes.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                    <i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                    <span>Clientes</span>
+                </a>
+
+                <a href="matriz_clientes.html"
+                    class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg overflow-hidden bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow">
+                    <i class="ph ph-squares-four text-2xl text-brand-yellow group-hover:scale-110 transition-transform"></i>
+                    <span>Matriz de clientes</span>
+                </a>
+
+                <a href="usuarios.html"
+                    class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group">
+                    <i class="ph ph-user-circle text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i>
+                    <span>Usuarios</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
+            <div data-profile-trigger=""
+                class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50"
+                title="Opciones de perfil">
+                <div class="relative shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
+                        LR
+                    </div>
+                    <span
+                        class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
+                </div>
+                <div class="flex-1 overflow-hidden min-w-0">
+                    <p
+                        class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">
+                        Denisse Gutiérrez</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
+                        <span>Administrador</span>
+                    </p>
+                </div>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0"
+                    title="Opciones de perfil"></i>
+            </div>
+            <a href="../login.html"
+                class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
+                <i class="ph ph-sign-out text-base"></i>
+                <span>Cerrar sesión</span>
+            </a>
+        </div>
+        </div>
+    </aside>
+    <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden fade-in">
+        <header class="px-4 sm:px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+                <button id="sidebar-toggle" class="lg:hidden w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center"><i class="ph ph-list text-lg"></i></button>
+                <div>
+                    <p class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">Módulo de Catálogos</p>
+                    <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3"><i class="ph-fill ph-squares-four text-brand-yellow"></i> Matriz de clientes</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="relative w-full md:w-80">
+                    <i class="ph ph-magnifying-glass text-gray-400 text-lg absolute left-3 top-3"></i>
+                    <input type="text" id="mx-buscar" class="block w-full pl-10 pr-3 py-2.5 border border-dark-600 rounded-xl bg-dark-800 text-white placeholder-gray-400 focus:outline-none focus:border-brand-yellow" placeholder="Buscar cliente o RFC...">
+                </div>
+                <button id="mx-csv" class="bg-dark-800 border border-dark-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:border-brand-yellow flex items-center gap-2 whitespace-nowrap"><i class="ph ph-file-csv text-lg text-brand-yellow"></i> CSV</button>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-8 custom-scrollbar space-y-6">
+            <!-- Resumen -->
+            <div id="mx-resumen" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+
+            <!-- Filtros -->
+            <div id="mx-filtros" class="flex flex-wrap gap-2"></div>
+
+            <div class="bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl p-4 sm:p-6 overflow-x-auto">
+                <table class="w-full text-left text-sm text-gray-300 min-w-[900px]">
+                    <thead class="bg-dark-900 text-gray-400 uppercase text-[10px] tracking-wider">
+                        <tr>
+                            <th class="py-4 px-4 rounded-tl-xl">Cliente</th>
+                            <th class="py-4 px-4 text-center">Estaciones</th>
+                            <th class="py-4 px-4 text-center">Tecnocontrol</th>
+                            <th class="py-4 px-4 text-center">SCFI</th>
+                            <th class="py-4 px-4 text-center">ASEA</th>
+                            <th class="py-4 px-4 text-center">Servicios</th>
+                            <th class="py-4 px-4 text-right rounded-tr-xl"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="mx-tbody">
+                        <tr class="no-clickable"><td colspan="7" class="py-10 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Cargando matriz...</td></tr>
+                    </tbody>
+                </table>
+                <p class="text-[11px] text-gray-500 mt-4"><span class="text-emerald-400 font-semibold">AUTO</span> = detectado por actividad (inspecciones SCFI o folios de Operaciones). <span class="text-gray-400 font-semibold">MANUAL</span> = marcado en el formulario del cliente.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="../JS/app.js?v=639250641835541270" defer></script>
+    <!-- Matriz de clientes: vista sudi_v_matriz_clientes (SQL 0010) sobre el catálogo compartido clientes_catalogo -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const norm = (t) => String(t ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            const fecha = (f) => (f ? new Date(f).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' }) : '');
+
+            let DB = null;
+            let filas = [];
+            let filtro = 'todos';
+
+            const servicios = (r) => [r.tecnocontrol, r.scfi, r.asea].filter(Boolean).length;
+            const jomar = (r) => r.scfi || r.asea;
+            const FILTROS = [
+                ['todos', 'Todos', () => true],
+                ['compartidos', 'Compartidos (2 o más)', (r) => servicios(r) >= 2],
+                ['tec_jomar', 'Tecnocontrol + JOMAR', (r) => r.tecnocontrol && jomar(r)],
+                ['scfi_asea', 'SCFI + ASEA', (r) => r.scfi && r.asea],
+                ['solo_tec', 'Solo Tecnocontrol', (r) => r.tecnocontrol && !jomar(r)],
+                ['solo_scfi', 'Solo SCFI', (r) => r.scfi && !r.asea && !r.tecnocontrol],
+                ['solo_asea', 'Solo ASEA', (r) => r.asea && !r.scfi && !r.tecnocontrol],
+                ['sin', 'Sin servicios', (r) => servicios(r) === 0],
+            ];
+
+            function resumen() {
+                const tarjeta = (titulo, n, icono, color) => `
+                    <div class="bg-dark-800 border border-dark-700 rounded-2xl p-4">
+                        <p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${icono} ${color}"></i> ${titulo}</p>
+                        <p class="text-3xl font-bold text-white mt-1">${n}</p>
+                    </div>`;
+                $('mx-resumen').innerHTML =
+                    tarjeta('Clientes', filas.length, 'ph-users', 'text-gray-400') +
+                    tarjeta('Tecnocontrol', filas.filter((r) => r.tecnocontrol).length, 'ph-wrench', 'text-sky-400') +
+                    tarjeta('SCFI', filas.filter((r) => r.scfi).length, 'ph-gauge', 'text-blue-400') +
+                    tarjeta('ASEA', filas.filter((r) => r.asea).length, 'ph-shield-check', 'text-emerald-400') +
+                    tarjeta('Compartidos', filas.filter((r) => servicios(r) >= 2).length, 'ph-intersect', 'text-brand-yellow');
+                $('mx-filtros').innerHTML = FILTROS.map(([id, txt, fn]) => {
+                    const n = filas.filter(fn).length;
+                    const on = id === filtro;
+                    return `<button data-f="${id}" class="px-3.5 py-2 rounded-xl text-xs font-semibold border transition-colors ${on ? 'bg-brand-yellow text-dark-900 border-brand-yellow' : 'bg-dark-800 text-gray-300 border-dark-600 hover:border-brand-yellow'}">${txt} <span class="${on ? 'text-dark-900/70' : 'text-gray-500'}">${n}</span></button>`;
+                }).join('');
+            }
+
+            function celda(activo, auto, detalle) {
+                if (!activo) return '<span class="text-gray-600">—</span>';
+                return `<div class="flex flex-col items-center gap-0.5">
+                    <i class="ph-fill ph-check-circle text-xl text-emerald-400"></i>
+                    <span class="text-[9px] font-bold tracking-wider ${auto ? 'text-emerald-400' : 'text-gray-400'}">${auto ? 'AUTO' : 'MANUAL'}</span>
+                    ${detalle ? `<span class="text-[10px] text-gray-500">${detalle}</span>` : ''}
+                </div>`;
+            }
+
+            function visibles() {
+                const fn = FILTROS.find((f) => f[0] === filtro)[2];
+                const term = norm($('mx-buscar').value.trim());
+                return filas.filter((r) => fn(r) && (!term || norm([r.nombre_comercial, r.razon_social, r.rfc].join(' ')).includes(term)));
+            }
+
+            function pintar() {
+                resumen();
+                const lista = visibles();
+                $('mx-tbody').innerHTML = lista.length ? lista.map((r) => {
+                    const n = servicios(r);
+                    return `<tr class="no-clickable border-b border-dark-700 hover:bg-dark-900/40">
+                        <td class="py-3 px-4"><p class="text-white font-medium uppercase">${esc(r.nombre_comercial || r.razon_social)}</p>
+                            ${r.nombre_comercial && r.razon_social ? `<p class="text-xs text-gray-500 uppercase">${esc(r.razon_social)}</p>` : ''}
+                            ${r.activo ? '' : '<span class="text-[10px] text-red-400 font-semibold uppercase">Inactivo</span>'}</td>
+                        <td class="py-3 px-4 text-center"><span class="bg-dark-900 border border-dark-700 px-2.5 py-1 rounded-md text-white font-bold">${r.estaciones}</span></td>
+                        <td class="py-3 px-4 text-center">${celda(r.tecnocontrol, r.tec_folios > 0, r.tec_folios ? `${r.tec_folios} folios` : '')}</td>
+                        <td class="py-3 px-4 text-center">${celda(r.scfi, r.scfi_inspecciones > 0, r.scfi_inspecciones ? `${r.scfi_inspecciones} insp. · ${fecha(r.scfi_ultima)}` : '')}</td>
+                        <td class="py-3 px-4 text-center">${celda(r.asea, false, '')}</td>
+                        <td class="py-3 px-4 text-center"><span class="font-bold ${n >= 2 ? 'text-brand-yellow' : n ? 'text-white' : 'text-gray-600'}">${n}</span></td>
+                        <td class="py-3 px-4 text-right"><a href="clientes.html?cliente=${encodeURIComponent(r.id)}" class="text-xs font-semibold text-gray-300 hover:text-brand-yellow inline-flex items-center gap-1"><i class="ph ph-pencil-simple"></i> Editar</a></td>
+                    </tr>`;
+                }).join('') : '<tr class="no-clickable"><td colspan="7" class="py-10 text-center text-gray-500">Sin clientes con ese filtro.</td></tr>';
+            }
+
+            async function cargar() {
+                try {
+                    filas = [];
+                    for (let desde = 0; ; desde += 1000) {
+                        const { data, error } = await DB.sb.from('sudi_v_matriz_clientes').select('*').order('razon_social').range(desde, desde + 999);
+                        if (error) throw new Error(DB.mensajeError(error));
+                        filas.push(...(data || []));
+                        if (!data || data.length < 1000) break;
+                    }
+                    pintar();
+                } catch (err) {
+                    $('mx-tbody').innerHTML = `<tr class="no-clickable"><td colspan="7" class="py-10 text-center text-red-400">No se pudo cargar la matriz: ${esc(err.message)}</td></tr>`;
+                }
+            }
+
+            $('mx-filtros').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (b) { filtro = b.dataset.f; pintar(); } });
+            $('mx-buscar').addEventListener('input', pintar);
+            $('mx-csv').addEventListener('click', () => {
+                const si = (v) => (v ? 'Sí' : '');
+                const csv = [['Nombre comercial', 'Razón social', 'RFC', 'Estaciones', 'Tecnocontrol', 'Folios Tecnocontrol', 'SCFI', 'Inspecciones SCFI', 'ASEA', 'Servicios']]
+                    .concat(visibles().map((r) => [r.nombre_comercial, r.razon_social, r.rfc, r.estaciones, si(r.tecnocontrol), r.tec_folios, si(r.scfi), r.scfi_inspecciones, si(r.asea), servicios(r)]))
+                    .map((f) => f.map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\r\n');
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+                a.download = `matriz_clientes_${new Date().toISOString().slice(0, 10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(a.href);
+            });
+
+            (async () => {
+                try { DB = await App.db(); } catch (err) {
+                    $('mx-tbody').innerHTML = `<tr class="no-clickable"><td colspan="7" class="py-10 text-center text-red-400">${esc(err.message)}</td></tr>`;
+                    return;
+                }
+                await cargar();
+                let t = null;
+                const recargar = () => { clearTimeout(t); t = setTimeout(cargar, 800); };
+                DB.sb.channel('sudi-matriz')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'clientes_catalogo' }, recargar)
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_scfi_inspecciones' }, recargar)
+                    .subscribe();
+            })();
+        });
+    </script>
+</body>
+</html>

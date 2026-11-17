@@ -1,4 +1,5 @@
-﻿<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">﻿
+<!DOCTYPE html>
+<html lang="es" class="dark"><head><meta charset="UTF-8"></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">
 
 
 
@@ -71,40 +72,17 @@
         </div>
 
         <!-- Perfil al pie del sidebar -->
-                
-    
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-
         <!-- Usuario / Cierre de sesión inferior -->
         <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
             <div data-profile-trigger="" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50" title="Opciones de perfil">
                 <div class="relative shrink-0">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
-                        DG
+                        ··
                     </div>
                     <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
                 <div class="flex-1 overflow-hidden min-w-0">
-                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Denisse Gutiérrez</p>
+                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Cargando...</p>
                     <p class="text-xs text-gray-400 truncate flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
                         <span>Administrador</span>
@@ -121,8 +99,7 @@
 
     <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-dark-900 custom-scrollbar">
-        
-        <!-- Header -->
+
         <header class="py-5 px-6 sm:px-10 border-b border-dark-700 bg-dark-900/90 backdrop-blur-md sticky top-0 z-20 flex items-center justify-between gap-4">
             <div class="flex items-center gap-4 min-w-0">
                 <button id="sidebar-toggle" class="lg:hidden shrink-0 w-10 h-10 rounded-xl bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
@@ -130,261 +107,270 @@
                 </button>
                 <div>
                     <h1 class="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                        <i class="ph ph-user-gear text-brand-yellow text-3xl"></i>
-                        Opciones de perfil
+                        <i class="ph ph-user-gear text-brand-yellow text-3xl"></i> Opciones de perfil
                     </h1>
-                    <p class="text-xs text-gray-400 mt-0.5">Información general de la cuenta y configuración de Administrador</p>
+                    <p class="text-xs text-gray-400 mt-0.5">Tu cuenta en SUDI, permisos y seguridad</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-3">
-                <button type="button" data-modal-open="modal-opciones-perfil" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-dark-800 border border-dark-700 hover:border-brand-yellow/50 text-gray-200 hover:text-white text-xs font-semibold transition-all">
-                    <i class="ph ph-browsers text-brand-yellow text-base"></i>
-                    <span>Abrir en ventana</span>
-                </button>
-                <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 hover:text-red-300 border border-red-500/30 text-xs font-bold transition-all shadow-sm">
-                    <i class="ph ph-sign-out text-base"></i>
-                    <span>Cerrar sesión</span>
-                </a>
-            </div>
+            <a href="login.html" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-400 hover:text-red-300 border border-red-500/30 text-xs font-bold transition-all">
+                <i class="ph ph-sign-out text-base"></i><span>Cerrar sesión</span>
+            </a>
         </header>
 
-        <!-- Contenedor del Perfil -->
         <div class="p-6 sm:p-10 max-w-6xl mx-auto w-full space-y-8 fade-in">
-            
-            <!-- Banner de Perfil Principal -->
-            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-dark-800 via-dark-800/90 to-dark-700/40 border border-dark-700/80 relative overflow-hidden flex flex-col md:flex-row items-center md:items-center gap-6 shadow-xl">
+
+            <!-- Banner -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-dark-800 via-dark-800/90 to-dark-700/40 border border-dark-700/80 flex flex-col md:flex-row items-center gap-6 shadow-xl">
                 <div class="relative shrink-0">
-                    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-brand-yellow via-amber-500 to-yellow-400 text-dark-900 font-black text-4xl sm:text-5xl flex items-center justify-center shadow-2xl shadow-brand-yellow/20 border-2 border-brand-yellow/40">
-                        LR
-                    </div>
-                    <span class="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-emerald-500 border-4 border-dark-800 rounded-full shadow-md" title="Sesión activa y verificada"></span>
+                    <div id="pf-iniciales" class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-tr from-brand-yellow via-amber-500 to-yellow-400 text-dark-900 font-black text-4xl sm:text-5xl flex items-center justify-center shadow-2xl shadow-brand-yellow/20 border-2 border-brand-yellow/40">··</div>
+                    <span class="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-emerald-500 border-4 border-dark-800 rounded-full" title="Sesión activa"></span>
                 </div>
-                
                 <div class="flex-1 text-center md:text-left min-w-0">
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-1.5">
-                        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">Denisse Gutiérrez</h2>
-                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30 shadow-sm">
-                            <i class="ph ph-shield-check text-sm"></i> Administrador
+                        <h2 id="pf-nombre" class="text-2xl sm:text-3xl font-black text-white tracking-tight">Cargando...</h2>
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30">
+                            <i class="ph ph-shield-check text-sm"></i> <span id="pf-rol">—</span>
                         </span>
                     </div>
-                    <p class="text-sm sm:text-base text-gray-400 font-mono mb-3">d.gutierrez@tecnocontrol.com.mx</p>
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2.5">
-                        <span class="inline-flex items-center gap-2 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Conectado al sistema
-                        </span>
-                        <span class="text-xs text-gray-300 bg-dark-900/80 px-3 py-1 rounded-lg border border-dark-700 font-mono">
-                            ID Empleado: #ADM-0012
-                        </span>
-                        <span class="text-xs text-brand-yellow bg-brand-yellow/10 px-3 py-1 rounded-lg border border-brand-yellow/20 font-medium">
-                            Nivel: Control Total
-                        </span>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-2.5 w-full md:w-auto shrink-0">
-                    <button type="button" data-modal-open="modal-opciones-perfil" class="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-yellow text-dark-900 font-bold text-sm hover:bg-yellow-400 transition-all shadow-lg shadow-brand-yellow/20">
-                        <i class="ph ph-browsers text-lg"></i>
-                        <span>Ver en ventana</span>
-                    </button>
-                    <a href="login.html" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-dark-700/60 hover:bg-red-500/20 text-gray-300 hover:text-red-400 border border-dark-600 hover:border-red-500/30 text-xs font-semibold transition-all">
-                        <i class="ph ph-sign-out text-base"></i>
-                        <span>Cerrar sesión</span>
-                    </a>
+                    <p id="pf-correo" class="text-sm sm:text-base text-gray-400 font-mono mb-3">—</p>
+                    <div id="pf-marcas" class="flex flex-wrap items-center justify-center md:justify-start gap-2.5"></div>
                 </div>
             </div>
 
-            <!-- Cuadrícula de Información -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Columna 1 y 2: Datos de Cuenta y Permisos -->
+
                 <div class="lg:col-span-2 space-y-6">
-                    
-                    <!-- Tarjeta: Datos del Perfil -->
-                    <div class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-5">
+
+                    <!-- Datos de cuenta -->
+                    <section class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-5">
                         <div class="flex items-center justify-between border-b border-dark-700 pb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center text-brand-yellow border border-brand-yellow/20">
-                                    <i class="ph ph-identification-card text-xl"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center text-brand-yellow border border-brand-yellow/20"><i class="ph ph-identification-card text-xl"></i></div>
                                 <div>
                                     <h3 class="text-base font-bold text-white">Datos de cuenta</h3>
-                                    <p class="text-xs text-gray-400">Información principal del usuario administrador</p>
+                                    <p class="text-xs text-gray-400">Los cambia la administradora de usuarios</p>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded-md bg-dark-700 text-gray-300 text-xs font-mono">Activo</span>
+                            <span id="pf-estado" class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">Activo</span>
                         </div>
+                        <div id="pf-datos" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                    </section>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Nombre y apellido</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-user text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white">Denisse Gutiérrez</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Usuario del sistema</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-identification-badge text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white font-mono">d.gutierrez</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Correo institucional</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-envelope text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200">d.gutierrez@tecnocontrol.com.mx</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Rol en el sistema</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-shield-check text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-brand-yellow">Administrador</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Cargo / Puesto</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-briefcase text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-white font-medium">No especificado</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
-                                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Teléfono corporativo</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-phone text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200 font-mono">No especificado</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta: Módulos y Privilegios -->
-                    <div class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-5">
-                        <div class="flex items-center justify-between border-b border-dark-700 pb-4">
+                    <!-- Mis verificaciones -->
+                    <section class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-5">
+                        <div class="flex items-center justify-between border-b border-dark-700 pb-4 gap-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center text-brand-yellow border border-brand-yellow/20">
-                                    <i class="ph ph-key text-xl"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center text-brand-yellow border border-brand-yellow/20"><i class="ph ph-clipboard-text text-xl"></i></div>
                                 <div>
-                                    <h3 class="text-base font-bold text-white">Privilegios y permisos del sistema</h3>
-                                    <p class="text-xs text-gray-400">Alcance de administración en los módulos de SUDI</p>
+                                    <h3 class="text-base font-bold text-white">Mis verificaciones SCFI</h3>
+                                    <p id="pf-mes" class="text-xs text-gray-400">Este mes</p>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded-md bg-brand-yellow/15 text-brand-yellow text-xs font-bold border border-brand-yellow/30">Superusuario</span>
+                            <a id="pf-ir-agenda" href="calendario.html" class="px-3 py-2 rounded-lg bg-dark-900 border border-dark-700 hover:border-brand-yellow/50 text-xs font-semibold text-gray-200 hover:text-brand-yellow transition-colors flex items-center gap-1.5 shrink-0"><i class="ph ph-calendar"></i> Ver mi agenda</a>
                         </div>
+                        <div id="pf-conteos" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+                        <div>
+                            <h4 class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold mb-2">Próximas visitas</h4>
+                            <div id="pf-proximas" class="space-y-2 text-sm text-gray-500">Cargando...</div>
+                        </div>
+                    </section>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Módulo SCFI Completo</span>
-                                    <span class="text-gray-400 text-[11px]">Clientes, Verificaciones, Equipos y Catálogos</span>
-                                </div>
-                            </div>
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Módulo ASEA Integral</span>
-                                    <span class="text-gray-400 text-[11px]">Estaciones de servicio, Órdenes y Gerentes</span>
-                                </div>
-                            </div>
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Control de Hologramas</span>
-                                    <span class="text-gray-400 text-[11px]">Distintivos, Flexogramas y Precintos</span>
-                                </div>
-                            </div>
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Reportes y Dictámenes</span>
-                                    <span class="text-gray-400 text-[11px]">Generación y descarga EMA / PROFECO</span>
-                                </div>
-                            </div>
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Gestión de Tablas</span>
-                                    <span class="text-gray-400 text-[11px]">Edición, notas y eliminación de registros</span>
-                                </div>
-                            </div>
-                            <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-center gap-3">
-                                <i class="ph ph-check-circle text-emerald-400 text-lg shrink-0"></i>
-                                <div>
-                                    <span class="font-bold text-white block">Agenda de Verificadores</span>
-                                    <span class="text-gray-400 text-[11px]">Asignación de visitas e inspecciones</span>
-                                </div>
+                    <!-- Permisos -->
+                    <section class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-5">
+                        <div class="flex items-center gap-3 border-b border-dark-700 pb-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-yellow/10 flex items-center justify-center text-brand-yellow border border-brand-yellow/20"><i class="ph ph-key text-xl"></i></div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Permisos en SUDI</h3>
+                                <p class="text-xs text-gray-400">Según tu perfil</p>
                             </div>
                         </div>
-                    </div>
+                        <div id="pf-permisos" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"></div>
+                    </section>
                 </div>
 
-                <!-- Columna 3: Seguridad, Sesión y Salida -->
                 <div class="space-y-6">
-                    
-                    <!-- Seguridad de Sesión -->
-                    <div class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-4">
+
+                    <!-- Sesión -->
+                    <section class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-4">
+                        <div class="flex items-center gap-3 border-b border-dark-700 pb-3">
+                            <i class="ph ph-clock text-xl text-brand-yellow"></i>
+                            <h3 class="text-base font-bold text-white">Sesión</h3>
+                        </div>
+                        <div id="pf-sesion" class="space-y-3 text-xs"></div>
+                        <button id="pf-salir-todo" type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-dark-900 border border-dark-700 hover:border-red-500/40 text-gray-300 hover:text-red-400 text-xs font-semibold transition-colors">
+                            <i class="ph ph-devices"></i> Cerrar sesión en todos los equipos
+                        </button>
+                    </section>
+
+                    <!-- Contraseña -->
+                    <section class="bg-dark-800 rounded-2xl border border-dark-700/80 p-6 shadow-lg space-y-4">
                         <div class="flex items-center gap-3 border-b border-dark-700 pb-3">
                             <i class="ph ph-lock-key text-xl text-brand-yellow"></i>
-                            <h3 class="text-base font-bold text-white">Seguridad y acceso</h3>
+                            <h3 class="text-base font-bold text-white">Cambiar contraseña</h3>
                         </div>
-
-                        <div class="space-y-3 text-xs">
-                            <div class="bg-dark-900/60 p-3 rounded-xl border border-dark-700/60">
-                                <span class="text-gray-400 block mb-1">Estado de sesión</span>
-                                <span class="text-emerald-400 font-bold flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Conectado ahora
-                                </span>
+                        <form id="pf-form-pass" class="space-y-3" autocomplete="off">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Contraseña actual</label>
+                                <input id="pf-pass-actual" type="password" autocomplete="current-password" class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-brand-yellow">
                             </div>
-                            <div class="bg-dark-900/60 p-3 rounded-xl border border-dark-700/60">
-                                <span class="text-gray-400 block mb-1">Último acceso</span>
-                                <span class="text-white font-mono">Hoy, 15:30:18</span>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Nueva contraseña (mínimo 8)</label>
+                                <input id="pf-pass-nueva" type="password" autocomplete="new-password" class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-brand-yellow">
                             </div>
-                            <div class="bg-dark-900/60 p-3 rounded-xl border border-dark-700/60">
-                                <span class="text-gray-400 block mb-1">Dirección IP</span>
-                                <span class="text-white font-mono">192.168.1.104</span>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Confirmar nueva contraseña</label>
+                                <input id="pf-pass-confirma" type="password" autocomplete="new-password" class="w-full px-3 py-2 text-sm bg-dark-900 border border-dark-700 rounded-lg text-white focus:outline-none focus:border-brand-yellow">
                             </div>
-                            <div class="bg-dark-900/60 p-3 rounded-xl border border-dark-700/60">
-                                <span class="text-gray-400 block mb-1">Conexión protegida</span>
-                                <span class="text-emerald-400 font-semibold flex items-center gap-1">
-                                    <i class="ph ph-shield-check"></i> Cifrado TLS 1.3
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Acción: Cerrar Sesión Destacada -->
-                    <div class="bg-red-500/10 rounded-2xl border border-red-500/25 p-6 shadow-lg space-y-3">
-                        <div class="flex items-center gap-2 text-red-400 font-bold text-sm">
-                            <i class="ph ph-warning-circle text-lg"></i>
-                            <span>Cerrar sesión</span>
-                        </div>
-                        <p class="text-xs text-gray-400 leading-relaxed">
-                            Finaliza tu sesión activa como Administrador en este equipo. Deberás ingresar nuevamente con tus credenciales.
-                        </p>
-                        <a href="login.html" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-xs transition-all shadow-lg shadow-red-500/20 group">
-                            <i class="ph ph-sign-out text-base group-hover:-translate-x-0.5 transition-transform"></i>
-                            <span>Cerrar sesión ahora</span>
-                        </a>
-                    </div>
+                            <button id="pf-pass-guardar" type="submit" class="w-full px-4 py-2.5 rounded-xl bg-brand-yellow text-dark-900 font-bold text-sm hover:bg-yellow-400 transition-colors disabled:opacity-50">Actualizar contraseña</button>
+                            <p class="text-[11px] text-gray-500 leading-relaxed">Si también usas el Portal Tecnocontrol con este correo, la contraseña cambia en ambos.</p>
+                        </form>
+                    </section>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Scripts de la aplicación -->
-    <script src="JS/app.js?v=639250641835541270" defer=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            'use strict';
+            const $ = (id) => document.getElementById(id);
+            const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const toast = (m, t = 'success') => (window.App?.toast ? App.toast(m, t) : alert(m));
+            const PERFILES = { administrador: 'Administrador', gerente: 'Gerente', tecnico_verificador: 'Técnico Verificador' };
+            const GENEROS = { m: 'Masculino', f: 'Femenino', o: 'Otro' };
+            const ESTATUS = {
+                programada: ['Programadas', 'text-blue-400'],
+                en_proceso: ['En proceso', 'text-amber-400'],
+                terminada: ['Terminadas', 'text-emerald-400'],
+                cancelada: ['Canceladas', 'text-red-400'],
+            };
+            const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const fechaHora = (v) => (v ? new Date(v).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : '—');
+            const fechaCorta = (s) => (s ? new Date(`${s}T12:00:00`).toLocaleDateString('es-MX', { weekday: 'short', day: '2-digit', month: 'short' }) : '—');
 
+            const caja = (etq, val, ico) => `
+                <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60">
+                    <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">${etq}</span>
+                    <div class="flex items-center gap-2"><i class="ph ${ico} text-brand-yellow text-lg"></i><span class="text-sm font-semibold text-white break-all">${val}</span></div>
+                </div>`;
+            const filaSesion = (etq, val) => `<div class="bg-dark-900/60 p-3 rounded-xl border border-dark-700/60"><span class="text-gray-400 block mb-1">${etq}</span><span class="text-white">${val}</span></div>`;
 
+            let DB = null;
+            let usuario = null;
 
-</body></html>
+            function pintarCuenta(p) {
+                const nombre = App.nombrePerfil(p);
+                const correo = p.correo || usuario?.email || '';
+                const rol = PERFILES[p.perfil] || p.perfil || '—';
+                $('pf-iniciales').textContent = nombre.split(/\s+/).filter(Boolean).slice(0, 2).map((x) => x[0]).join('').toUpperCase() || 'SU';
+                $('pf-nombre').textContent = nombre;
+                $('pf-rol').textContent = rol;
+                $('pf-correo').textContent = correo;
+                const marcas = ['<span class="inline-flex items-center gap-2 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Conectado</span>'];
+                if (p.es_inspector) marcas.push('<span class="text-xs text-blue-300 bg-blue-500/10 px-3 py-1 rounded-lg border border-blue-500/20 font-medium">Inspector</span>');
+                if (p.firma_verificador) marcas.push('<span class="text-xs text-purple-300 bg-purple-500/10 px-3 py-1 rounded-lg border border-purple-500/20 font-medium">Firma como verificador</span>');
+                $('pf-marcas').innerHTML = marcas.join('');
+                $('pf-datos').innerHTML = [
+                    caja('Nombre(s)', esc([p.nombre, p.segundo_nombre].filter(Boolean).join(' ') || nombre), 'ph-user'),
+                    caja('Apellidos', esc([p.apellido_paterno, p.apellido_materno].filter(Boolean).join(' ') || '—'), 'ph-user-list'),
+                    caja('Correo', esc(correo || '—'), 'ph-envelope'),
+                    caja('Perfil', esc(rol), 'ph-shield-check'),
+                    caja('Género', esc(GENEROS[p.genero] || '—'), 'ph-gender-intersex'),
+                    caja('Verificador', p.firma_verificador ? 'Inspector con firma' : (p.es_inspector ? 'Inspector sin firma' : 'No es inspector'), 'ph-seal-check'),
+                ].join('');
+                $('pf-permisos').innerHTML = App.permisosPerfil(p).map(([t, d, ok]) => `
+                    <div class="bg-dark-900/60 p-3.5 rounded-xl border border-dark-700/60 flex items-start gap-3 ${ok ? '' : 'opacity-50'}">
+                        <i class="ph-fill ${ok ? 'ph-check-circle text-emerald-400' : 'ph-minus-circle text-gray-500'} text-lg shrink-0"></i>
+                        <div><span class="font-bold text-white block">${t}</span><span class="text-gray-400 text-[11px]">${ok ? d : 'Sin acceso'}</span></div>
+                    </div>`).join('');
+                $('pf-sesion').innerHTML = [
+                    filaSesion('Estado', '<span class="text-emerald-400 font-bold">Conectado ahora</span>'),
+                    filaSesion('Último acceso', fechaHora(usuario?.last_sign_in_at)),
+                    filaSesion('Cuenta creada', fechaHora(usuario?.created_at)),
+                    filaSesion('Mantener sesión', (() => { try { return localStorage.getItem('sudi-recordar') === '0' ? 'Solo mientras el navegador esté abierto' : 'Sí, en este equipo'; } catch (_) { return '—'; } })()),
+                ].join('');
+                if (p.es_inspector) $('pf-ir-agenda').href = `calendario.html?inspector=${encodeURIComponent(p.id)}`;
+            }
+
+            async function pintarVerificaciones(p) {
+                const hoy = new Date();
+                const ini = iso(new Date(hoy.getFullYear(), hoy.getMonth(), 1));
+                const fin = iso(new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0));
+                $('pf-mes').textContent = hoy.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }).replace(/^./, (c) => c.toUpperCase());
+                const mias = (q) => q.or(`inspector_id.eq.${p.id},realizo_id.eq.${p.id}`);
+                try {
+                    const conteos = await Promise.all(Object.keys(ESTATUS).map(async (k) => {
+                        const { count, error } = await mias(DB.sb.from('sudi_v_scfi_insp_lista').select('id', { count: 'exact', head: true }))
+                            .eq('estatus', k).gte('fecha_inspeccion', ini).lte('fecha_inspeccion', fin);
+                        if (error) throw new Error(DB.mensajeError(error));
+                        return [k, count || 0];
+                    }));
+                    $('pf-conteos').innerHTML = conteos.map(([k, n]) => `
+                        <div class="bg-dark-900/60 p-4 rounded-xl border border-dark-700/60 text-center">
+                            <span class="block text-2xl font-black ${ESTATUS[k][1]}">${n}</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">${ESTATUS[k][0]}</span>
+                        </div>`).join('');
+
+                    const { data, error } = await mias(DB.sb.from('sudi_v_scfi_insp_lista').select('*'))
+                        .in('estatus', ['programada', 'en_proceso']).gte('fecha_inspeccion', iso(hoy))
+                        .order('fecha_inspeccion').limit(5);
+                    if (error) throw new Error(DB.mensajeError(error));
+                    $('pf-proximas').innerHTML = data.length ? data.map((i) => `
+                        <div class="flex items-center justify-between gap-3 bg-dark-900/60 px-4 py-3 rounded-xl border border-dark-700/60">
+                            <div class="min-w-0">
+                                <p class="text-white font-semibold font-mono text-xs">${esc(i.folio)}</p>
+                                <p class="text-xs text-gray-400 truncate">${esc(i.razon_social || i.cliente_comercial || '')} · ${esc(i.permiso || '')}</p>
+                            </div>
+                            <span class="text-xs text-blue-300 font-medium shrink-0">${fechaCorta(i.fecha_inspeccion)}</span>
+                        </div>`).join('') : '<p class="text-xs text-gray-500">No tienes visitas programadas.</p>';
+                } catch (err) {
+                    $('pf-conteos').innerHTML = '';
+                    $('pf-proximas').innerHTML = `<p class="text-xs text-red-400">${esc(err.message)}</p>`;
+                }
+            }
+
+            $('pf-form-pass').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const actual = $('pf-pass-actual').value;
+                const nueva = $('pf-pass-nueva').value;
+                if (!actual || !nueva) { toast('Escribe tu contraseña actual y la nueva.', 'error'); return; }
+                if (nueva.length < 8) { toast('La nueva contraseña debe tener al menos 8 caracteres.', 'error'); return; }
+                if (nueva !== $('pf-pass-confirma').value) { toast('La confirmación no coincide.', 'error'); return; }
+                if (nueva === actual) { toast('La nueva contraseña es igual a la actual.', 'error'); return; }
+                const btn = $('pf-pass-guardar');
+                btn.disabled = true;
+                try {
+                    const correo = usuario?.email || DB.perfil?.correo;
+                    const r1 = await DB.sb.auth.signInWithPassword({ email: correo, password: actual });
+                    if (r1.error) throw new Error('La contraseña actual no es correcta.');
+                    const r2 = await DB.sb.auth.updateUser({ password: nueva });
+                    if (r2.error) throw new Error(DB.mensajeError(r2.error));
+                    $('pf-form-pass').reset();
+                    toast('Contraseña actualizada.');
+                } catch (err) {
+                    toast(err.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+
+            $('pf-salir-todo').addEventListener('click', async () => {
+                if (!confirm('Se cerrará tu sesión en todos los equipos y navegadores. ¿Continuar?')) return;
+                try { await DB.sb.auth.signOut({ scope: 'global' }); } catch (_) {}
+                try { sessionStorage.removeItem('sudi-sesion-viva'); } catch (_) {}
+                window.location.href = 'login.html';
+            });
+
+            (window.App?.db ? App.db() : Promise.reject(new Error('No cargó JS/app.js')))
+                .then(async (db) => {
+                    DB = db;
+                    usuario = (await DB.sb.auth.getSession()).data.session?.user || null;
+                    pintarCuenta(DB.perfil);
+                    await pintarVerificaciones(DB.perfil);
+                })
+                .catch((err) => toast(err.message, 'error'));
+        });
+    </script>
+    <script src="JS/app.js?v=20261117" defer></script>
+</body>
+</html>

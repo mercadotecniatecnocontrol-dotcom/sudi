@@ -1,41 +1,22 @@
-<html lang="es" class="dark"><head></head><body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">﻿
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="CSS/styles.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link rel="preconnect" href="https://unpkg.com">
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Semanal/Mensual - Jomar</title>
-    <!-- Tailwind CSS -->
+    <title>Agenda - SUDI Jomar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="CSS/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: {
-                            900: '#0F111A',
-                            800: '#161925',
-                            700: '#232736',
-                            600: '#32384e'
-                        },
-                        brand: {
-                            yellow: '#EAB308'
-                        }
-                    }
-                }
-            }
+            theme: { extend: {
+                fontFamily: { sans: ['Inter', 'sans-serif'] },
+                colors: { dark: { 900: '#0F111A', 800: '#161925', 700: '#232736', 600: '#32384e' }, brand: { yellow: '#EAB308' } }
+            } }
         }
     </script>
     <style>
@@ -59,7 +40,7 @@
         .month-grid {
             display: grid;
             grid-template-columns: repeat(7, minmax(130px, 1fr));
-            grid-template-rows: repeat(5, minmax(120px, 1fr));
+            grid-auto-rows: minmax(118px, auto);
             gap: 0.5rem;
         }
         
@@ -67,300 +48,98 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .hidden { display: none !important; }
     </style>
+</head>
+<body class="bg-dark-900 text-gray-300 font-sans h-screen flex overflow-hidden antialiased selection:bg-brand-yellow selection:text-dark-900">
 
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-20 lg:hidden"></div>
 
-
-    <!-- Overlay móvil del sidebar -->
-    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/60 z-10 lg:hidden"></div>
-
-    <!-- Sidebar Lateral -->
-    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between"><div><div><div><div><div><div><div><div>
+    <!-- Sidebar -->
+    <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between">
         <div>
             <div class="h-20 flex items-center px-6 border-b border-dark-700 cursor-pointer">
-                <img src="img\JOMARLOGO.png" alt="Jomar Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.3)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
+                <img src="img/JOMARLOGO.png" alt="Jomar Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_15px_rgba(234,179,8,0.3)] drop-shadow-[0_1px_1px_rgba(255,255,255,1)] drop-shadow-[0_-1px_1px_rgba(255,255,255,1)] drop-shadow-[1px_0_1px_rgba(255,255,255,1)] drop-shadow-[-1px_0_1px_rgba(255,255,255,1)]">
             </div>
-
             <nav class="p-4 space-y-2 mt-2">
                 <a href="index.html" class="flex items-center gap-4 px-5 py-4 rounded-2xl bg-[#1E2337] text-white hover:bg-[#252C45] transition-all font-medium text-base shadow-sm group mb-4"><i class="ph ph-arrow-left text-2xl text-gray-200 group-hover:-translate-x-1 transition-transform"></i><span>Ir al Menú Principal</span></a>
-                <a href="#" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-calendar text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Agenda</span></a>
+                <a href="calendario.html" class="relative flex items-center gap-4 px-5 py-3.5 rounded-2xl text-brand-yellow font-semibold text-lg bg-gradient-to-r from-brand-yellow/15 via-brand-yellow/5 to-transparent border-l-4 border-brand-yellow"><i class="ph ph-calendar text-2xl"></i><span>Agenda</span></a>
                 <a href="SCFI/inspecciones.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-clipboard-text text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Inspecciones</span></a>
                 <a href="catalogos/clientes.html" class="flex items-center gap-4 px-5 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-dark-700/40 transition-all font-medium text-lg group"><i class="ph ph-users text-2xl text-gray-400 group-hover:scale-110 transition-transform"></i><span>Clientes</span></a>
             </nav>
         </div>
-
-                
-    </div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
-        
-</div>
-        <!-- Usuario / Cierre de sesión inferior -->
         <div class="p-4 border-t border-dark-700 bg-dark-800/95 profile-container">
             <div data-profile-trigger="" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-dark-700/80 cursor-pointer transition-all mb-2 group border border-transparent hover:border-dark-600/50" title="Opciones de perfil">
                 <div class="relative shrink-0">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">
-                        DG
-                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-yellow to-amber-500 flex items-center justify-center text-dark-900 font-bold shadow-md shadow-brand-yellow/10">··</div>
                     <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-dark-800 rounded-full"></span>
                 </div>
                 <div class="flex-1 overflow-hidden min-w-0">
-                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Denisse Gutiérrez</p>
-                    <p class="text-xs text-gray-400 truncate flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span>
-                        <span>Administrador</span>
-                    </p>
+                    <p class="text-sm text-white font-semibold truncate group-hover:text-brand-yellow transition-colors">Cargando...</p>
+                    <p class="text-xs text-gray-400 truncate flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-brand-yellow"></span><span>—</span></p>
                 </div>
-                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0" title="Opciones de perfil"></i>
+                <i class="ph ph-user-gear text-lg text-gray-400 group-hover:text-brand-yellow group-hover:rotate-12 transition-all shrink-0"></i>
             </div>
             <a href="login.html" class="flex items-center gap-2 px-3 py-2 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/5 rounded-lg transition-colors">
-                <i class="ph ph-sign-out text-base"></i>
-                <span>Cerrar sesión</span>
+                <i class="ph ph-sign-out text-base"></i><span>Cerrar sesión</span>
             </a>
         </div>
-</aside>
+    </aside>
 
-    <!-- Contenido Principal -->
-    <div class="flex-1 flex overflow-hidden">
-        
-        <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden fade-in">
-            
-            
-        <header class="px-4 sm:px-8 py-6 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4 relative z-10 bg-dark-900/90 backdrop-blur-md">
-            
-            <div class="flex items-center gap-4 sm:gap-6">
-                <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors">
-                    <i class="ph ph-list text-lg"></i>
-                </button>
-                <div>
-                    <p id="header-subtitle" class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">Agosto 2026</p>
-                    <h1 id="header-title" class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Semana 33</h1>
+    <div class="flex-1 flex overflow-hidden min-w-0">
+        <main class="flex-1 flex flex-col h-full bg-dark-900 overflow-hidden min-w-0">
+
+            <header class="px-4 sm:px-8 py-5 flex items-center justify-between border-b border-dark-700 shrink-0 flex-wrap gap-4 relative z-10 bg-dark-900/90 backdrop-blur-md">
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <button id="sidebar-toggle" class="lg:hidden shrink-0 w-9 h-9 rounded-lg bg-dark-800 border border-dark-700 text-gray-300 flex items-center justify-center hover:text-white transition-colors"><i class="ph ph-list text-lg"></i></button>
+                    <div>
+                        <p id="header-subtitle" class="text-gray-400 font-medium tracking-wider text-sm mb-1 uppercase">—</p>
+                        <h1 id="header-title" class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Agenda</h1>
+                    </div>
+                    <div class="flex gap-2 ml-2 mt-2">
+                        <button id="nav-prev" class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors" title="Anterior"><i class="ph ph-caret-left"></i></button>
+                        <button id="nav-hoy" class="bg-dark-800 border border-dark-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors">Hoy</button>
+                        <button id="nav-next" class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors" title="Siguiente"><i class="ph ph-caret-right"></i></button>
+                    </div>
                 </div>
-                
-                <!-- Controles de navegación devueltos a su lugar original (izquierda) y un poco más abajo -->
-                <div class="hidden sm:flex gap-2 ml-4 mt-2">
-                    <button class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors"><i class="ph ph-caret-left"></i></button>
-                    <button class="bg-dark-800 border border-dark-700 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors">Hoy</button>
-                    <button class="bg-dark-800 border border-dark-700 text-white px-3 py-2 rounded-xl text-sm font-medium hover:bg-dark-700 transition-colors"><i class="ph ph-caret-right"></i></button>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 flex-wrap justify-end">
-                
-                <!-- Selector de Técnico (limpio sin duplicados) -->
-                <div class="relative z-50">
-                    <button data-dropdown-toggle="tecnico-selector-menu" class="group flex items-center gap-3 px-4 py-2 bg-dark-800/80 border border-dark-600 hover:border-brand-yellow rounded-2xl shadow-lg hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all cursor-pointer">
-                        <div class="w-10 h-10 rounded-full bg-dark-900 border border-dark-700 text-gray-400 group-hover:text-brand-yellow group-hover:border-brand-yellow/50 flex items-center justify-center transition-colors">
-                            <i class="ph-fill ph-users text-xl"></i>
+
+                <div class="flex items-center gap-3 flex-wrap justify-end">
+                    <!-- Filtro de inspector -->
+                    <div class="relative z-50">
+                        <button id="btn-filtro" type="button" class="group flex items-center gap-3 px-4 py-2 bg-dark-800/80 border border-dark-600 hover:border-brand-yellow rounded-2xl shadow-lg transition-all">
+                            <div class="w-9 h-9 rounded-full bg-dark-900 border border-dark-700 text-gray-400 group-hover:text-brand-yellow flex items-center justify-center"><i class="ph-fill ph-users text-lg"></i></div>
+                            <div class="text-left">
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold leading-tight mb-0.5">Filtro de agenda:</p>
+                                <p id="filtro-nombre" class="text-sm font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight">Todos los inspectores</p>
+                            </div>
+                            <i class="ph ph-caret-down text-gray-500 group-hover:text-brand-yellow ml-1"></i>
+                        </button>
+                        <div id="filtro-menu" class="hidden absolute top-full mt-3 right-0 sm:left-0 sm:right-auto w-72 bg-dark-900 border border-dark-600 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] py-2 z-[9999]">
+                            <div class="px-4 py-2 border-b border-dark-700 mb-2">
+                                <input id="filtro-buscar" type="text" placeholder="Buscar inspector..." class="w-full bg-dark-800 border border-dark-700 text-white text-xs rounded-lg py-2 px-3 focus:outline-none focus:border-brand-yellow">
+                            </div>
+                            <div id="filtro-lista" class="max-h-64 overflow-y-auto custom-scrollbar"></div>
                         </div>
-                        <div class="text-left">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-semibold leading-tight mb-0.5">Filtro de Agenda:</p>
-                            <p id="tecnico-seleccionado" class="text-sm font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight">Todos los técnicos</p>
-                        </div>
-                        <i class="ph ph-caret-down text-gray-500 group-hover:text-brand-yellow transition-colors ml-2"></i>
+                    </div>
+
+                    <button id="btn-global" type="button" class="flex items-center gap-2 px-4 py-3 bg-dark-800/80 border border-brand-yellow/30 hover:border-brand-yellow text-brand-yellow rounded-2xl shadow-lg transition-all font-bold text-sm">
+                        <i class="ph ph-globe-hemisphere-west text-lg"></i> Vista global
                     </button>
-                    
-                    <div id="tecnico-selector-menu" data-dropdown="" class="hidden absolute top-full mt-3 left-0 w-72 bg-dark-900 border border-dark-600 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] py-2 z-[9999] fade-in">
-                        <div class="px-4 py-2 border-b border-dark-700 mb-2">
-                            <input type="text" placeholder="Buscar técnico..." class="w-full bg-dark-800 border border-dark-700 text-white text-xs rounded-lg py-2 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                        </div>
-                        <div class="max-h-60 overflow-y-auto custom-scrollbar">
-                            
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'Todos los técnicos')">
-                                    <div class="w-8 h-8 rounded-full bg-dark-700 border border-gray-600 text-gray-300 flex items-center justify-center text-xs font-bold"><i class="ph-fill ph-users"></i></div>
-                                    <span class="text-sm text-brand-yellow font-bold">Ver Todos</span>
-                                </a>
-                                <div class="border-t border-dark-700 my-1 mx-4"></div>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'ALAN ESTRADA')">
-                                    <div class="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xs font-bold">AE</div>
-                                    <span class="text-sm text-gray-300 group-hover/tech:text-white font-medium">ALAN ESTRADA</span>
-                                </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'FILIBERTO SALCEDO')">
-                                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xs font-bold">FS</div>
-                                    <span class="text-sm text-gray-300 group-hover/tech:text-white font-medium">FILIBERTO SALCEDO</span>
-                                </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'HORACIO PORRAS')">
-                                    <div class="w-8 h-8 rounded-full bg-gray-500/20 border border-gray-500/30 text-gray-400 flex items-center justify-center text-xs font-bold">HP</div>
-                                    <span class="text-sm text-gray-300 group-hover/tech:text-white font-medium">HORACIO PORRAS</span>
-                                </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'GUILLERMO DURSTEWITZ')">
-                                    <div class="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center text-xs font-bold">GD</div>
-                                    <span class="text-sm text-gray-300 group-hover/tech:text-white font-medium">GUILLERMO DURSTEWITZ</span>
-                                </a>
-                                <a href="#" class="flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/tech" onclick="seleccionarTecnico(event, 'AUX JOMAR')">
-                </a>
-                        </div>
+
+                    <div class="bg-dark-800 p-1.5 rounded-xl border border-dark-700 flex items-center">
+                        <button id="btn-view-week" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow shadow-sm transition-all flex items-center gap-2"><i class="ph ph-kanban"></i> Semana</button>
+                        <button id="btn-view-month" class="px-4 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white transition-all flex items-center gap-2"><i class="ph ph-calendar-blank"></i> Mes</button>
                     </div>
+
+                    <button id="btn-asignar" type="button" class="hidden bg-brand-yellow text-dark-900 px-5 py-3 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:bg-yellow-400 transition-all items-center gap-2 whitespace-nowrap">
+                        <i class="ph ph-plus-circle text-lg"></i> Asignar
+                    </button>
                 </div>
+            </header>
 
-                <!-- Botón Vista Global -->
-                <button onclick="document.getElementById('modal-vista-global').classList.remove('hidden')" class="flex items-center gap-2 px-4 py-3 bg-dark-800/80 border border-brand-yellow/30 hover:border-brand-yellow text-brand-yellow rounded-2xl shadow-lg hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all cursor-pointer font-bold text-sm">
-                    <i class="ph ph-globe-hemisphere-west text-lg"></i> Vista Global
-                </button>
-
-                <!-- Toggle Switch (Semana / Mes) - un poco mas arriba con mb-2 -->
-                <div class="bg-dark-800 p-1.5 rounded-xl border border-dark-700 flex items-center mb-2">
-                    <button id="btn-view-week" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow shadow-sm transition-all flex items-center gap-2"><i class="ph ph-kanban"></i> Semana</button>
-                    <button id="btn-view-month" class="px-4 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white transition-all flex items-center gap-2"><i class="ph ph-calendar-blank"></i> Mes</button>
-                </div>
-
-                <!-- Botón Asignar -->
-                <button onclick="document.getElementById('modal-tarea').classList.remove('hidden')" class="bg-brand-yellow text-dark-900 px-5 py-3 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:bg-yellow-400 transition-all flex items-center gap-2 whitespace-nowrap">
-                    <i class="ph ph-plus-circle text-lg"></i> Asignar
-                </button>
-
-            </div>
-        </header>
-        
-
-            <div class="flex-1 overflow-x-auto overflow-y-auto bg-dark-900 p-8 custom-scrollbar relative">
-                
-                <!-- ================= VISTA SEMANAL (KANBAN) ================= -->
-                <div id="view-week" class="board-grid h-full fade-in">
-                    
-                    <!-- LUNES -->
-                    <div class="bg-dark-800/50 border border-dark-700 rounded-3xl p-4 flex flex-col h-full group/col relative">
-                        <!-- Botón Ver Detalles (Fecha Clickable) -->
-                        <div class="absolute inset-x-0 top-0 h-16 flex items-center justify-center opacity-0 group-hover/col:opacity-100 transition-opacity bg-gradient-to-b from-dark-800/90 to-transparent cursor-pointer rounded-t-3xl z-10" data-modal-open="modal-detalle-dia">
-                            <span class="bg-dark-900 border border-brand-yellow/50 text-brand-yellow text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1"><i class="ph ph-arrows-out-simple"></i> Ver día completo</span>
-                        </div>
-                        
-                        <div class="text-center mb-4 pb-4 border-b border-dark-700 pt-2 transition-transform group-hover/col:-translate-y-1">
-                            <p class="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1 group-hover/col:text-brand-yellow transition-colors">Lun</p>
-                            <p class="text-2xl font-bold text-white group-hover/col:text-brand-yellow transition-colors">03</p>
-                        </div>
-                        <div class="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-1 relative z-0">
-                            
-                            <!-- Tarjeta de Tarea Pendiente con Notas (Color Azul: Alan Estrada) -->
-                            <div class="bg-dark-800 border border-dark-600 rounded-2xl p-4 shadow-lg hover:-translate-y-1 hover:border-brand-yellow/50 transition-all group relative overflow-hidden cursor-pointer" data-modal-open="modal-editar-tarea">
-                                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500 group-hover:bg-brand-yellow transition-colors"></div>
-                                
-                                <div class="flex justify-between items-start mb-2 pl-1 gap-2">
-                                    <span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Alan Estrada</span>
-                                    <span class="text-[9px] bg-dark-700 text-gray-400 border border-dark-600 px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Pendiente</span>
-                                </div>
-
-                                <h3 class="text-[13px] font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight pl-1 mb-1.5">Folio: DI-CAL-26-08-737</h3>
-                                <div class="space-y-1 pl-1 mb-3">
-                                    <p class="text-[11px] text-gray-300 font-medium truncate">ESTACION TRES HERMANOS</p>
-                                    <p class="text-[10px] text-gray-400 font-mono">PL/23734/EXP/ES/2021</p>
-                                </div>
-                                <!-- Notas -->
-                                <div class="bg-brand-yellow/5 border border-brand-yellow/20 rounded-lg p-2 pl-1">
-                                    <p class="text-[10px] text-brand-yellow/90 font-medium leading-snug flex gap-1.5">
-                                        <i class="ph-fill ph-note-pencil text-sm shrink-0"></i> No olvidar sellar la bitácora principal.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-dark-700 shrink-0">
-                            <div class="flex justify-between items-center text-[11px] font-bold text-gray-500">
-                                <span class="flex items-center gap-1.5" title="Hologramas/Distintivos"><i class="ph-fill ph-ticket text-brand-yellow text-sm"></i> 12 Hol</span>
-                                <span class="flex items-center gap-1.5" title="Precintos"><i class="ph-fill ph-tag text-blue-400 text-sm"></i> 4 Prec</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- MARTES (Día actual resaltado) -->
-                    <div class="bg-brand-yellow/5 border-2 border-brand-yellow/50 rounded-3xl p-4 flex flex-col h-full relative overflow-hidden group/col">
-                        <!-- Botón Ver Detalles (Fecha Clickable) -->
-                        <div class="absolute inset-x-0 top-0 h-16 flex items-center justify-center opacity-0 group-hover/col:opacity-100 transition-opacity bg-gradient-to-b from-brand-yellow/20 to-transparent cursor-pointer rounded-t-3xl z-10" data-modal-open="modal-detalle-dia">
-                            <span class="bg-dark-900 border border-brand-yellow text-brand-yellow text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1"><i class="ph ph-arrows-out-simple"></i> Ver día completo</span>
-                        </div>
-                        
-                        <div class="absolute top-0 right-0 bg-brand-yellow text-dark-900 text-[9px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider z-0">Hoy</div>
-                        <div class="text-center mb-4 pb-4 border-b border-brand-yellow/20 mt-2 transition-transform group-hover/col:-translate-y-1">
-                            <p class="text-xs text-brand-yellow font-semibold uppercase tracking-widest mb-1">Mar</p>
-                            <p class="text-2xl font-bold text-brand-yellow">04</p>
-                        </div>
-                        <div class="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-1 relative z-0">
-                            
-                            <!-- Tarjeta de Tarea Ejecutada (Color Verde: Filiberto) -->
-                            <div class="bg-dark-800 border border-emerald-500/30 rounded-2xl p-4 shadow-lg hover:-translate-y-1 hover:border-emerald-500 transition-all group relative overflow-hidden cursor-pointer" data-modal-open="modal-editar-tarea">
-                                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500 group-hover:bg-emerald-400 transition-colors"></div>
-                                <div class="flex justify-between items-start mb-2 pl-1 gap-2">
-                                    <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Filiberto Salcedo</span>
-                                    <span class="text-[9px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Ejecutado</span>
-                                </div>
-                                <h3 class="text-[13px] font-bold text-white group-hover:text-emerald-400 transition-colors leading-tight pl-1 mb-1.5">Folio: DI-CAL-26-08-735</h3>
-                                <div class="space-y-1.5 pl-1 mb-2">
-                                    <p class="text-[11px] text-gray-300 font-medium truncate">MULTISERVICIOS JBC</p>
-                                    <p class="text-[10px] text-gray-400 font-mono">PL/4137/EXP/ES/2015</p>
-                                </div>
-                                <div class="pt-2 border-t border-dark-700 flex justify-between items-center pl-1">
-                                    <span class="text-[10px] font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded uppercase tracking-wider">Sin Viáticos</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Tarjeta Cancelada (Color Morado: Guillermo) -->
-                            <div class="bg-dark-800 border border-red-500/30 rounded-2xl p-4 shadow-lg hover:-translate-y-1 hover:border-red-500 transition-all group relative overflow-hidden cursor-pointer" data-modal-open="modal-editar-tarea">
-                                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500 group-hover:bg-red-500 transition-colors"></div>
-                                <div class="flex justify-between items-start mb-2 pl-1 gap-2">
-                                    <span class="bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Guillermo D.</span>
-                                    <span class="text-[9px] bg-red-500/10 text-red-400 border border-red-500/20 px-1.5 py-0.5 rounded font-bold uppercase shrink-0 leading-none text-center">No<br>Ejecutado</span>
-                                </div>
-                                <h3 class="text-[13px] font-bold text-white group-hover:text-red-400 transition-colors leading-tight pl-1 mb-1.5">Folio: DI-CAL-26-08-720</h3>
-                                <div class="space-y-1.5 pl-1 mb-3">
-                                    <p class="text-[11px] text-gray-300 font-medium truncate">SERVICIO BALLEZA</p>
-                                    <p class="text-[10px] text-gray-400 font-mono">PL/1500/EXP/ES/2015</p>
-                                </div>
-                                <div class="bg-red-500/5 border border-red-500/20 rounded-lg p-2 pl-1">
-                                    <p class="text-[10px] text-red-400/90 font-medium leading-snug flex gap-1.5">
-                                        <i class="ph-fill ph-warning-circle text-sm shrink-0"></i> Se canceló por falta de material (hologramas).
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-brand-yellow/20 shrink-0 relative z-0">
-                            <div class="flex justify-between items-center text-[11px] font-bold text-brand-yellow/70">
-                                <span class="flex items-center gap-1.5" title="Hologramas/Distintivos"><i class="ph-fill ph-ticket text-brand-yellow text-sm"></i> 26 Hol</span>
-                                <span class="flex items-center gap-1.5" title="Precintos"><i class="ph-fill ph-tag text-blue-400 text-sm"></i> 8 Prec</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- MIÉRCOLES -->
-                    <div class="bg-dark-800/50 border border-dark-700 rounded-3xl p-4 flex flex-col h-full group/col relative">
-                        <div class="absolute inset-x-0 top-0 h-16 flex items-center justify-center opacity-0 group-hover/col:opacity-100 transition-opacity bg-gradient-to-b from-dark-800/90 to-transparent cursor-pointer rounded-t-3xl z-10" data-modal-open="modal-detalle-dia">
-                            <span class="bg-dark-900 border border-brand-yellow/50 text-brand-yellow text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1"><i class="ph ph-arrows-out-simple"></i> Ver detalles del día</span>
-                        </div>
-                        <div class="text-center mb-4 pb-4 border-b border-dark-700 transition-transform group-hover/col:-translate-y-1">
-                            <p class="text-xs text-gray-500 font-semibold uppercase tracking-widest mb-1 group-hover/col:text-brand-yellow transition-colors">Mié</p>
-                            <p class="text-2xl font-bold text-white group-hover/col:text-brand-yellow transition-colors">05</p>
-                        </div>
-                        <div class="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-1 relative z-0">
-                            <div class="flex h-full items-center justify-center text-center p-4">
-                                <p class="text-xs text-gray-600 font-medium">No hay asignaciones</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- JUEVES, VIERNES, SÁBADO, DOMINGO -->
-                    <div class="bg-dark-800/50 border border-dark-700 rounded-3xl p-4 flex flex-col h-full"><div class="text-center mb-4 pb-4 border-b border-dark-700"><p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Jue</p><p class="text-2xl font-bold text-white">06</p></div><div class="flex-1 flex items-center justify-center"><p class="text-xs text-gray-600 font-medium">Libre</p></div></div>
-                    <div class="bg-dark-800/50 border border-dark-700 rounded-3xl p-4 flex flex-col h-full"><div class="text-center mb-4 pb-4 border-b border-dark-700"><p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Vie</p><p class="text-2xl font-bold text-white">07</p></div><div class="flex-1 flex items-center justify-center"><p class="text-xs text-gray-600 font-medium">Libre</p></div></div>
-                    <div class="bg-dark-900 border border-dark-700 rounded-3xl p-4 flex flex-col h-full opacity-70"><div class="text-center mb-4 pb-4 border-b border-dark-700"><p class="text-xs text-gray-600 uppercase tracking-widest mb-1">Sáb</p><p class="text-2xl font-bold text-gray-500">08</p></div></div>
-                    <div class="bg-dark-900 border border-dark-700 rounded-3xl p-4 flex flex-col h-full opacity-50"><div class="text-center mb-4 pb-4 border-b border-dark-700"><p class="text-xs text-gray-600 uppercase tracking-widest mb-1">Dom</p><p class="text-2xl font-bold text-gray-600">09</p></div></div>
-                </div>
-
-                <!-- ================= VISTA MENSUAL (CALENDARIO MULTI-TÉCNICO) ================= -->
+            <div class="flex-1 overflow-auto bg-dark-900 p-4 sm:p-8 custom-scrollbar relative">
+                <div id="cal-cargando" class="hidden absolute top-3 right-6 text-xs text-gray-400 flex items-center gap-2 z-10"><i class="ph ph-spinner animate-spin"></i> Actualizando...</div>
+                <div id="view-week" class="board-grid h-full"></div>
                 <div id="view-month" class="hidden h-full flex flex-col min-w-[800px]">
-                    <div class="grid grid-cols-7 gap-4 mb-3">
+                    <div class="grid grid-cols-7 gap-2 mb-3">
                         <div class="text-center text-xs font-bold text-gray-500 uppercase tracking-widest">Lunes</div>
                         <div class="text-center text-xs font-bold text-gray-500 uppercase tracking-widest">Martes</div>
                         <div class="text-center text-xs font-bold text-gray-500 uppercase tracking-widest">Miércoles</div>
@@ -369,516 +148,660 @@
                         <div class="text-center text-xs font-bold text-gray-600 uppercase tracking-widest">Sábado</div>
                         <div class="text-center text-xs font-bold text-gray-600 uppercase tracking-widest">Domingo</div>
                     </div>
-                    <div class="month-grid flex-1 overflow-y-auto custom-scrollbar pr-2">
-                        <!-- Días anteriores -->
-                        <div class="bg-dark-900 border border-dark-700/50 rounded-xl p-2 flex flex-col opacity-40"><span class="text-right text-xs font-semibold text-gray-500 mb-1">27</span></div>
-                        <div class="bg-dark-900 border border-dark-700/50 rounded-xl p-2 flex flex-col opacity-40"><span class="text-right text-xs font-semibold text-gray-500 mb-1">28</span></div>
-                        <div class="bg-dark-900 border border-dark-700/50 rounded-xl p-2 flex flex-col opacity-40"><span class="text-right text-xs font-semibold text-gray-500 mb-1">29</span></div>
-                        <div class="bg-dark-900 border border-dark-700/50 rounded-xl p-2 flex flex-col opacity-40"><span class="text-right text-xs font-semibold text-gray-500 mb-1">30</span></div>
-                        <div class="bg-dark-900 border border-dark-700/50 rounded-xl p-2 flex flex-col opacity-40"><span class="text-right text-xs font-semibold text-gray-500 mb-1">31</span></div>
-                        
-                        <!-- Días Mes Actual -->
-                        <div class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all cursor-pointer group" data-modal-open="modal-detalle-dia">
-                            <span class="text-right text-xs font-bold text-gray-400 group-hover:text-brand-yellow mb-1 transition-colors">01</span>
-                            <!-- Tareas Multi Técnico -->
-                            <div class="space-y-1">
-                                <div class="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> FS - Ejecutada</div>
-                                <div class="bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div> AE - Ejecutada</div>
-                            </div>
-                        </div>
-                        <div class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all cursor-pointer group" data-modal-open="modal-detalle-dia">
-                            <span class="text-right text-xs font-bold text-gray-400 group-hover:text-brand-yellow mb-1 transition-colors">02</span>
-                        </div>
-                        
-                        <div class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all cursor-pointer group" data-modal-open="modal-detalle-dia">
-                            <span class="text-right text-xs font-bold text-white group-hover:text-brand-yellow mb-1 transition-colors">03</span>
-                            <div class="space-y-1">
-                                <div class="bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div> AE - Pendiente</div>
-                                <div class="bg-purple-500/20 border border-purple-500/30 text-purple-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div> GD - Pendiente</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Día Actual resaltado en el Mes -->
-                        <div class="bg-brand-yellow/5 border border-brand-yellow rounded-xl p-2 flex flex-col hover:shadow-[0_0_15px_rgba(234,179,8,0.2)] transition-all cursor-pointer group relative" data-modal-open="modal-detalle-dia">
-                            <div class="absolute top-0 left-0 bg-brand-yellow text-dark-900 text-[8px] font-bold px-2 py-0.5 rounded-br-lg uppercase tracking-wider">Hoy</div>
-                            <span class="text-right text-sm font-black text-brand-yellow mb-1 transition-colors">04</span>
-                            <div class="space-y-1">
-                                <div class="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> FS - Ejecutada</div>
-                                <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate font-medium"><i class="ph-fill ph-warning-circle"></i> GD - Cancelada</div>
-                            </div>
-                        </div>
-
-                        <div class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all cursor-pointer group" data-modal-open="modal-detalle-dia">
-                            <span class="text-right text-xs font-bold text-white group-hover:text-brand-yellow mb-1 transition-colors">05</span>
-                            <div class="space-y-1">
-                                <div class="bg-orange-500/20 border border-orange-500/30 text-orange-400 text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><div class="w-1.5 h-1.5 rounded-full bg-orange-500"></div> AJ - Pendiente</div>
-                            </div>
-                        </div>
-
-                        <script>
-                            for(let i=6; i<=31; i++) {
-                                document.write(`
-                                <div class="bg-dark-800 border border-dark-600 rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all cursor-pointer group" data-modal-open="modal-detalle-dia">
-                                    <span class="text-right text-xs font-bold text-gray-400 group-hover:text-brand-yellow mb-1 transition-colors">${i}</span>
-                                </div>`);
-                            }
-                        </script>
-                    </div>
+                    <div id="month-grid" class="month-grid flex-1 pr-1"></div>
                 </div>
-
             </div>
         </main>
 
-        <!-- Panel Lateral Derecho (Alertas y Recursos) -->
-        <aside class="fixed lg:static inset-y-0 left-0 w-64 bg-dark-800 border-r border-dark-700 z-30 -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out h-full overflow-y-auto overflow-x-hidden custom-scrollbar select-none shrink-0 flex flex-col justify-between"><div><div><div><div><div><div><div><div>
-            
+        <!-- Panel derecho: resumen y alertas -->
+        <section class="hidden xl:flex w-80 shrink-0 bg-dark-800 border-l border-dark-700 h-full overflow-y-auto custom-scrollbar flex-col gap-5 p-5">
             <div class="bg-dark-700/50 border border-dark-600 rounded-3xl p-5 shadow-lg relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-24 h-24 bg-brand-yellow/10 rounded-bl-full blur-2xl"></div>
-                <h3 class="text-white font-bold text-base mb-1 flex items-center gap-2"><i class="ph-fill ph-stack text-brand-yellow"></i> Material de Semana</h3>
-                <p class="text-[10px] text-gray-400 mb-5 leading-relaxed uppercase tracking-wider font-semibold">Total programado actual</p>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between bg-dark-900/50 p-3 rounded-xl border border-dark-700">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-brand-yellow/20 p-1.5 rounded-lg text-brand-yellow"><i class="ph-fill ph-ticket text-lg"></i></div>
-                            <span class="text-sm text-gray-300 font-medium">Hol y Dist</span>
-                        </div>
-                        <span class="text-xl font-black text-white">86</span>
-                    </div>
-                    <div class="flex items-center justify-between bg-dark-900/50 p-3 rounded-xl border border-dark-700">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-500/20 p-1.5 rounded-lg text-blue-400"><i class="ph-fill ph-tag text-lg"></i></div>
-                            <span class="text-sm text-gray-300 font-medium">Precintos</span>
-                        </div>
-                        <span class="text-xl font-black text-white">24</span>
-                    </div>
-                </div>
+                <h3 class="text-white font-bold text-base mb-1 flex items-center gap-2"><i class="ph-fill ph-stack text-brand-yellow"></i> Resumen</h3>
+                <p id="res-periodo" class="text-[10px] text-gray-400 mb-4 uppercase tracking-wider font-semibold">—</p>
+                <div id="res-cifras" class="space-y-3"></div>
             </div>
-
-            <!-- Panel de Recursos -->
             <div class="bg-dark-700/50 border border-dark-600 rounded-3xl p-5 shadow-lg flex-1 flex flex-col relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full blur-2xl"></div>
                 <div class="flex items-center justify-between mb-4 border-b border-dark-700 pb-2">
-                    <h3 class="text-white font-bold text-base flex items-center gap-2"><i class="ph-fill ph-warning-octagon text-red-400"></i> Control de Recursos</h3>
+                    <h3 class="text-white font-bold text-base flex items-center gap-2"><i class="ph-fill ph-warning-octagon text-red-400"></i> Pendientes de atender</h3>
                 </div>
-                <div class="space-y-4 flex-1">
-                    
-                    <!-- Alerta Viáticos -->
-                    <div class="bg-dark-900/50 p-3 rounded-xl border border-red-500/20">
-                        <div class="flex items-start justify-between mb-1">
-                            <h4 class="text-sm font-semibold text-red-300">Sin Viáticos Asignados</h4>
-                            <i class="ph ph-money text-red-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-500 mb-2">Folio: DI-CAL-26-08-735</p>
-                        <button class="w-full bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white text-xs font-bold py-1.5 rounded-lg border border-red-500/30 transition-colors">
-                            Gestionar Viáticos
-                        </button>
-                    </div>
-
-                    <!-- Alerta Material -->
-                    <div class="bg-dark-900/50 p-3 rounded-xl border border-orange-500/20">
-                        <div class="flex items-start justify-between mb-1">
-                            <h4 class="text-sm font-semibold text-orange-300">Material Insuficiente</h4>
-                            <i class="ph ph-package text-orange-400"></i>
-                        </div>
-                        <p class="text-[11px] text-gray-500 mb-2">Requiere 10 Hologramas extra. Inspector: Alan Estrada</p>
-                        <button onclick="window.location.href='hologramas/distintivos.html'" class="w-full bg-orange-500/10 text-orange-400 hover:bg-orange-500 hover:text-white text-xs font-bold py-1.5 rounded-lg border border-orange-500/30 transition-colors">
-                            Solicitar Material
-                        </button>
-                    </div>
-
-                </div>
+                <div id="res-alertas" class="space-y-3 flex-1"></div>
             </div>
-        </div>
-
-</aside>
+        </section>
     </div>
 
-    <!-- Modales -->
-    
-    <!-- MODAL: VISTA GLOBAL DE TÉCNICOS MEJORADA -->
-    <div id="modal-vista-global" class="hidden fixed inset-0 z-[110] flex items-center justify-center px-4">
-        <!-- Overlay oscuro con funcion de cerrar -->
-        <div class="modal-backdrop absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="document.getElementById('modal-vista-global').classList.add('hidden')"></div>
-        
-        <div class="relative bg-dark-800 border border-brand-yellow/30 rounded-3xl shadow-2xl w-full max-w-5xl p-8 max-h-[90vh] overflow-y-auto transform transition-all fade-in custom-scrollbar">
-            
-            <!-- Cabecera del modal -->
-            <div class="flex items-start justify-between mb-8 border-b border-dark-700 pb-4 pt-2">
+    <!-- Modal: Vista global -->
+    <div id="modal-global" class="hidden fixed inset-0 z-[110] flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" data-cerrar></div>
+        <div class="relative bg-dark-800 border border-brand-yellow/30 rounded-3xl shadow-2xl w-full max-w-5xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-start justify-between mb-6 border-b border-dark-700 pb-4">
                 <div>
-                    <h3 class="text-white font-black text-2xl flex items-center gap-3"><i class="ph-fill ph-globe-hemisphere-west text-brand-yellow"></i> Vista Global de Operaciones</h3>
-                    <p class="text-base text-gray-400 mt-1">Progreso y estado de actividades semanales por técnico.</p>
+                    <h3 class="text-white font-black text-2xl flex items-center gap-3"><i class="ph-fill ph-globe-hemisphere-west text-brand-yellow"></i> Vista global</h3>
+                    <p id="global-sub" class="text-sm text-gray-400 mt-1">Avance por inspector en el periodo visible.</p>
                 </div>
-                <!-- BOTÓN DE CERRAR SEGURO -->
-                <button onclick="document.getElementById('modal-vista-global').classList.add('hidden')" class="text-gray-400 hover:text-white hover:bg-red-500/20 transition-colors bg-dark-900 p-2.5 rounded-xl border border-dark-700">
-                    <i class="ph ph-x text-2xl"></i>
-                </button>
+                <button type="button" data-cerrar class="text-gray-400 hover:text-white hover:bg-red-500/20 bg-dark-900 p-2.5 rounded-xl border border-dark-700"><i class="ph ph-x text-2xl"></i></button>
             </div>
-            
-            <div class="space-y-6">
-                <!-- Fila Técnico 1: Alan -->
-                <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 flex flex-col md:flex-row gap-8 hover:border-brand-yellow/50 transition-colors group">
-                    <div class="flex items-start gap-5 md:w-1/3 border-b md:border-b-0 md:border-r border-dark-700 pb-4 md:pb-0 md:pr-4 cursor-pointer" onclick="seleccionarTecnico(event, 'ALAN ESTRADA'); document.getElementById('modal-vista-global').classList.add('hidden');">
-                        <div class="w-16 h-16 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl font-bold shadow-inner shrink-0 mt-1">AE</div>
-                        <div>
-                            <h4 class="text-white font-bold text-lg group-hover:text-brand-yellow transition-colors">ALAN ESTRADA</h4>
-                            <p class="text-sm text-gray-500 mt-1">4 Tareas en la semana</p>
-                            <div class="mt-4 flex gap-2 flex-wrap">
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded font-bold uppercase">Material OK</span>
-                                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded font-bold uppercase">Viáticos OK</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-2/3 flex flex-col justify-center">
-                        <div class="flex justify-between text-xs uppercase font-bold text-gray-400 mb-2.5"><span>Progreso Semanal</span><span class="text-emerald-400 text-sm">75%</span></div>
-                        <div class="h-3 w-full bg-dark-800 rounded-full overflow-hidden border border-dark-700 mb-5"><div class="h-full bg-blue-500 rounded-full" style="width: 75%"></div></div>
-                        
-                        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700/50">
-                            <h5 class="text-sm font-bold text-gray-300 mb-3 border-b border-dark-700 pb-2">Actividades Destacadas</h5>
-                            <ul class="space-y-3">
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-check-circle text-emerald-400 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Hoy:</span> 1 Ejecutada <span class="text-brand-yellow text-xs ml-1 font-mono tracking-wider">(DI-CAL-26-08-722)</span></div>
-                                </li>
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-clock text-gray-500 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Lunes:</span> 2 Pendientes <span class="text-brand-yellow text-xs ml-1 font-mono tracking-wider">(DI-CAL-26-08-737)</span></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fila Técnico 2: Filiberto -->
-                <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 flex flex-col md:flex-row gap-8 hover:border-brand-yellow/50 transition-colors group">
-                    <div class="flex items-start gap-5 md:w-1/3 border-b md:border-b-0 md:border-r border-dark-700 pb-4 md:pb-0 md:pr-4 cursor-pointer" onclick="seleccionarTecnico(event, 'FILIBERTO SALCEDO'); document.getElementById('modal-vista-global').classList.add('hidden');">
-                        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl font-bold shadow-inner shrink-0 mt-1">FS</div>
-                        <div>
-                            <h4 class="text-white font-bold text-lg group-hover:text-brand-yellow transition-colors">FILIBERTO SALCEDO</h4>
-                            <p class="text-sm text-gray-500 mt-1">6 Tareas en la semana</p>
-                            <div class="mt-4 flex gap-2 flex-wrap">
-                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-xs px-2.5 py-1 rounded font-bold uppercase">Sin Viáticos</span>
-                                <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs px-2.5 py-1 rounded font-bold uppercase">Falta Material</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-2/3 flex flex-col justify-center">
-                        <div class="flex justify-between text-xs uppercase font-bold text-gray-400 mb-2.5"><span>Progreso Semanal</span><span class="text-brand-yellow text-sm">30%</span></div>
-                        <div class="h-3 w-full bg-dark-800 rounded-full overflow-hidden border border-dark-700 mb-5"><div class="h-full bg-emerald-500 rounded-full" style="width: 30%"></div></div>
-                        
-                        <div class="bg-dark-800 rounded-xl p-4 border border-dark-700/50">
-                            <h5 class="text-sm font-bold text-gray-300 mb-3 border-b border-dark-700 pb-2">Actividades Destacadas</h5>
-                            <ul class="space-y-3">
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-check-circle text-emerald-400 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Hoy:</span> 1 Ejecutada <span class="text-brand-yellow text-xs ml-1 font-mono tracking-wider">(DI-CAL-26-08-735)</span></div>
-                                </li>
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-calendar text-gray-500 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Resto de semana:</span> 5 Tareas programadas pendientes.</div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fila Técnico 3: Guillermo -->
-                <div class="bg-dark-900 border border-dark-700 rounded-2xl p-6 flex flex-col md:flex-row gap-8 hover:border-brand-yellow/50 transition-colors group">
-                    <div class="flex items-start gap-5 md:w-1/3 border-b md:border-b-0 md:border-r border-dark-700 pb-4 md:pb-0 md:pr-4 cursor-pointer" onclick="seleccionarTecnico(event, 'GUILLERMO DURSTEWITZ'); document.getElementById('modal-vista-global').classList.add('hidden');">
-                        <div class="w-16 h-16 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl font-bold shadow-inner shrink-0 mt-1">GD</div>
-                        <div>
-                            <h4 class="text-white font-bold text-lg group-hover:text-brand-yellow transition-colors">GUILLERMO DURSTEWITZ</h4>
-                            <p class="text-sm text-gray-500 mt-1">2 Tareas en la semana</p>
-                            <div class="mt-4 flex gap-2 flex-wrap">
-                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-xs px-2.5 py-1 rounded font-bold uppercase">Requiere Atención</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="md:w-2/3 flex flex-col justify-center">
-                        <div class="flex justify-between text-xs uppercase font-bold text-gray-400 mb-2.5"><span>Progreso Semanal</span><span class="text-red-400 text-sm">Cancelaciones</span></div>
-                        <div class="h-3 w-full bg-dark-800 rounded-full overflow-hidden border border-dark-700 mb-5"><div class="h-full bg-red-500 rounded-full" style="width: 50%"></div></div>
-                        
-                        <div class="bg-dark-800 rounded-xl p-4 border border-red-500/20">
-                            <h5 class="text-sm font-bold text-gray-300 mb-3 border-b border-dark-700 pb-2">Actividades Destacadas</h5>
-                            <ul class="space-y-3">
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-warning-circle text-red-400 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Hoy:</span> <span class="text-red-400">1 No Ejecutada / Cancelada</span> <span class="text-brand-yellow text-xs ml-1 font-mono tracking-wider">(DI-CAL-26-08-720)</span></div>
-                                </li>
-                                <li class="flex items-start gap-3 text-sm text-gray-400">
-                                    <i class="ph-fill ph-check-circle text-emerald-400 mt-0.5 text-lg"></i>
-                                    <div><span class="font-bold text-white">Ayer:</span> 1 Ejecutada correctamente.</div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Nueva Tarea (Asignar) -->
-    <div id="modal-tarea" class="hidden fixed inset-0 z-[100] flex items-center justify-center px-4">
-        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('modal-tarea').classList.add('hidden')"></div>
-        <div class="relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto transform transition-all fade-in custom-scrollbar">
-            <div class="flex items-center justify-between mb-6 border-b border-dark-700 pb-3">
-                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-calendar-plus text-brand-yellow text-xl"></i> Asignar tarea a agenda</h3>
-                <button class="text-gray-500 hover:text-white transition-colors" onclick="document.getElementById('modal-tarea').classList.add('hidden')">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
-            </div>
-            <form class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Vincular con Inspección (Folio)</label>
-                    <div class="relative">
-                        <input type="text" placeholder="Ej. DI-CAL-26-08-735" class="w-full bg-dark-900 border border-brand-yellow/50 text-white rounded-lg py-2.5 px-3 pl-9 focus:outline-none focus:ring-1 focus:ring-brand-yellow transition-all">
-                        <i class="ph ph-magnifying-glass absolute left-3 top-3 text-brand-yellow"></i>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Día de la semana *</label>
-                        <input type="date" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Técnico *</label>
-                        <select class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all">
-                            <option>ALAN ESTRADA</option>
-                            <option>FILIBERTO SALCEDO</option>
-                            <option>HORACIO PORRAS</option>
-                            <option>GUILLERMO DURSTEWITZ</option>
-                            <option>AUX JOMAR</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Estatus de ejecución (Sincronizado con Inspección)</label>
-                    <select class="w-full bg-dark-900 border border-dark-700 text-gray-400 rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all">
-                        <option value="pendiente" selected="">Pendiente</option>
-                        <option value="ejecutado" class="text-emerald-400 font-semibold">Ejecutado (Verificado en SCFI)</option>
-                        <option value="cancelado" class="text-red-400 font-semibold">No ejecutado / Cancelado</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Estación *</label>
-                    <input type="text" placeholder="Autocompletado si hay folio..." class="w-full bg-dark-900/50 border border-dark-700 text-gray-400 rounded-lg py-2.5 px-3 cursor-not-allowed">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Permiso PL</label>
-                        <input type="text" placeholder="Autocompletado..." class="w-full bg-dark-900/50 border border-dark-700 text-gray-400 rounded-lg py-2.5 px-3 cursor-not-allowed">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Material Requerido</label>
-                        <input type="text" placeholder="Ej. 12 Hol / 4 Prec" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-brand-yellow uppercase tracking-wider font-semibold mb-1.5 flex items-center gap-1"><i class="ph-fill ph-note-pencil"></i> Instrucciones / Notas</label>
-                    <textarea class="w-full bg-brand-yellow/5 border border-brand-yellow/30 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all min-h-[60px]" placeholder="Ej. Recordar sellar la bitácora o recoger el material a tiempo..."></textarea>
-                </div>
-
-                <div class="pt-2 border-t border-dark-700 mt-6 flex justify-end gap-3">
-                    <button type="button" class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors" onclick="document.getElementById('modal-tarea').classList.add('hidden')">Cancelar</button>
-                    <button type="button" class="px-6 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all" onclick="document.getElementById('modal-tarea').classList.add('hidden')">Guardar Tarea</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: Editar Tarea -->
-    <div id="modal-editar-tarea" data-modal="" class="hidden fixed inset-0 z-[100] flex items-center justify-center px-4">
-        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="document.getElementById('modal-editar-tarea').classList.add('hidden')"></div>
-        <div class="relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto transform transition-all fade-in custom-scrollbar">
-            <div class="flex items-center justify-between mb-6 border-b border-dark-700 pb-3">
-                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-pencil-simple text-brand-yellow text-xl"></i> Editar asignación</h3>
-                <button class="text-gray-500 hover:text-white transition-colors" onclick="document.getElementById('modal-editar-tarea').classList.add('hidden')">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
-            </div>
-            <form class="space-y-4">
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Folio Vinculado</label>
-                    <input type="text" value="DI-CAL-26-08-735" readonly="" class="w-full bg-dark-900/50 border border-dark-700 text-brand-yellow font-bold rounded-lg py-2.5 px-3 cursor-not-allowed">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Día de la semana *</label>
-                        <input type="date" value="2026-08-04" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Técnico Asignado</label>
-                        <select class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all">
-                            <option>ALAN ESTRADA</option>
-                            <option selected="">FILIBERTO SALCEDO</option>
-                            <option>GUILLERMO DURSTEWITZ</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Estatus de Ejecución</label>
-                    <select class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all">
-                        <option value="pendiente">Pendiente</option>
-                        <option value="ejecutado" class="text-emerald-400 font-semibold" selected="">Ejecutado</option>
-                        <option value="cancelado" class="text-red-400 font-semibold">No ejecutado / Cancelado</option>
-                    </select>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Permiso PL</label>
-                        <input type="text" value="PL/4137/EXP/ES/2015" readonly="" class="w-full bg-dark-900/50 border border-dark-700 text-gray-400 rounded-lg py-2.5 px-3 cursor-not-allowed">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Viáticos</label>
-                        <select class="w-full bg-dark-900 border border-red-500/50 text-red-400 font-bold rounded-lg py-2.5 px-3 focus:outline-none transition-all">
-                            <option value="faltan" selected="">Faltan viáticos</option>
-                            <option value="ok" class="text-white">Viáticos OK</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs text-brand-yellow uppercase tracking-wider font-semibold mb-1.5 flex items-center gap-1"><i class="ph-fill ph-note-pencil"></i> Instrucciones / Notas</label>
-                    <textarea class="w-full bg-brand-yellow/5 border border-brand-yellow/30 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow transition-all min-h-[60px]"></textarea>
-                </div>
-
-                <div class="pt-2 border-t border-dark-700 mt-6 flex justify-between items-center gap-3">
-                    <button type="button" class="px-4 py-2.5 text-sm font-medium rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors flex items-center gap-1" onclick="document.getElementById('modal-editar-tarea').classList.add('hidden')"><i class="ph ph-trash"></i> Desvincular</button>
-                    <div class="flex gap-2">
-                        <button type="button" class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700 transition-colors" onclick="document.getElementById('modal-editar-tarea').classList.add('hidden')">Cancelar</button>
-                        <button type="button" class="px-6 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg shadow-[0_0_15px_rgba(234,179,8,0.3)] transition-all" onclick="document.getElementById('modal-editar-tarea').classList.add('hidden')">Guardar cambios</button>
-                    </div>
-                </div>
-            </form>
+            <div id="global-lista" class="space-y-4"></div>
         </div>
     </div>
 
     <!-- Modal: Detalle del día -->
-    <div id="modal-detalle-dia" data-modal="" class="hidden fixed inset-0 z-[90] flex items-center justify-center px-4">
-        <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm" data-modal-close=""></div>
-        <div class="relative bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl w-full max-w-2xl p-8 max-h-[90vh] overflow-y-auto transform transition-all fade-in">
+    <div id="modal-dia" class="hidden fixed inset-0 z-[90] flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+        <div class="relative bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl w-full max-w-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="flex justify-between items-start border-b border-dark-700 pb-4 mb-6">
                 <div>
-                    <h2 class="text-2xl font-black text-brand-yellow flex items-center gap-3"><i class="ph ph-calendar"></i> Martes, 04 de Agosto</h2>
-                    <p class="text-sm text-gray-400 mt-1">Resumen de operaciones y material para este día.</p>
+                    <h2 id="dia-titulo" class="text-2xl font-black text-brand-yellow flex items-center gap-3">—</h2>
+                    <p class="text-sm text-gray-400 mt-1">Verificaciones programadas para este día.</p>
                 </div>
-                <button data-modal-close="" class="text-gray-500 hover:text-white transition-colors bg-dark-900 p-2 rounded-xl">
-                    <i class="ph ph-x text-xl"></i>
-                </button>
+                <button type="button" data-cerrar class="text-gray-500 hover:text-white bg-dark-900 p-2 rounded-xl"><i class="ph ph-x text-xl"></i></button>
             </div>
-            
-            <div class="space-y-4 mb-6">
-                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Tareas programadas (2)</h4>
-                
-                <!-- Tarea 1 Día Detalle -->
-                <div class="bg-dark-900/80 border border-dark-600 rounded-2xl p-4 shadow-lg hover:border-brand-yellow/50 transition-all group relative overflow-hidden flex justify-between items-center cursor-pointer" data-modal-open="modal-editar-tarea">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-emerald-500"></div>
-                    <div class="pl-3">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Filiberto S.</span>
-                            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Ejecutado</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Folio: DI-CAL-26-08-735</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">Estación: MULTISERVICIOS JBC • Permiso: PL/4137/EXP/ES/2015</p>
-                    </div>
-                    <button class="bg-dark-800 text-gray-300 hover:text-brand-yellow hover:bg-dark-700 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-dark-700 flex items-center gap-1 shrink-0">
-                        <i class="ph ph-pencil-simple"></i> Editar
-                    </button>
-                </div>
-
-                <!-- Tarea 2 Día Detalle -->
-                <div class="bg-dark-900/80 border border-dark-600 rounded-2xl p-4 shadow-lg hover:border-brand-yellow/50 transition-all group relative overflow-hidden flex justify-between items-center cursor-pointer" data-modal-open="modal-editar-tarea">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500"></div>
-                    <div class="pl-3">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="bg-purple-500/20 text-purple-400 border border-purple-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Guillermo D.</span>
-                            <span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">Cancelado</span>
-                        </div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-red-400 transition-colors">Folio: DI-CAL-26-08-720</h3>
-                        <p class="text-[11px] text-gray-400 mt-0.5">Estación: SERVICIO BALLEZA • Permiso: PL/1500/EXP/ES/2015</p>
-                    </div>
-                    <button class="bg-dark-800 text-gray-300 hover:text-brand-yellow hover:bg-dark-700 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-dark-700 flex items-center gap-1 shrink-0">
-                        <i class="ph ph-pencil-simple"></i> Editar
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-2xl p-4 flex justify-between items-center mb-6">
-                <div>
-                    <p class="text-xs font-bold text-brand-yellow uppercase tracking-widest">Material requerido</p>
-                    <p class="text-sm text-gray-300 mt-1">Total de insumos para completar las tareas del día.</p>
-                </div>
-                <div class="flex gap-4">
-                    <div class="text-center bg-dark-900 px-4 py-2 rounded-xl border border-dark-700">
-                        <span class="block text-lg font-black text-brand-yellow">26</span>
-                        <span class="text-[9px] font-bold text-gray-500 uppercase">Hologramas</span>
-                    </div>
-                    <div class="text-center bg-dark-900 px-4 py-2 rounded-xl border border-dark-700">
-                        <span class="block text-lg font-black text-blue-400">8</span>
-                        <span class="text-[9px] font-bold text-gray-500 uppercase">Precintos</span>
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="document.getElementById('modal-tarea').classList.remove('hidden'); document.getElementById('modal-detalle-dia').classList.add('hidden')" class="w-full bg-dark-900 border border-dark-700 text-white hover:border-brand-yellow transition-all rounded-xl py-3 text-sm font-bold flex justify-center items-center gap-2 group">
-                <i class="ph ph-plus-circle text-brand-yellow text-lg group-hover:scale-110 transition-transform"></i> Agregar nueva asignación a este día
+            <div id="dia-lista" class="space-y-3 mb-6"></div>
+            <div id="dia-totales" class="mb-6"></div>
+            <button id="dia-asignar" type="button" class="hidden w-full bg-dark-900 border border-dark-700 text-white hover:border-brand-yellow transition-all rounded-xl py-3 text-sm font-bold justify-center items-center gap-2">
+                <i class="ph ph-plus-circle text-brand-yellow text-lg"></i> Asignar verificación a este día
             </button>
         </div>
     </div>
 
-    <script src="JS/app.js?v=639250641835541270" defer=""></script>
+    <!-- Modal: Asignar -->
+    <div id="modal-asignar" class="hidden fixed inset-0 z-[120] flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+        <div class="relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between mb-5 border-b border-dark-700 pb-3">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-calendar-plus text-brand-yellow text-xl"></i> Asignar verificación a la agenda</h3>
+                <button type="button" data-cerrar class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <form id="form-asignar" class="space-y-4" autocomplete="off">
+                <div>
+                    <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Buscar verificación (folio, PL o cliente) *</label>
+                    <div class="relative">
+                        <input id="as-buscar" type="text" placeholder="Ej. DI-CAL-26-03-737 o PL/4137" class="w-full bg-dark-900 border border-brand-yellow/50 text-white rounded-lg py-2.5 px-3 pl-9 focus:outline-none focus:ring-1 focus:ring-brand-yellow">
+                        <i class="ph ph-magnifying-glass absolute left-3 top-3 text-brand-yellow"></i>
+                    </div>
+                    <div id="as-resultados" class="mt-2 space-y-1.5"></div>
+                    <div id="as-elegida" class="hidden mt-2 bg-brand-yellow/5 border border-brand-yellow/30 rounded-lg p-3 text-sm"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Día *</label>
+                        <input id="as-fecha" type="date" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow [color-scheme:dark]">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Inspector *</label>
+                        <select id="as-inspector" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow"></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-brand-yellow uppercase tracking-wider font-semibold mb-1.5 flex items-center gap-1"><i class="ph-fill ph-note-pencil"></i> Instrucciones / notas</label>
+                    <textarea id="as-notas" class="w-full bg-brand-yellow/5 border border-brand-yellow/30 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow min-h-[60px]" placeholder="Se guardan en las observaciones de la verificación"></textarea>
+                </div>
+                <p class="text-[11px] text-gray-500">¿La verificación todavía no existe? Créala en <a href="SCFI/inspecciones.html" class="text-brand-yellow hover:underline">SCFI → Inspecciones</a> (ahí se genera el folio) y aparecerá aquí en su fecha.</p>
+                <div class="pt-3 border-t border-dark-700 flex justify-end gap-3">
+                    <button type="button" data-cerrar class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cancelar</button>
+                    <button id="as-guardar" type="submit" class="px-6 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg disabled:opacity-50">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Editar -->
+    <div id="modal-editar" class="hidden fixed inset-0 z-[130] flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+        <div class="relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between mb-5 border-b border-dark-700 pb-3">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><i class="ph ph-pencil-simple text-brand-yellow text-xl"></i> <span id="ed-titulo">Editar</span></h3>
+                <button type="button" data-cerrar class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <form id="form-editar" class="space-y-4" autocomplete="off">
+                <div id="ed-info" class="bg-dark-900/60 border border-dark-700 rounded-lg p-3 text-sm"></div>
+                <div id="ed-aviso" class="hidden text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Día</label>
+                        <input id="ed-fecha" type="date" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow disabled:opacity-60 [color-scheme:dark]">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Inspector</label>
+                        <select id="ed-inspector" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow disabled:opacity-60"></select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Estatus</label>
+                        <select id="ed-estatus" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow disabled:opacity-60"></select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1.5">Viáticos ($)</label>
+                        <input id="ed-viaticos" type="number" step="0.01" min="0" class="w-full bg-dark-900 border border-dark-700 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow disabled:opacity-60">
+                    </div>
+                </div>
+                <div id="ed-motivo-wrap" class="hidden">
+                    <label class="block text-xs text-red-400 uppercase tracking-wider font-semibold mb-1.5">Motivo de cancelación</label>
+                    <input id="ed-motivo" type="text" class="w-full bg-dark-900 border border-red-500/40 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-red-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-brand-yellow uppercase tracking-wider font-semibold mb-1.5 flex items-center gap-1"><i class="ph-fill ph-note-pencil"></i> Instrucciones / notas</label>
+                    <textarea id="ed-notas" class="w-full bg-brand-yellow/5 border border-brand-yellow/30 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow min-h-[70px] disabled:opacity-60"></textarea>
+                </div>
+                <div class="pt-3 border-t border-dark-700 flex justify-between items-center gap-3">
+                    <a href="SCFI/inspecciones.html" class="text-xs text-gray-400 hover:text-brand-yellow flex items-center gap-1"><i class="ph ph-arrow-square-out"></i> Abrir Inspecciones</a>
+                    <div class="flex gap-2">
+                        <button type="button" data-cerrar class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cerrar</button>
+                        <button id="ed-guardar" type="submit" class="px-6 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg disabled:opacity-50">Guardar cambios</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        function seleccionarTecnico(e, nombre) {
-            e.preventDefault();
-            document.getElementById('tecnico-seleccionado').textContent = nombre;
-            const dropdown = document.getElementById('tecnico-selector-menu');
-            if (dropdown) dropdown.classList.add('hidden');
-            if(window.App && typeof window.App.toast === 'function') {
-                window.App.toast(`Filtro aplicado: ${nombre}`, 'success');
+    document.addEventListener('DOMContentLoaded', () => {
+        'use strict';
+        const $ = (id) => document.getElementById(id);
+        const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        const toast = (m, t = 'success') => (window.App?.toast ? App.toast(m, t) : alert(m));
+
+        const ESTATUS = {
+            programada: { label: 'Programada', badge: 'bg-blue-500/10 text-blue-400 border-blue-500/20', chip: 'bg-blue-500/15 border-blue-500/30 text-blue-300', borde: 'border-dark-600' },
+            en_proceso: { label: 'En proceso', badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20', chip: 'bg-amber-500/15 border-amber-500/30 text-amber-300', borde: 'border-amber-500/30' },
+            terminada:  { label: 'Terminada',  badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', chip: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300', borde: 'border-emerald-500/30' },
+            cancelada:  { label: 'Cancelada',  badge: 'bg-red-500/10 text-red-400 border-red-500/20', chip: 'bg-red-500/10 border-red-500/30 text-red-300', borde: 'border-red-500/30' },
+        };
+        // Color fijo por inspector (barra lateral y etiqueta)
+        const COLORES = [
+            ['bg-blue-500', 'bg-blue-500/20 text-blue-400 border-blue-500/30'],
+            ['bg-emerald-500', 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'],
+            ['bg-purple-500', 'bg-purple-500/20 text-purple-400 border-purple-500/30'],
+            ['bg-orange-500', 'bg-orange-500/20 text-orange-400 border-orange-500/30'],
+            ['bg-pink-500', 'bg-pink-500/20 text-pink-400 border-pink-500/30'],
+            ['bg-cyan-500', 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30'],
+            ['bg-lime-500', 'bg-lime-500/20 text-lime-400 border-lime-500/30'],
+            ['bg-rose-500', 'bg-rose-500/20 text-rose-400 border-rose-500/30'],
+        ];
+        const DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+
+        const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const desdeIso = (s) => new Date(`${s}T12:00:00`);
+        const sumarDias = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+        const lunesDe = (d) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12); return sumarDias(x, -((x.getDay() + 6) % 7)); };
+        const semanaIso = (d) => { const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const n = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - n); const a = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return Math.ceil(((t - a) / 86400000 + 1) / 7); };
+        const mesAnio = (d) => d.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }).replace(/^./, (c) => c.toUpperCase());
+        const fechaLarga = (s) => desdeIso(s).toLocaleDateString('es-MX', { weekday: 'long', day: '2-digit', month: 'long' }).replace(/^./, (c) => c.toUpperCase());
+        const iniciales = (t = '') => String(t).split(/\s+/).filter(Boolean).slice(0, 2).map((x) => x[0]).join('').toUpperCase() || '?';
+        const dinero = (n) => Number(n).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+        const HOY = iso(new Date());
+
+        let DB = null;
+        let vista = 'semana';
+        let ancla = new Date();
+        let filtro = { id: '', nombre: 'Todos los inspectores' };
+        let inspectores = [];
+        let colorDe = {};
+        let filas = [];
+        let porDia = {};
+        let elegida = null;
+        let editando = null;
+
+        // ---------------- utilidades de UI ----------------
+        const abrir = (id) => $(id).classList.remove('hidden');
+        const cerrar = (id) => $(id).classList.add('hidden');
+        document.querySelectorAll('[data-cerrar]').forEach((el) => el.addEventListener('click', () => el.closest('.fixed').classList.add('hidden')));
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            ['modal-editar', 'modal-asignar', 'modal-dia', 'modal-global'].some((id) => { if (!$(id).classList.contains('hidden')) { cerrar(id); return true; } return false; });
+        });
+
+        const yo = () => DB?.perfil?.id;
+        const puedeCapturar = (i) => DB.puedeEditar() || [i?.inspector_id, i?.realizo_id].includes(yo());
+        const sinViaticos = (i) => i.estatus !== 'cancelada' && !(Number(i.viaticos) > 0);
+        const cliente = (i) => i.razon_social || i.cliente_comercial || i.estacion_nombre || 'Cliente sin nombre';
+        const color = (id) => COLORES[colorDe[id] ?? 0] || COLORES[0];
+
+        function rango() {
+            if (vista === 'semana') {
+                const ini = lunesDe(ancla);
+                return { ini, fin: sumarDias(ini, 6) };
+            }
+            const primero = new Date(ancla.getFullYear(), ancla.getMonth(), 1, 12);
+            const ultimo = new Date(ancla.getFullYear(), ancla.getMonth() + 1, 0, 12);
+            return { ini: lunesDe(primero), fin: sumarDias(lunesDe(ultimo), 6), primero, ultimo };
+        }
+
+        function pintarEncabezado() {
+            const { ini, fin } = rango();
+            if (vista === 'semana') {
+                $('header-title').textContent = `Semana ${semanaIso(ini)}`;
+                $('header-subtitle').textContent = ini.getMonth() === fin.getMonth() ? mesAnio(ini) : `${mesAnio(ini)} – ${mesAnio(fin)}`;
+            } else {
+                $('header-title').textContent = mesAnio(ancla);
+                $('header-subtitle').textContent = 'Vista mensual';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const btnWeek = document.getElementById('btn-view-week');
-            const btnMonth = document.getElementById('btn-view-month');
-            const viewWeek = document.getElementById('view-week');
-            const viewMonth = document.getElementById('view-month');
-            const titleLabel = document.getElementById('header-title');
-            const subtitleLabel = document.getElementById('header-subtitle');
+        // ---------------- datos ----------------
+        async function cargar() {
+            pintarEncabezado();
+            $('cal-cargando').classList.remove('hidden');
+            const { ini, fin } = rango();
+            try {
+                let q = DB.sb.from('sudi_v_scfi_insp_lista').select('*')
+                    .gte('fecha_inspeccion', iso(ini)).lte('fecha_inspeccion', iso(fin))
+                    .order('fecha_inspeccion').order('folio').limit(3000);
+                if (filtro.id) q = q.or(`inspector_id.eq.${filtro.id},realizo_id.eq.${filtro.id}`);
+                const { data, error } = await q;
+                if (error) throw new Error(DB.mensajeError(error));
+                filas = data || [];
+                porDia = {};
+                filas.forEach((i) => { (porDia[i.fecha_inspeccion] = porDia[i.fecha_inspeccion] || []).push(i); });
+                if (vista === 'semana') pintarSemana(); else pintarMes();
+                pintarResumen();
+            } catch (err) {
+                const msg = `<div class="col-span-full py-16 text-center text-red-400 text-sm">${esc(err.message)}</div>`;
+                $('view-week').innerHTML = msg;
+                $('month-grid').innerHTML = msg;
+            } finally {
+                $('cal-cargando').classList.add('hidden');
+            }
+        }
 
-            const retriggerAnim = (el) => {
-                el.classList.remove('fade-in');
-                void el.offsetWidth;
-                el.classList.add('fade-in');
-            };
+        // ---------------- vista semana ----------------
+        function tarjeta(i) {
+            const st = ESTATUS[i.estatus] || ESTATUS.programada;
+            const [barra, etiqueta] = color(i.inspector_id);
+            const nota = i.estatus === 'cancelada' && i.cancelada_motivo
+                ? `<div class="bg-red-500/5 border border-red-500/20 rounded-lg p-2 mt-2"><p class="text-[10px] text-red-400/90 font-medium leading-snug flex gap-1.5"><i class="ph-fill ph-warning-circle text-sm shrink-0"></i>${esc(i.cancelada_motivo)}</p></div>`
+                : (i.observaciones ? `<div class="bg-brand-yellow/5 border border-brand-yellow/20 rounded-lg p-2 mt-2"><p class="text-[10px] text-brand-yellow/90 font-medium leading-snug flex gap-1.5"><i class="ph-fill ph-note-pencil text-sm shrink-0"></i><span class="line-clamp-3">${esc(i.observaciones)}</span></p></div>` : '');
+            return `
+            <button type="button" data-id="${esc(i.id)}" class="w-full text-left bg-dark-800 border ${st.borde} rounded-2xl p-4 shadow-lg hover:-translate-y-0.5 hover:border-brand-yellow/50 transition-all group relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5 ${barra}"></div>
+                <div class="flex justify-between items-start mb-2 pl-1 gap-2">
+                    <span class="${etiqueta} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase truncate">${esc(i.inspector || 'Sin inspector')}</span>
+                    <span class="${st.badge} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">${st.label}</span>
+                </div>
+                <h3 class="text-[13px] font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight pl-1 mb-1.5">Folio: ${esc(i.folio)}${i.alto_flujo ? ' <span class="text-purple-400 text-[10px]">AF</span>' : ''}</h3>
+                <div class="space-y-1 pl-1">
+                    <p class="text-[11px] text-gray-300 font-medium truncate">${esc(cliente(i))}</p>
+                    <p class="text-[10px] text-gray-400 font-mono truncate">${esc(i.permiso || '—')}</p>
+                </div>
+                ${sinViaticos(i) ? '<div class="pt-2 mt-2 border-t border-dark-700 pl-1"><span class="text-[10px] font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded uppercase tracking-wider">Sin viáticos</span></div>' : ''}
+                ${nota}
+            </button>`;
+        }
 
-            btnWeek.addEventListener('click', () => {
-                btnWeek.className = 'px-4 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow shadow-sm transition-all flex items-center gap-2';
-                btnMonth.className = 'px-4 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white transition-all flex items-center gap-2';
-                
-                viewMonth.classList.add('hidden');
-                viewWeek.classList.remove('hidden');
-                
-                retriggerAnim(viewWeek);
-                titleLabel.textContent = 'Semana 33';
-                subtitleLabel.textContent = 'Agosto 2026';
+        function pintarSemana() {
+            const { ini } = rango();
+            $('view-week').innerHTML = Array.from({ length: 7 }, (_, n) => {
+                const d = sumarDias(ini, n);
+                const k = iso(d);
+                const lista = porDia[k] || [];
+                const esHoy = k === HOY;
+                const finde = n >= 5;
+                const mangueras = lista.filter((i) => i.estatus !== 'cancelada').reduce((s, i) => s + (Number(i.mangueras) || 0), 0);
+                return `
+                <div class="${esHoy ? 'bg-brand-yellow/5 border-2 border-brand-yellow/50' : (finde ? 'bg-dark-900 border border-dark-700' : 'bg-dark-800/50 border border-dark-700')} rounded-3xl p-4 flex flex-col h-full relative overflow-hidden min-h-[420px]">
+                    ${esHoy ? '<div class="absolute top-0 right-0 bg-brand-yellow text-dark-900 text-[9px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">Hoy</div>' : ''}
+                    <button type="button" data-dia="${k}" class="text-center mb-4 pb-4 border-b ${esHoy ? 'border-brand-yellow/20' : 'border-dark-700'} pt-2 group/d" title="Ver día completo">
+                        <p class="text-xs ${esHoy ? 'text-brand-yellow' : 'text-gray-500'} font-semibold uppercase tracking-widest mb-1 group-hover/d:text-brand-yellow">${DIAS[n]}</p>
+                        <p class="text-2xl font-bold ${esHoy ? 'text-brand-yellow' : (finde ? 'text-gray-500' : 'text-white')} group-hover/d:text-brand-yellow">${String(d.getDate()).padStart(2, '0')}</p>
+                    </button>
+                    <div class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-1">
+                        ${lista.length ? lista.map(tarjeta).join('') : '<div class="flex h-full items-center justify-center text-center p-4"><p class="text-xs text-gray-600 font-medium">Sin asignaciones</p></div>'}
+                    </div>
+                    ${lista.length ? `<div class="mt-4 pt-3 border-t ${esHoy ? 'border-brand-yellow/20' : 'border-dark-700'} shrink-0 flex justify-between items-center text-[11px] font-bold text-gray-500">
+                        <span class="flex items-center gap-1.5"><i class="ph-fill ph-clipboard-text text-brand-yellow text-sm"></i> ${lista.length} verif.</span>
+                        <span class="flex items-center gap-1.5" title="Mangueras a verificar"><i class="ph-fill ph-gas-pump text-blue-400 text-sm"></i> ${mangueras} mang.</span>
+                    </div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        // ---------------- vista mes ----------------
+        function pintarMes() {
+            const { ini, fin } = rango();
+            const celdas = [];
+            for (let d = new Date(ini); d <= fin; d = sumarDias(d, 1)) {
+                const k = iso(d);
+                const lista = porDia[k] || [];
+                const fuera = d.getMonth() !== ancla.getMonth();
+                const esHoy = k === HOY;
+                const chips = lista.slice(0, 3).map((i) => {
+                    const st = ESTATUS[i.estatus] || ESTATUS.programada;
+                    return `<div class="${st.chip} border text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><span class="w-1.5 h-1.5 rounded-full shrink-0 ${color(i.inspector_id)[0]}"></span>${esc(iniciales(i.inspector))} · ${esc(String(i.folio || '').slice(-7))}</div>`;
+                }).join('');
+                celdas.push(`
+                <button type="button" data-dia="${k}" class="text-left ${esHoy ? 'bg-brand-yellow/5 border-brand-yellow' : 'bg-dark-800 border-dark-600'} ${fuera ? 'opacity-40' : ''} border rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all group relative">
+                    ${esHoy ? '<div class="absolute top-0 left-0 bg-brand-yellow text-dark-900 text-[8px] font-bold px-2 py-0.5 rounded-br-lg uppercase tracking-wider">Hoy</div>' : ''}
+                    <span class="self-end text-xs font-bold ${esHoy ? 'text-brand-yellow' : 'text-gray-400'} group-hover:text-brand-yellow mb-1">${d.getDate()}</span>
+                    <div class="space-y-1 w-full">${chips}${lista.length > 3 ? `<div class="text-[10px] text-gray-400 pl-1">+${lista.length - 3} más</div>` : ''}</div>
+                </button>`);
+            }
+            $('month-grid').innerHTML = celdas.join('');
+        }
+
+        // ---------------- resumen y alertas ----------------
+        function pintarResumen() {
+            const { ini, fin, primero, ultimo } = rango();
+            const enPeriodo = vista === 'semana' ? filas : filas.filter((i) => i.fecha_inspeccion >= iso(primero) && i.fecha_inspeccion <= iso(ultimo));
+            const activas = enPeriodo.filter((i) => i.estatus !== 'cancelada');
+            const cuenta = (k) => enPeriodo.filter((i) => i.estatus === k).length;
+            const mangueras = activas.reduce((s, i) => s + (Number(i.mangueras) || 0), 0);
+            const viaticos = activas.reduce((s, i) => s + (Number(i.viaticos) || 0), 0);
+            $('res-periodo').textContent = vista === 'semana' ? `Semana ${semanaIso(ini)} · ${filtro.nombre}` : `${mesAnio(ancla)} · ${filtro.nombre}`;
+            const cifra = (ico, clr, txt, val) => `<div class="flex items-center justify-between bg-dark-900/50 p-3 rounded-xl border border-dark-700"><div class="flex items-center gap-3"><div class="${clr} p-1.5 rounded-lg"><i class="ph-fill ${ico} text-lg"></i></div><span class="text-sm text-gray-300 font-medium">${txt}</span></div><span class="text-lg font-black text-white">${val}</span></div>`;
+            $('res-cifras').innerHTML = [
+                cifra('ph-clipboard-text', 'bg-brand-yellow/20 text-brand-yellow', 'Verificaciones', activas.length),
+                cifra('ph-check-circle', 'bg-emerald-500/20 text-emerald-400', 'Terminadas', cuenta('terminada')),
+                cifra('ph-x-circle', 'bg-red-500/20 text-red-400', 'Canceladas', cuenta('cancelada')),
+                cifra('ph-gas-pump', 'bg-blue-500/20 text-blue-400', 'Mangueras', mangueras),
+                cifra('ph-money', 'bg-purple-500/20 text-purple-400', 'Viáticos', dinero(viaticos)),
+            ].join('');
+
+            const alertas = [];
+            activas.filter(sinViaticos).filter((i) => i.estatus !== 'terminada').forEach((i) => alertas.push(['red', 'ph-money', 'Sin viáticos', i]));
+            activas.filter((i) => !i.inspector_id).forEach((i) => alertas.push(['orange', 'ph-user-circle-minus', 'Sin inspector', i]));
+            activas.filter((i) => i.estatus === 'programada' && i.fecha_inspeccion < HOY).forEach((i) => alertas.push(['amber', 'ph-clock-countdown', 'Fecha vencida sin iniciar', i]));
+            const CLR = { red: 'border-red-500/20 text-red-300', orange: 'border-orange-500/20 text-orange-300', amber: 'border-amber-500/20 text-amber-300' };
+            $('res-alertas').innerHTML = alertas.length ? alertas.slice(0, 25).map(([c, ico, t, i]) => `
+                <button type="button" data-id="${esc(i.id)}" class="w-full text-left bg-dark-900/50 p-3 rounded-xl border ${CLR[c]} hover:bg-dark-900 transition-colors">
+                    <div class="flex items-start justify-between mb-1"><h4 class="text-sm font-semibold">${t}</h4><i class="ph ${ico}"></i></div>
+                    <p class="text-[11px] text-gray-400">${esc(i.folio)} · ${esc(fechaLarga(i.fecha_inspeccion))}</p>
+                    <p class="text-[11px] text-gray-500 truncate">${esc(i.inspector || '—')} · ${esc(cliente(i))}</p>
+                </button>`).join('') + (alertas.length > 25 ? `<p class="text-[11px] text-gray-500 text-center">+${alertas.length - 25} más</p>` : '')
+                : '<p class="text-xs text-gray-500 text-center py-6">Todo en orden en este periodo.</p>';
+        }
+
+        // ---------------- vista global ----------------
+        function pintarGlobal() {
+            const grupos = {};
+            filas.forEach((i) => {
+                const k = i.inspector_id || 'sin';
+                (grupos[k] = grupos[k] || { id: i.inspector_id, nombre: i.inspector || 'Sin inspector', items: [] }).items.push(i);
             });
+            const lista = Object.values(grupos).sort((a, b) => b.items.length - a.items.length);
+            $('global-sub').textContent = `${vista === 'semana' ? `Semana ${semanaIso(rango().ini)}` : mesAnio(ancla)} · avance por inspector`;
+            $('global-lista').innerHTML = lista.length ? lista.map((g) => {
+                const n = (k) => g.items.filter((i) => i.estatus === k).length;
+                const validas = g.items.length - n('cancelada');
+                const pct = validas ? Math.round((n('terminada') / validas) * 100) : 0;
+                const faltanViat = g.items.filter(sinViaticos).length;
+                const [barra, etiqueta] = color(g.id);
+                return `
+                <div class="bg-dark-900 border border-dark-700 rounded-2xl p-5 flex flex-col md:flex-row gap-6 hover:border-brand-yellow/50 transition-colors">
+                    <button type="button" data-global-insp="${esc(g.id || '')}" data-nombre="${esc(g.nombre)}" class="flex items-start gap-4 md:w-1/3 text-left md:border-r border-dark-700 md:pr-4 group" ${g.id ? '' : 'disabled'}>
+                        <div class="w-14 h-14 rounded-full ${etiqueta} border flex items-center justify-center text-xl font-bold shrink-0">${esc(iniciales(g.nombre))}</div>
+                        <div class="min-w-0">
+                            <h4 class="text-white font-bold text-base group-hover:text-brand-yellow transition-colors truncate">${esc(g.nombre)}</h4>
+                            <p class="text-sm text-gray-500 mt-0.5">${g.items.length} verificación(es)</p>
+                            <div class="mt-3 flex gap-2 flex-wrap">
+                                ${faltanViat ? `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[11px] px-2 py-0.5 rounded font-bold uppercase">${faltanViat} sin viáticos</span>` : '<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-2 py-0.5 rounded font-bold uppercase">Viáticos OK</span>'}
+                                ${n('cancelada') ? `<span class="bg-red-500/10 text-red-400 border border-red-500/20 text-[11px] px-2 py-0.5 rounded font-bold uppercase">${n('cancelada')} cancelada(s)</span>` : ''}
+                            </div>
+                        </div>
+                    </button>
+                    <div class="md:w-2/3 flex flex-col justify-center">
+                        <div class="flex justify-between text-xs uppercase font-bold text-gray-400 mb-2"><span>Avance</span><span class="text-brand-yellow text-sm">${pct}%</span></div>
+                        <div class="h-3 w-full bg-dark-800 rounded-full overflow-hidden border border-dark-700 mb-4"><div class="h-full ${barra} rounded-full" style="width:${pct}%"></div></div>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            ${Object.entries(ESTATUS).map(([k, v]) => `<div class="bg-dark-800 rounded-lg p-2 border border-dark-700"><span class="block text-lg font-black text-white">${n(k)}</span><span class="text-[10px] uppercase font-bold ${v.badge.split(' ')[1]}">${v.label}</span></div>`).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('') : '<p class="text-sm text-gray-500 text-center py-10">No hay verificaciones en este periodo.</p>';
+        }
 
-            btnMonth.addEventListener('click', () => {
-                btnMonth.className = 'px-4 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow shadow-sm transition-all flex items-center gap-2';
-                btnWeek.className = 'px-4 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white transition-all flex items-center gap-2';
-                
-                viewWeek.classList.add('hidden');
-                viewMonth.classList.remove('hidden');
-                
-                retriggerAnim(viewMonth);
-                titleLabel.textContent = 'Agosto 2026';
-                subtitleLabel.textContent = 'Vista Mensual';
-            });
+        // ---------------- detalle del día ----------------
+        let diaActual = null;
+        function abrirDia(k) {
+            diaActual = k;
+            const lista = porDia[k] || [];
+            $('dia-titulo').innerHTML = `<i class="ph ph-calendar"></i> ${esc(fechaLarga(k))}`;
+            $('dia-lista').innerHTML = lista.length ? `<h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Programadas (${lista.length})</h4>` + lista.map((i) => {
+                const st = ESTATUS[i.estatus] || ESTATUS.programada;
+                const [barra, etiqueta] = color(i.inspector_id);
+                return `
+                <button type="button" data-id="${esc(i.id)}" class="w-full text-left bg-dark-900/80 border border-dark-600 rounded-2xl p-4 hover:border-brand-yellow/50 transition-all group relative overflow-hidden flex justify-between items-center gap-3">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 ${barra}"></div>
+                    <div class="pl-3 min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <span class="${etiqueta} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">${esc(i.inspector || 'Sin inspector')}</span>
+                            <span class="${st.badge} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">${st.label}</span>
+                            ${sinViaticos(i) ? '<span class="text-[9px] font-bold text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded uppercase">Sin viáticos</span>' : ''}
+                        </div>
+                        <h3 class="text-sm font-bold text-white group-hover:text-brand-yellow">Folio: ${esc(i.folio)}</h3>
+                        <p class="text-[11px] text-gray-400 mt-0.5 truncate">${esc(cliente(i))} • ${esc(i.permiso || '—')}</p>
+                    </div>
+                    <span class="bg-dark-800 text-gray-300 group-hover:text-brand-yellow px-3 py-1.5 rounded-lg text-xs font-medium border border-dark-700 flex items-center gap-1 shrink-0"><i class="ph ph-pencil-simple"></i> Abrir</span>
+                </button>`;
+            }).join('') : '<p class="text-sm text-gray-500 text-center py-6">No hay verificaciones programadas.</p>';
+            const activas = lista.filter((i) => i.estatus !== 'cancelada');
+            $('dia-totales').innerHTML = activas.length ? `
+                <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-2xl p-4 flex justify-between items-center gap-4 flex-wrap">
+                    <div><p class="text-xs font-bold text-brand-yellow uppercase tracking-widest">Carga del día</p><p class="text-sm text-gray-300 mt-1">Sin contar canceladas.</p></div>
+                    <div class="flex gap-3">
+                        <div class="text-center bg-dark-900 px-4 py-2 rounded-xl border border-dark-700"><span class="block text-lg font-black text-brand-yellow">${activas.length}</span><span class="text-[9px] font-bold text-gray-500 uppercase">Verificaciones</span></div>
+                        <div class="text-center bg-dark-900 px-4 py-2 rounded-xl border border-dark-700"><span class="block text-lg font-black text-blue-400">${activas.reduce((s, i) => s + (Number(i.mangueras) || 0), 0)}</span><span class="text-[9px] font-bold text-gray-500 uppercase">Mangueras</span></div>
+                    </div>
+                </div>` : '';
+            abrir('modal-dia');
+        }
+
+        // ---------------- asignar ----------------
+        function opcionesInspector(sel) {
+            return '<option value="">Selecciona...</option>' + inspectores.map((u) => `<option value="${esc(u.id)}" ${u.id === sel ? 'selected' : ''}>${esc(u.nombre_completo)}</option>`).join('');
+        }
+
+        function abrirAsignar(fecha) {
+            elegida = null;
+            $('form-asignar').reset();
+            $('as-resultados').innerHTML = '';
+            $('as-elegida').classList.add('hidden');
+            $('as-fecha').value = fecha || HOY;
+            $('as-inspector').innerHTML = opcionesInspector(filtro.id);
+            abrir('modal-asignar');
+            setTimeout(() => $('as-buscar').focus(), 50);
+        }
+
+        let tBuscar = null;
+        $('as-buscar').addEventListener('input', () => {
+            clearTimeout(tBuscar);
+            tBuscar = setTimeout(async () => {
+                const t = $('as-buscar').value.trim().replace(/[,()%*\\]/g, ' ').trim();
+                if (t.length < 3) { $('as-resultados').innerHTML = ''; return; }
+                const { data, error } = await DB.sb.from('sudi_v_scfi_insp_lista').select('*')
+                    .or(['folio', 'permiso', 'razon_social', 'cliente_comercial', 'numero_estacion'].map((c) => `${c}.ilike.%${t}%`).join(','))
+                    .neq('estatus', 'cancelada').not('cerrada', 'is', true)
+                    .order('fecha_inspeccion', { ascending: false, nullsFirst: true }).limit(8);
+                if (error) { $('as-resultados').innerHTML = `<p class="text-xs text-red-400">${esc(DB.mensajeError(error))}</p>`; return; }
+                $('as-resultados').innerHTML = data.length ? data.map((i) => `
+                    <button type="button" data-idx="${esc(i.id)}" class="w-full text-left px-3 py-2 rounded-lg bg-dark-900 border border-dark-700 hover:border-brand-yellow/50 text-xs">
+                        <span class="font-mono font-bold text-brand-yellow">${esc(i.folio)}</span>
+                        <span class="text-gray-400"> · ${esc(cliente(i))} · ${esc(i.permiso || '')}</span>
+                        <span class="block text-[11px] text-gray-500">${i.fecha_inspeccion ? esc(fechaLarga(i.fecha_inspeccion)) : 'Sin fecha'} · ${esc(i.inspector || 'Sin inspector')} · ${esc((ESTATUS[i.estatus] || {}).label || i.estatus)}</span>
+                    </button>`).join('') : '<p class="text-xs text-gray-500">Sin resultados abiertos con ese texto.</p>';
+                $('as-resultados')._datos = data;
+            }, 300);
         });
-    </script>
 
-</body></html>
+        $('as-resultados').addEventListener('click', (e) => {
+            const b = e.target.closest('[data-idx]');
+            if (!b) return;
+            elegida = ($('as-resultados')._datos || []).find((i) => i.id === b.dataset.idx) || null;
+            if (!elegida) return;
+            $('as-resultados').innerHTML = '';
+            $('as-buscar').value = elegida.folio;
+            $('as-elegida').innerHTML = `<span class="font-mono font-bold text-brand-yellow">${esc(elegida.folio)}</span><br><span class="text-gray-300">${esc(cliente(elegida))}</span><br><span class="text-xs text-gray-400">${esc(elegida.permiso || '—')}</span>`;
+            $('as-elegida').classList.remove('hidden');
+            if (elegida.inspector_id) $('as-inspector').value = elegida.inspector_id;
+            $('as-notas').value = elegida.observaciones || '';
+        });
+
+        $('form-asignar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!elegida) { toast('Busca y selecciona una verificación.', 'error'); return; }
+            if (!$('as-fecha').value || !$('as-inspector').value) { toast('Día e inspector son obligatorios.', 'error'); return; }
+            const btn = $('as-guardar');
+            btn.disabled = true;
+            try {
+                const cambios = { fecha_inspeccion: $('as-fecha').value, inspector_id: $('as-inspector').value, observaciones: $('as-notas').value.trim() || null };
+                if (!elegida.realizo_id) cambios.realizo_id = cambios.inspector_id;
+                await DB.actualizar('sudi_scfi_inspecciones', elegida.id, cambios);
+                toast(`${elegida.folio} asignada al ${fechaLarga(cambios.fecha_inspeccion)}.`);
+                cerrar('modal-asignar');
+                cerrar('modal-dia');
+                await cargar();
+            } catch (err) {
+                toast(err.message, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // ---------------- editar ----------------
+        function abrirEditar(id) {
+            const i = filas.find((x) => x.id === id);
+            if (!i) return;
+            editando = i;
+            const captura = puedeCapturar(i);
+            const cerrada = Boolean(i.cerrada);
+            const bloqueado = !captura || cerrada;
+            $('ed-titulo').textContent = `Folio ${i.folio}`;
+            $('ed-info').innerHTML = `<span class="text-gray-200 font-semibold">${esc(cliente(i))}</span><br><span class="text-xs text-gray-400">${esc(i.permiso || '—')} ${i.estacion_nombre ? '· ' + esc(i.estacion_nombre) : ''}</span>${i.realizo && i.realizo !== i.inspector ? `<br><span class="text-xs text-gray-500">Realizó: ${esc(i.realizo)}</span>` : ''}`;
+            const avisos = [];
+            if (!captura) avisos.push('Solo lectura: no eres el inspector de esta verificación.');
+            if (cerrada) avisos.push('La verificación está cerrada; solo un gerente puede cambiar el estatus o reabrirla en Inspecciones.');
+            $('ed-aviso').textContent = avisos.join(' ');
+            $('ed-aviso').classList.toggle('hidden', !avisos.length);
+
+            $('ed-fecha').value = i.fecha_inspeccion || '';
+            $('ed-inspector').innerHTML = opcionesInspector(i.inspector_id);
+            if (i.inspector_id && !inspectores.some((u) => u.id === i.inspector_id)) $('ed-inspector').insertAdjacentHTML('beforeend', `<option value="${esc(i.inspector_id)}" selected>${esc(i.inspector || 'Inspector')}</option>`);
+            $('ed-estatus').innerHTML = Object.entries(ESTATUS).map(([k, v]) => `<option value="${k}" ${k === i.estatus ? 'selected' : ''}>${v.label}</option>`).join('');
+            $('ed-viaticos').value = i.viaticos ?? '';
+            $('ed-notas').value = i.observaciones || '';
+            $('ed-motivo').value = i.cancelada_motivo || '';
+
+            ['ed-fecha', 'ed-viaticos', 'ed-notas'].forEach((k) => { $(k).disabled = bloqueado; });
+            $('ed-inspector').disabled = bloqueado || !DB.puedeEditar();
+            $('ed-estatus').disabled = !DB.puedeEditar();
+            $('ed-motivo').disabled = !DB.puedeEditar();
+            $('ed-guardar').classList.toggle('hidden', bloqueado && !DB.puedeEditar());
+            $('ed-motivo-wrap').classList.toggle('hidden', i.estatus !== 'cancelada');
+            abrir('modal-editar');
+        }
+
+        $('ed-estatus').addEventListener('change', () => $('ed-motivo-wrap').classList.toggle('hidden', $('ed-estatus').value !== 'cancelada'));
+
+        $('form-editar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const i = editando;
+            if (!i) return;
+            const cambios = {};
+            if (DB.puedeEditar()) {
+                cambios.estatus = $('ed-estatus').value;
+                cambios.cancelada_motivo = cambios.estatus === 'cancelada' ? ($('ed-motivo').value.trim() || null) : null;
+                if (cambios.estatus === 'cancelada' && !cambios.cancelada_motivo) { toast('Escribe el motivo de la cancelación.', 'error'); return; }
+            }
+            if (puedeCapturar(i) && !i.cerrada) {
+                if (!$('ed-fecha').value) { toast('El día es obligatorio.', 'error'); return; }
+                cambios.fecha_inspeccion = $('ed-fecha').value;
+                cambios.viaticos = $('ed-viaticos').value === '' ? null : Number($('ed-viaticos').value);
+                cambios.observaciones = $('ed-notas').value.trim() || null;
+                if (DB.puedeEditar()) cambios.inspector_id = $('ed-inspector').value || null;
+            }
+            if (!Object.keys(cambios).length) { cerrar('modal-editar'); return; }
+            const btn = $('ed-guardar');
+            btn.disabled = true;
+            try {
+                await DB.actualizar('sudi_scfi_inspecciones', i.id, cambios);
+                toast(`${i.folio} actualizada.`);
+                cerrar('modal-editar');
+                await cargar();
+                if (!$('modal-dia').classList.contains('hidden') && diaActual) abrirDia(diaActual);
+            } catch (err) {
+                toast(err.message, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // ---------------- filtro de inspector ----------------
+        function pintarFiltro() {
+            const t = $('filtro-buscar').value.trim().toLowerCase();
+            const items = inspectores.filter((u) => !t || u.nombre_completo.toLowerCase().includes(t));
+            $('filtro-lista').innerHTML = `
+                <button type="button" data-filtro="" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors"><div class="w-8 h-8 rounded-full bg-dark-700 border border-gray-600 text-gray-300 flex items-center justify-center"><i class="ph-fill ph-users"></i></div><span class="text-sm text-brand-yellow font-bold">Ver todos</span></button>
+                <div class="border-t border-dark-700 my-1 mx-4"></div>` +
+                items.map((u) => `<button type="button" data-filtro="${esc(u.id)}" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-dark-800 transition-colors group/t ${u.id === filtro.id ? 'bg-dark-800' : ''}">
+                    <div class="w-8 h-8 rounded-full ${color(u.id)[1]} border flex items-center justify-center text-xs font-bold">${esc(iniciales(u.nombre_completo))}</div>
+                    <span class="text-sm text-gray-300 group-hover/t:text-white font-medium text-left">${esc(u.nombre_completo)}</span></button>`).join('');
+        }
+
+        function aplicarFiltro(id) {
+            const u = inspectores.find((x) => x.id === id);
+            filtro = { id: u ? u.id : '', nombre: u ? u.nombre_completo : 'Todos los inspectores' };
+            $('filtro-nombre').textContent = filtro.nombre;
+            $('filtro-menu').classList.add('hidden');
+            const url = new URL(window.location.href);
+            if (filtro.id) url.searchParams.set('inspector', filtro.id); else url.searchParams.delete('inspector');
+            history.replaceState(null, '', url);
+            cargar();
+        }
+
+        $('btn-filtro').addEventListener('click', (e) => { e.stopPropagation(); $('filtro-menu').classList.toggle('hidden'); pintarFiltro(); setTimeout(() => $('filtro-buscar').focus(), 30); });
+        $('filtro-buscar').addEventListener('input', pintarFiltro);
+        $('filtro-menu').addEventListener('click', (e) => { e.stopPropagation(); const b = e.target.closest('[data-filtro]'); if (b) aplicarFiltro(b.dataset.filtro); });
+        document.addEventListener('click', () => $('filtro-menu').classList.add('hidden'));
+
+        // ---------------- navegación ----------------
+        function cambiarVista(v) {
+            vista = v;
+            const on = 'px-4 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow shadow-sm transition-all flex items-center gap-2';
+            const off = 'px-4 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white transition-all flex items-center gap-2';
+            $('btn-view-week').className = v === 'semana' ? on : off;
+            $('btn-view-month').className = v === 'mes' ? on : off;
+            $('view-week').classList.toggle('hidden', v !== 'semana');
+            $('view-month').classList.toggle('hidden', v !== 'mes');
+            cargar();
+        }
+        $('btn-view-week').addEventListener('click', () => cambiarVista('semana'));
+        $('btn-view-month').addEventListener('click', () => cambiarVista('mes'));
+        $('nav-hoy').addEventListener('click', () => { ancla = new Date(); cargar(); });
+        $('nav-prev').addEventListener('click', () => { ancla = vista === 'semana' ? sumarDias(ancla, -7) : new Date(ancla.getFullYear(), ancla.getMonth() - 1, 1, 12); cargar(); });
+        $('nav-next').addEventListener('click', () => { ancla = vista === 'semana' ? sumarDias(ancla, 7) : new Date(ancla.getFullYear(), ancla.getMonth() + 1, 1, 12); cargar(); });
+        $('btn-global').addEventListener('click', () => { pintarGlobal(); abrir('modal-global'); });
+        $('btn-asignar').addEventListener('click', () => abrirAsignar());
+        $('dia-asignar').addEventListener('click', () => abrirAsignar(diaActual));
+        $('global-lista').addEventListener('click', (e) => { const b = e.target.closest('[data-global-insp]'); if (b && b.dataset.globalInsp) { cerrar('modal-global'); aplicarFiltro(b.dataset.globalInsp); } });
+
+        // Clics en tarjetas y días (delegados)
+        document.body.addEventListener('click', (e) => {
+            const tarj = e.target.closest('[data-id]');
+            if (tarj && !tarj.closest('#as-resultados')) { abrirEditar(tarj.dataset.id); return; }
+            const dia = e.target.closest('[data-dia]');
+            if (dia) abrirDia(dia.dataset.dia);
+        });
+
+        // ---------------- arranque ----------------
+        (window.App?.db ? App.db() : Promise.reject(new Error('No cargó JS/app.js')))
+            .then(async (db) => {
+                DB = db;
+                const usuarios = await DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector', filtros: { activo: true }, orden: 'nombre_completo' }).catch(() => []);
+                inspectores = usuarios.filter((u) => u.es_inspector);
+                if (!inspectores.length) inspectores = usuarios;
+                inspectores.forEach((u, n) => { colorDe[u.id] = n % COLORES.length; });
+
+                if (DB.puedeEditar()) { $('btn-asignar').classList.replace('hidden', 'flex'); $('dia-asignar').classList.replace('hidden', 'flex'); }
+
+                const pedido = new URLSearchParams(window.location.search).get('inspector');
+                const inicial = pedido || (DB.perfil?.perfil === 'tecnico_verificador' ? DB.perfil.id : '');
+                const u = inspectores.find((x) => x.id === inicial);
+                if (u) { filtro = { id: u.id, nombre: u.nombre_completo }; $('filtro-nombre').textContent = u.nombre_completo; }
+                await cargar();
+            })
+            .catch((err) => toast(err.message, 'error'));
+    });
+    </script>
+    <script src="JS/app.js?v=20261117" defer></script>
+</body>
+</html>

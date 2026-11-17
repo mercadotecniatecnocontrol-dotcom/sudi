@@ -330,6 +330,99 @@
     }
 
     // ---------------------------------------------------------------
+    // Datos reales del usuario (sudi_usuarios + sesión de Supabase)
+    // ---------------------------------------------------------------
+    const GESTOR_USUARIOS = 'i.ruiz@jomarverifica.com.mx';
+    const NOMBRES_PERFIL = { administrador: 'Administrador', gerente: 'Gerente', tecnico_verificador: 'Técnico Verificador' };
+    const escHtml = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function nombrePerfil(p) {
+        if (!p) return '';
+        return p.nombre_completo || [p.nombre, p.segundo_nombre, p.apellido_paterno, p.apellido_materno].filter(Boolean).join(' ') || p.correo || '';
+    }
+
+    function inicialesDe(t = '') {
+        return String(t).split(/\s+/).filter(Boolean).slice(0, 2).map((x) => x[0]).join('').toUpperCase() || 'SU';
+    }
+
+    function fechaHora(v) {
+        if (!v) return '—';
+        const d = new Date(v);
+        return isNaN(d) ? '—' : d.toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    // Lo que puede hacer cada perfil (refleja DB.puedeEditar / DB.esAdmin y las reglas de RLS)
+    function permisosPerfil(p) {
+        const rol = p?.perfil;
+        const edita = ['administrador', 'gerente'].includes(rol);
+        const admin = rol === 'administrador';
+        const gestor = String(p?.correo || '').toLowerCase() === GESTOR_USUARIOS;
+        return [
+            ['SCFI · Verificaciones', edita ? 'Crear, editar, cerrar y reabrir verificaciones' : 'Capturar solo las verificaciones donde eres inspector o realizaste', true],
+            ['SCFI · Consecutivos de folio', 'Ajustar el consecutivo de folios de dictamen', admin],
+            ['SCFI · Clientes, equipos y catálogos', edita ? 'Alta y edición' : 'Solo consulta', true],
+            ['Hologramas y precintos', edita ? 'Asignar y administrar folios' : 'Usar los folios asignados a ti', true],
+            ['ASEA', edita ? 'Clientes, órdenes, inspecciones y gerentes' : 'Según permiso de edición ASEA', true],
+            ['Agenda', edita ? 'Asignar y reprogramar visitas de cualquier inspector' : 'Ver la agenda y reprogramar tus visitas', true],
+            ['Reportes', 'Consulta y exportación', true],
+            ['Usuarios', 'Crear usuarios y marcar inspector/firma', gestor],
+        ];
+    }
+
+    function cajaDato(etiqueta, valor, icono) {
+        return `<div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
+            <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">${etiqueta}</span>
+            <div class="flex items-center gap-2"><i class="ph ${icono} text-brand-yellow text-lg"></i><span class="text-sm font-semibold text-white break-all">${valor}</span></div>
+        </div>`;
+    }
+
+    function marcasHtml(p) {
+        const m = [`<span class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>Conectado</span>`];
+        if (p.es_inspector) m.push('<span class="text-xs text-blue-300 bg-blue-500/10 px-2.5 py-0.5 rounded-md border border-blue-500/20">Inspector</span>');
+        if (p.firma_verificador) m.push('<span class="text-xs text-purple-300 bg-purple-500/10 px-2.5 py-0.5 rounded-md border border-purple-500/20">Firma como verificador</span>');
+        return m.join('');
+    }
+
+    function permisosHtml(p) {
+        return permisosPerfil(p).map(([t, d, ok]) => `
+            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-start gap-2 ${ok ? 'text-gray-300' : 'text-gray-600'}">
+                <i class="ph-fill ${ok ? 'ph-check-circle text-emerald-400' : 'ph-minus-circle text-gray-600'} text-base mt-0.5"></i>
+                <div><span class="font-bold block ${ok ? 'text-white' : ''}">${t}</span><span class="text-[11px]">${ok ? d : 'Sin acceso'}</span></div>
+            </div>`).join('');
+    }
+
+    function llenarPerfil(modal) {
+        const pintar = async (p) => {
+            if (!p) return;
+            const DB = window.DB;
+            let usuario = null;
+            try { usuario = (await DB.sb.auth.getSession()).data.session?.user || null; } catch (_) {}
+            const nombre = nombrePerfil(p);
+            const correo = p.correo || usuario?.email || '';
+            const rol = NOMBRES_PERFIL[p.perfil] || p.perfil || '—';
+            const set = (k, v, html) => modal.querySelectorAll(`[data-pf="${k}"]`).forEach((el) => { if (html) el.innerHTML = v; else el.textContent = v; });
+            set('iniciales', inicialesDe(nombre));
+            set('nombre', nombre);
+            set('perfil', rol);
+            set('correo', correo);
+            set('marcas', marcasHtml(p), true);
+            set('general', [
+                cajaDato('Nombre completo', escHtml(nombre), 'ph-user'),
+                cajaDato('Usuario', escHtml(correo.split('@')[0] || '—'), 'ph-identification-badge'),
+                cajaDato('Correo', escHtml(correo || '—'), 'ph-envelope'),
+                cajaDato('Perfil', escHtml(rol), 'ph-shield-check'),
+            ].join(''), true);
+            set('permisos', permisosHtml(p), true);
+            set('seguridad', [
+                cajaDato('Último acceso', fechaHora(usuario?.last_sign_in_at), 'ph-clock'),
+                cajaDato('Cuenta creada', fechaHora(usuario?.created_at), 'ph-calendar-check'),
+            ].join(''), true);
+        };
+        const ir = () => window.DB.listo.then(pintar).catch(() => {});
+        if (window.DB) ir(); else document.addEventListener('sudi:db-cargado', ir, { once: true });
+    }
+
+    // ---------------------------------------------------------------
     // Modal "Opciones de perfil"
     // ---------------------------------------------------------------
     function ensureProfileModal() {
@@ -376,9 +469,7 @@
                             <i class="ph ph-user-gear text-brand-yellow text-base"></i>
                             <span>Opciones de perfil</span>
                         </div>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">
-                            Administrador
-                        </span>
+                        <span data-pf="perfil" class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">—</span>
                     </div>
                     <button type="button" data-modal-close class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-dark-700 transition-colors" aria-label="Cerrar ventana">
                         <i class="ph ph-x text-base"></i>
@@ -388,181 +479,47 @@
                 <!-- Cuerpo de la ventana con scroll interno -->
                 <div class="p-6 overflow-y-auto custom-scrollbar space-y-6 flex-1">
                     
-                    <!-- Tarjeta / Banner principal de usuario -->
+                    <!-- Banner del usuario (se llena con la sesión real) -->
                     <div class="p-5 rounded-2xl bg-gradient-to-r from-dark-900 via-dark-900/90 to-dark-700/40 border border-dark-700/80 relative overflow-hidden flex flex-col sm:flex-row items-center gap-5 shadow-inner">
                         <div class="relative shrink-0">
-                            <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-yellow via-amber-500 to-yellow-400 text-dark-900 font-black text-3xl flex items-center justify-center shadow-xl shadow-brand-yellow/20 border-2 border-brand-yellow/40">
-                                DG
-                            </div>
+                            <div data-pf="iniciales" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-yellow via-amber-500 to-yellow-400 text-dark-900 font-black text-3xl flex items-center justify-center shadow-xl shadow-brand-yellow/20 border-2 border-brand-yellow/40">··</div>
                             <span class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-[3px] border-dark-900 rounded-full shadow-md" title="Sesión activa"></span>
                         </div>
                         <div class="flex-1 text-center sm:text-left min-w-0">
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
-                                <h2 class="text-xl font-bold text-white tracking-wide">Denisse Gutierrez</h2>
+                                <h2 data-pf="nombre" class="text-xl font-bold text-white tracking-wide">Cargando...</h2>
                                 <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-yellow/20 text-brand-yellow border border-brand-yellow/30">
-                                    <i class="ph ph-shield-check text-sm"></i> Administrador
+                                    <i class="ph ph-shield-check text-sm"></i> <span data-pf="perfil">—</span>
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-400 font-mono mb-2">d.gutierrez@tecnocontrol.com.mx</p>
-                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                                <span class="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    Conectado al sistema
-                                </span>
-                                <span class="text-xs text-gray-400 bg-dark-800 px-2.5 py-0.5 rounded-md border border-dark-700">
-                                    ID: #ADM-0012
-                                </span>
-                            </div>
+                            <p data-pf="correo" class="text-sm text-gray-400 font-mono mb-2">—</p>
+                            <div data-pf="marcas" class="flex flex-wrap items-center justify-center sm:justify-start gap-2"></div>
                         </div>
                     </div>
 
-                    <!-- Pestañas de navegación de la ventana -->
+                    <!-- Pestañas -->
                     <div class="flex items-center gap-2 border-b border-dark-700/80 pb-2 overflow-x-auto">
                         <button type="button" class="profile-tab-btn active px-4 py-2 rounded-xl text-xs font-bold text-brand-yellow bg-brand-yellow/10 border border-brand-yellow/30 transition-all flex items-center gap-2" data-tab="tab-general">
-                            <i class="ph ph-identification-card text-sm"></i>
-                            Información general
+                            <i class="ph ph-identification-card text-sm"></i> Información general
                         </button>
                         <button type="button" class="profile-tab-btn px-4 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all flex items-center gap-2 border border-transparent" data-tab="tab-permisos">
-                            <i class="ph ph-shield text-sm"></i>
-                            Rol y permisos
+                            <i class="ph ph-shield text-sm"></i> Rol y permisos
                         </button>
                         <button type="button" class="profile-tab-btn px-4 py-2 rounded-xl text-xs font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all flex items-center gap-2 border border-transparent" data-tab="tab-seguridad">
-                            <i class="ph ph-lock-key text-sm"></i>
-                            Seguridad y sesión
+                            <i class="ph ph-lock-key text-sm"></i> Sesión
                         </button>
                     </div>
 
-                    <!-- Pestaña 1: Información General -->
-                    <div id="tab-general" class="profile-tab-content space-y-3">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Nombre y apellido</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-user text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white">Denisse Gutierrez</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Usuario</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-identification-badge text-brand-yellow text-lg"></i>
-                                    <span class="text-sm font-bold text-white font-mono">d.gutierrez</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Correo institucional</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-envelope text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200">d.gutierrez@tecnocontrol.com.mx</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Puesto</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-briefcase text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-white font-medium">No especificado</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Teléfono</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-phone text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-gray-200 font-mono">No especificado</span>
-                                </div>
-                            </div>
-
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Organización</span>
-                                <div class="flex items-center gap-2">
-                                    <i class="ph ph-buildings text-brand-yellow text-lg"></i>
-                                    <span class="text-sm text-white font-medium">No especificado</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pestaña 2: Rol y Permisos -->
-                    <div id="tab-permisos" class="profile-tab-content space-y-3 hidden">
-                        <div class="bg-dark-900/70 rounded-xl p-4 border border-dark-700/60 flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-brand-yellow/15 flex items-center justify-center text-brand-yellow border border-brand-yellow/30">
-                                    <i class="ph ph-shield-check text-xl"></i>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block">Nivel de privilegios</span>
-                                    <span class="text-sm font-bold text-brand-yellow">Administrador Global (Superusuario)</span>
-                                </div>
-                            </div>
-                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 text-xs font-semibold">
-                                Acceso Total
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Gestión y Creación en SCFI</span>
-                            </div>
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Gestión Integral ASEA</span>
-                            </div>
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Asignación de Hologramas y Precintos</span>
-                            </div>
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Exportación de Dictámenes y Reportes</span>
-                            </div>
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Edición y Eliminación en Tablas</span>
-                            </div>
-                            <div class="bg-dark-900/50 p-3 rounded-lg border border-dark-700/50 flex items-center gap-2 text-gray-300">
-                                <i class="ph ph-check-circle text-emerald-400 text-sm"></i>
-                                <span>Asignación de Agenda y Calendario</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pestaña 3: Seguridad y Sesión -->
-                    <div id="tab-seguridad" class="profile-tab-content space-y-3 hidden">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Estado de conexión</span>
-                                <span class="text-sm font-semibold text-emerald-400 flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    Sesión Activa
-                                </span>
-                            </div>
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Último acceso</span>
-                                <span class="text-sm font-mono text-gray-200">Hoy, 15:30:18</span>
-                            </div>
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Dirección IP</span>
-                                <span class="text-sm font-mono text-gray-300">192.168.1.104</span>
-                            </div>
-                            <div class="bg-dark-900/70 rounded-xl p-3.5 border border-dark-700/60">
-                                <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold block mb-1">Cifrado</span>
-                                <span class="text-sm text-emerald-400 font-medium flex items-center gap-1">
-                                    <i class="ph ph-lock-key"></i> HTTPS / TLS 1.3
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="tab-general" data-pf="general" class="profile-tab-content grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                    <div id="tab-permisos" data-pf="permisos" class="profile-tab-content grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs hidden"></div>
+                    <div id="tab-seguridad" data-pf="seguridad" class="profile-tab-content grid grid-cols-1 sm:grid-cols-2 gap-3 hidden"></div>
                 </div>
 
                 <!-- Barra inferior de acciones -->
                 <div class="p-4 sm:p-5 border-t border-dark-700/90 bg-dark-900/90 flex flex-col sm:flex-row items-center justify-between gap-3">
                     <div class="text-xs text-gray-400 hidden sm:flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-brand-yellow"></span>
-                        <span>SUDI Sistema Único de Dictámenes</span>
+                        <span>SUDI · JOMAR Verificaciones</span>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
                         <a href="${perfilHref}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-dark-700 hover:bg-dark-600 text-brand-yellow hover:text-yellow-300 border border-brand-yellow/30 text-xs font-semibold transition-all">
@@ -581,6 +538,7 @@
             </div>
         `;
         document.body.appendChild(modal);
+        llenarPerfil(modal);
 
         // Control de pestañas
         modal.querySelectorAll('.profile-tab-btn').forEach((btn) => {
@@ -721,6 +679,9 @@
         openModal,
         closeModal,
         openProfileModal: () => openModal(ensureProfileModal()),
+        nombrePerfil,
+        permisosPerfil,
+        escHtml,
         initModals,
         initDropdowns,
         initSearch,

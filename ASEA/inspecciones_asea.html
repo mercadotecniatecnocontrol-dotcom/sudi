@@ -463,6 +463,9 @@
                 if (!editor) document.querySelectorAll('[data-editor]').forEach((el) => el.classList.add('hidden'));
                 try { await cargarCatalogos(); } catch (err) { toast(err.message, 'error'); }
                 await cargarOrdenes();
+                // Abrir directo desde la Agenda: inspecciones_asea.html?id=123
+                const pedida = new URLSearchParams(location.search).get('id');
+                if (pedida) { const o = ordenes.find((x) => String(x.id) === pedida); if (o) abrir(o); }
                 let t = null;
                 DB.sb.channel('sudi-asea-inspecciones')
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'sudi_asea_ordenes' }, () => { clearTimeout(t); t = setTimeout(cargarOrdenes, 600); })

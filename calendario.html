@@ -120,6 +120,12 @@
                         </div>
                     </div>
 
+                    <div id="sel-modulo" class="bg-dark-800 p-1.5 rounded-xl border border-dark-700 flex items-center">
+                        <button type="button" data-modulo="" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow">Todos</button>
+                        <button type="button" data-modulo="scfi" class="px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white">SCFI</button>
+                        <button type="button" data-modulo="asea" class="px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white">ASEA</button>
+                    </div>
+
                     <button id="btn-global" type="button" class="flex items-center gap-2 px-4 py-3 bg-dark-800/80 border border-brand-yellow/30 hover:border-brand-yellow text-brand-yellow rounded-2xl shadow-lg transition-all font-bold text-sm">
                         <i class="ph ph-globe-hemisphere-west text-lg"></i> Vista global
                     </button>
@@ -255,6 +261,7 @@
             </div>
             <form id="form-editar" class="space-y-4" autocomplete="off">
                 <div id="ed-info" class="bg-dark-900/60 border border-dark-700 rounded-lg p-3 text-sm"></div>
+                <div id="ed-docs" class="flex flex-wrap gap-2"></div>
                 <div id="ed-aviso" class="hidden text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5"></div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -285,13 +292,29 @@
                     <textarea id="ed-notas" class="w-full bg-brand-yellow/5 border border-brand-yellow/30 text-white rounded-lg py-2.5 px-3 focus:outline-none focus:border-brand-yellow min-h-[70px] disabled:opacity-60"></textarea>
                 </div>
                 <div class="pt-3 border-t border-dark-700 flex justify-between items-center gap-3">
-                    <a href="SCFI/inspecciones.html" class="text-xs text-gray-400 hover:text-brand-yellow flex items-center gap-1"><i class="ph ph-arrow-square-out"></i> Abrir Inspecciones</a>
+                    <a id="ed-abrir" href="SCFI/inspecciones.html" class="text-xs text-gray-400 hover:text-brand-yellow flex items-center gap-1"><i class="ph ph-arrow-square-out"></i> Abrir / cargar información</a>
                     <div class="flex gap-2">
                         <button type="button" data-cerrar class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cerrar</button>
                         <button id="ed-guardar" type="submit" class="px-6 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg disabled:opacity-50">Guardar cambios</button>
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal: Orden ASEA (consulta) -->
+    <div id="modal-asea" class="hidden fixed inset-0 z-[130] flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-cerrar></div>
+        <div class="relative bg-dark-800 border border-sky-500/30 rounded-2xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between mb-5 border-b border-dark-700 pb-3">
+                <h3 class="text-white font-bold text-lg flex items-center gap-2"><span class="text-[10px] font-black px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">ASEA</span> <span id="as2-titulo">Orden</span></h3>
+                <button type="button" data-cerrar class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div id="as2-info" class="grid grid-cols-2 gap-3 text-sm mb-5"></div>
+            <div class="pt-3 border-t border-dark-700 flex justify-end gap-2">
+                <button type="button" data-cerrar class="px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-dark-700">Cerrar</button>
+                <a id="as2-abrir" href="ASEA/inspecciones_asea.html" class="px-5 py-2.5 text-sm font-bold text-dark-900 bg-brand-yellow hover:bg-yellow-400 rounded-lg flex items-center gap-2"><i class="ph ph-arrow-square-out"></i> Abrir en ASEA</a>
+            </div>
         </div>
     </div>
 
@@ -319,6 +342,15 @@
             ['bg-lime-500', 'bg-lime-500/20 text-lime-400 border-lime-500/30'],
             ['bg-rose-500', 'bg-rose-500/20 text-rose-400 border-rose-500/30'],
         ];
+        const TIPOS_SCFI = {
+            periodica_1: 'Periódica 1er periodo', periodica_2: 'Periódica 2do periodo',
+            extraordinaria_1: 'Extraordinaria 1er periodo', extraordinaria_2: 'Extraordinaria 2do periodo', inicial: 'Inicial',
+        };
+        const TIPOS_ASEA = { OP: 'Operación y mantenimiento', D: 'Diseño', C: 'Construcción' };
+        const MODULO = {
+            scfi: '<span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-brand-yellow/15 text-brand-yellow border border-brand-yellow/30">SCFI</span>',
+            asea: '<span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">ASEA</span>',
+        };
         const DIAS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
         const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -336,6 +368,9 @@
         let vista = 'semana';
         let ancla = new Date();
         let filtro = { id: '', nombre: 'Todos los inspectores' };
+        let modulo = '';
+        let usuariosPorId = {};
+        let avisoAsea = false;
         let inspectores = [];
         let colorDe = {};
         let filas = [];
@@ -349,12 +384,13 @@
         document.querySelectorAll('[data-cerrar]').forEach((el) => el.addEventListener('click', () => el.closest('.fixed').classList.add('hidden')));
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
-            ['modal-editar', 'modal-asignar', 'modal-dia', 'modal-global'].some((id) => { if (!$(id).classList.contains('hidden')) { cerrar(id); return true; } return false; });
+            ['modal-editar', 'modal-asea', 'modal-asignar', 'modal-dia', 'modal-global'].some((id) => { if (!$(id).classList.contains('hidden')) { cerrar(id); return true; } return false; });
         });
 
         const yo = () => DB?.perfil?.id;
         const puedeCapturar = (i) => DB.puedeEditar() || [i?.inspector_id, i?.realizo_id].includes(yo());
-        const sinViaticos = (i) => i.estatus !== 'cancelada' && !(Number(i.viaticos) > 0);
+        const sinViaticos = (i) => i.modulo === 'scfi' && i.estatus !== 'cancelada' && !(Number(i.viaticos) > 0);
+        const diaDe = (v) => (!v ? null : (String(v).length === 10 ? String(v) : iso(new Date(v))));
         const cliente = (i) => i.razon_social || i.cliente_comercial || i.estacion_nombre || 'Cliente sin nombre';
         const color = (id) => COLORES[colorDe[id] ?? 0] || COLORES[0];
 
@@ -385,13 +421,11 @@
             $('cal-cargando').classList.remove('hidden');
             const { ini, fin } = rango();
             try {
-                let q = DB.sb.from('sudi_v_scfi_insp_lista').select('*')
-                    .gte('fecha_inspeccion', iso(ini)).lte('fecha_inspeccion', iso(fin))
-                    .order('fecha_inspeccion').order('folio').limit(3000);
-                if (filtro.id) q = q.or(`inspector_id.eq.${filtro.id},realizo_id.eq.${filtro.id}`);
-                const { data, error } = await q;
-                if (error) throw new Error(DB.mensajeError(error));
-                filas = data || [];
+                const [scfi, asea] = await Promise.all([
+                    modulo === 'asea' ? [] : cargarScfi(ini, fin),
+                    modulo === 'scfi' ? [] : cargarAsea(ini, fin),
+                ]);
+                filas = [...scfi, ...asea].sort((a, b) => (a.fecha_inspeccion || '').localeCompare(b.fecha_inspeccion || '') || String(a.folio || '').localeCompare(String(b.folio || '')));
                 porDia = {};
                 filas.forEach((i) => { (porDia[i.fecha_inspeccion] = porDia[i.fecha_inspeccion] || []).push(i); });
                 if (vista === 'semana') pintarSemana(); else pintarMes();
@@ -403,6 +437,74 @@
             } finally {
                 $('cal-cargando').classList.add('hidden');
             }
+        }
+
+        async function cargarScfi(ini, fin) {
+            let q = DB.sb.from('sudi_v_scfi_insp_lista').select('*')
+                .gte('fecha_inspeccion', iso(ini)).lte('fecha_inspeccion', iso(fin))
+                .order('fecha_inspeccion').order('folio').limit(3000);
+            if (filtro.id) q = q.or(`inspector_id.eq.${filtro.id},realizo_id.eq.${filtro.id}`);
+            const { data, error } = await q;
+            if (error) throw new Error(DB.mensajeError(error));
+            return (data || []).map((i) => ({ ...i, modulo: 'scfi' }));
+        }
+
+        // ASEA: el día es la fecha de inicio; si aún no inicia, la fecha de solicitud
+        async function cargarAsea(ini, fin) {
+            const a = new Date(ini.getFullYear(), ini.getMonth(), ini.getDate()).toISOString();
+            const b = new Date(fin.getFullYear(), fin.getMonth(), fin.getDate(), 23, 59, 59).toISOString();
+            let q = DB.sb.from('sudi_asea_ordenes').select('*')
+                .or(`and(fecha_inicio.gte.${a},fecha_inicio.lte.${b}),and(fecha_inicio.is.null,fecha_solicitud.gte.${iso(ini)},fecha_solicitud.lte.${iso(fin)}T23:59:59)`)
+                .limit(3000);
+            if (filtro.id) q = q.eq('verificador_id', filtro.id);
+            const { data, error } = await q;
+            if (error) {
+                if (!avisoAsea) { avisoAsea = true; toast(`No se pudieron leer las órdenes ASEA: ${DB.mensajeError(error)}`, 'warning'); }
+                return [];
+            }
+            if (!data?.length) return [];
+            const ids = (campo) => [...new Set(data.map((o) => o[campo]).filter((v) => v !== null && v !== undefined))];
+            const [ests, clis] = await Promise.all([
+                ids('estacion_id').length ? DB.sb.from('estaciones_servicio').select('id, permiso, nombre, nombre_comercial').in('id', ids('estacion_id')).then((r) => r.data || []) : [],
+                ids('cliente_id').length ? DB.sb.from('clientes_catalogo').select('id, razon_social, nombre_comercial').in('id', ids('cliente_id')).then((r) => r.data || []) : [],
+            ]);
+            const est = Object.fromEntries(ests.map((e) => [String(e.id), e]));
+            const cli = Object.fromEntries(clis.map((c) => [String(c.id), c]));
+            return data.map((o) => {
+                const e = est[String(o.estacion_id)] || {};
+                const c = cli[String(o.cliente_id)] || {};
+                const estatus = o.estatus === 'cancelada' ? 'cancelada'
+                    : (o.estatus === 'realizada' || o.fecha_fin) ? 'terminada'
+                    : o.fecha_inicio ? 'en_proceso' : 'programada';
+                return {
+                    id: `asea-${o.id}`, modulo: 'asea', orden: o,
+                    folio: o.folio || 'Sin folio', estatus,
+                    fecha_inspeccion: diaDe(o.fecha_inicio || o.fecha_solicitud),
+                    sin_inicio: !o.fecha_inicio,
+                    inspector_id: o.verificador_id, inspector: usuariosPorId[o.verificador_id]?.nombre_completo || '',
+                    razon_social: c.razon_social || c.nombre_comercial || '', estacion_nombre: e.nombre_comercial || e.nombre || '',
+                    permiso: e.permiso || '', observaciones: o.observaciones || '', tipo: o.tipo_verificacion,
+                };
+            });
+        }
+
+        function abrirAsea(i) {
+            const o = i.orden;
+            const fh = (v) => (v ? new Date(v).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : '—');
+            const dato = (t, v) => `<div class="bg-dark-900/60 border border-dark-700 rounded-xl px-3 py-2.5 min-w-0"><p class="text-[10px] uppercase tracking-wider text-gray-500">${t}</p><p class="text-sm text-gray-200 truncate" title="${esc(v)}">${esc(v || '—')}</p></div>`;
+            $('as2-titulo').textContent = i.folio;
+            $('as2-info').innerHTML = [
+                dato('Tipo', TIPOS_ASEA[o.tipo_verificacion] || o.tipo_verificacion),
+                dato('Estatus', (ESTATUS[i.estatus] || {}).label),
+                dato('Estación', i.permiso),
+                dato('Razón social', i.razon_social),
+                dato('Verificador', i.inspector),
+                dato('Folio seguimiento', o.folio_seguimiento),
+                dato('Inicio', fh(o.fecha_inicio)),
+                dato('Fin', fh(o.fecha_fin)),
+            ].join('') + (o.observaciones ? `<div class="col-span-2 bg-brand-yellow/5 border border-brand-yellow/20 rounded-xl p-3 text-xs text-brand-yellow/90">${esc(o.observaciones)}</div>` : '');
+            $('as2-abrir').href = `ASEA/inspecciones_asea.html?id=${encodeURIComponent(o.id)}`;
+            abrir('modal-asea');
         }
 
         // ---------------- vista semana ----------------
@@ -419,10 +521,12 @@
                     <span class="${etiqueta} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase truncate">${esc(i.inspector || 'Sin inspector')}</span>
                     <span class="${st.badge} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">${st.label}</span>
                 </div>
-                <h3 class="text-[13px] font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight pl-1 mb-1.5">Folio: ${esc(i.folio)}${i.alto_flujo ? ' <span class="text-purple-400 text-[10px]">AF</span>' : ''}</h3>
+                <h3 class="text-[13px] font-bold text-white group-hover:text-brand-yellow transition-colors leading-tight pl-1 mb-1.5 flex items-center gap-1.5 flex-wrap">${MODULO[i.modulo]} ${esc(i.folio)}${i.alto_flujo ? ' <span class="text-purple-400 text-[10px]">AF</span>' : ''}</h3>
                 <div class="space-y-1 pl-1">
                     <p class="text-[11px] text-gray-300 font-medium truncate">${esc(cliente(i))}</p>
                     <p class="text-[10px] text-gray-400 font-mono truncate">${esc(i.permiso || '—')}</p>
+                    <p class="text-[10px] text-gray-500 truncate">${esc(i.modulo === 'asea' ? (TIPOS_ASEA[i.tipo] || i.tipo || '') + (i.sin_inicio ? ' · sin iniciar (fecha de solicitud)' : '') : (TIPOS_SCFI[i.tipo] || i.tipo || ''))}</p>
+                    ${i.modulo === 'scfi' ? `<p class="text-[10px] font-semibold ${i.facturacion === 'facturado' ? 'text-emerald-400' : 'text-gray-500'}">${i.facturacion === 'facturado' ? `Facturado ${esc(i.factura || '')}` : 'No facturado'}</p>` : ''}
                 </div>
                 ${sinViaticos(i) ? '<div class="pt-2 mt-2 border-t border-dark-700 pl-1"><span class="text-[10px] font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded uppercase tracking-wider">Sin viáticos</span></div>' : ''}
                 ${nota}
@@ -467,7 +571,7 @@
                 const esHoy = k === HOY;
                 const chips = lista.slice(0, 3).map((i) => {
                     const st = ESTATUS[i.estatus] || ESTATUS.programada;
-                    return `<div class="${st.chip} border text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><span class="w-1.5 h-1.5 rounded-full shrink-0 ${color(i.inspector_id)[0]}"></span>${esc(iniciales(i.inspector))} · ${esc(String(i.folio || '').slice(-7))}</div>`;
+                    return `<div class="${st.chip} border text-[10px] px-1.5 py-0.5 rounded flex items-center gap-1 truncate"><span class="w-1.5 h-1.5 rounded-full shrink-0 ${color(i.inspector_id)[0]}"></span><b class="${i.modulo === 'asea' ? 'text-sky-300' : 'text-brand-yellow'}">${i.modulo === 'asea' ? 'A' : 'S'}</b> ${esc(iniciales(i.inspector))} · ${esc(String(i.folio || '').slice(-7))}</div>`;
                 }).join('');
                 celdas.push(`
                 <button type="button" data-dia="${k}" class="text-left ${esHoy ? 'bg-brand-yellow/5 border-brand-yellow' : 'bg-dark-800 border-dark-600'} ${fuera ? 'opacity-40' : ''} border rounded-xl p-2 flex flex-col hover:border-brand-yellow/50 hover:shadow-lg transition-all group relative">
@@ -490,7 +594,8 @@
             $('res-periodo').textContent = vista === 'semana' ? `Semana ${semanaIso(ini)} · ${filtro.nombre}` : `${mesAnio(ancla)} · ${filtro.nombre}`;
             const cifra = (ico, clr, txt, val) => `<div class="flex items-center justify-between bg-dark-900/50 p-3 rounded-xl border border-dark-700"><div class="flex items-center gap-3"><div class="${clr} p-1.5 rounded-lg"><i class="ph-fill ${ico} text-lg"></i></div><span class="text-sm text-gray-300 font-medium">${txt}</span></div><span class="text-lg font-black text-white">${val}</span></div>`;
             $('res-cifras').innerHTML = [
-                cifra('ph-clipboard-text', 'bg-brand-yellow/20 text-brand-yellow', 'Verificaciones', activas.length),
+                cifra('ph-clipboard-text', 'bg-brand-yellow/20 text-brand-yellow', 'SCFI', activas.filter((i) => i.modulo === 'scfi').length),
+                cifra('ph-gas-can', 'bg-sky-500/20 text-sky-300', 'ASEA', activas.filter((i) => i.modulo === 'asea').length),
                 cifra('ph-check-circle', 'bg-emerald-500/20 text-emerald-400', 'Terminadas', cuenta('terminada')),
                 cifra('ph-x-circle', 'bg-red-500/20 text-red-400', 'Canceladas', cuenta('cancelada')),
                 cifra('ph-gas-pump', 'bg-blue-500/20 text-blue-400', 'Mangueras', mangueras),
@@ -500,12 +605,12 @@
             const alertas = [];
             activas.filter(sinViaticos).filter((i) => i.estatus !== 'terminada').forEach((i) => alertas.push(['red', 'ph-money', 'Sin viáticos', i]));
             activas.filter((i) => !i.inspector_id).forEach((i) => alertas.push(['orange', 'ph-user-circle-minus', 'Sin inspector', i]));
-            activas.filter((i) => i.estatus === 'programada' && i.fecha_inspeccion < HOY).forEach((i) => alertas.push(['amber', 'ph-clock-countdown', 'Fecha vencida sin iniciar', i]));
+            activas.filter((i) => i.modulo === 'scfi' && i.estatus === 'programada' && i.fecha_inspeccion < HOY).forEach((i) => alertas.push(['amber', 'ph-clock-countdown', 'Fecha vencida sin iniciar', i]));
             const CLR = { red: 'border-red-500/20 text-red-300', orange: 'border-orange-500/20 text-orange-300', amber: 'border-amber-500/20 text-amber-300' };
             $('res-alertas').innerHTML = alertas.length ? alertas.slice(0, 25).map(([c, ico, t, i]) => `
                 <button type="button" data-id="${esc(i.id)}" class="w-full text-left bg-dark-900/50 p-3 rounded-xl border ${CLR[c]} hover:bg-dark-900 transition-colors">
                     <div class="flex items-start justify-between mb-1"><h4 class="text-sm font-semibold">${t}</h4><i class="ph ${ico}"></i></div>
-                    <p class="text-[11px] text-gray-400">${esc(i.folio)} · ${esc(fechaLarga(i.fecha_inspeccion))}</p>
+                    <p class="text-[11px] text-gray-400">${i.modulo === 'asea' ? 'ASEA' : 'SCFI'} · ${esc(i.folio)} · ${esc(fechaLarga(i.fecha_inspeccion))}</p>
                     <p class="text-[11px] text-gray-500 truncate">${esc(i.inspector || '—')} · ${esc(cliente(i))}</p>
                 </button>`).join('') + (alertas.length > 25 ? `<p class="text-[11px] text-gray-500 text-center">+${alertas.length - 25} más</p>` : '')
                 : '<p class="text-xs text-gray-500 text-center py-6">Todo en orden en este periodo.</p>';
@@ -568,7 +673,7 @@
                             <span class="${st.badge} border text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">${st.label}</span>
                             ${sinViaticos(i) ? '<span class="text-[9px] font-bold text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded uppercase">Sin viáticos</span>' : ''}
                         </div>
-                        <h3 class="text-sm font-bold text-white group-hover:text-brand-yellow">Folio: ${esc(i.folio)}</h3>
+                        <h3 class="text-sm font-bold text-white group-hover:text-brand-yellow flex items-center gap-1.5">${MODULO[i.modulo]} ${esc(i.folio)}</h3>
                         <p class="text-[11px] text-gray-400 mt-0.5 truncate">${esc(cliente(i))} • ${esc(i.permiso || '—')}</p>
                     </div>
                     <span class="bg-dark-800 text-gray-300 group-hover:text-brand-yellow px-3 py-1.5 rounded-lg text-xs font-medium border border-dark-700 flex items-center gap-1 shrink-0"><i class="ph ph-pencil-simple"></i> Abrir</span>
@@ -659,14 +764,21 @@
 
         // ---------------- editar ----------------
         function abrirEditar(id) {
-            const i = filas.find((x) => x.id === id);
+            const i = filas.find((x) => String(x.id) === String(id));
             if (!i) return;
+            if (i.modulo === 'asea') { abrirAsea(i); return; }
             editando = i;
             const captura = puedeCapturar(i);
             const cerrada = Boolean(i.cerrada);
             const bloqueado = !captura || cerrada;
             $('ed-titulo').textContent = `Folio ${i.folio}`;
-            $('ed-info').innerHTML = `<span class="text-gray-200 font-semibold">${esc(cliente(i))}</span><br><span class="text-xs text-gray-400">${esc(i.permiso || '—')} ${i.estacion_nombre ? '· ' + esc(i.estacion_nombre) : ''}</span>${i.realizo && i.realizo !== i.inspector ? `<br><span class="text-xs text-gray-500">Realizó: ${esc(i.realizo)}</span>` : ''}`;
+            $('ed-abrir').href = `SCFI/inspecciones.html?folio=${encodeURIComponent(i.folio)}`;
+            $('ed-docs').innerHTML = [['dictamen_archivo', 'Ver dictamen'], ['orden_servicio_archivo', 'Ver orden de servicio']]
+                .map(([c, t]) => i[c] ? `<button type="button" data-doc="${c}" class="px-3 py-1.5 rounded-lg bg-dark-900 border border-dark-700 hover:border-brand-yellow/50 text-xs text-gray-200 hover:text-brand-yellow flex items-center gap-1.5"><i class="ph ph-file-pdf"></i> ${t}</button>` : `<span class="px-3 py-1.5 rounded-lg border border-dashed border-dark-700 text-xs text-gray-600">${t.replace('Ver ', 'Sin ')}</span>`).join('');
+            $('ed-info').innerHTML = `<span class="text-gray-200 font-semibold">${esc(cliente(i))}</span>`
+                + `<br><span class="text-xs text-gray-400">${esc(TIPOS_SCFI[i.tipo] || i.tipo || '')} · ${i.facturacion === 'facturado' ? `<span class="text-emerald-400">Facturado ${esc(i.factura || '')}</span>` : 'No facturado'}</span>`
+                + `<br>`;
+            $('ed-info').innerHTML += `<span class="text-xs text-gray-400">${esc(i.permiso || '—')} ${i.estacion_nombre ? '· ' + esc(i.estacion_nombre) : ''}</span>${i.realizo && i.realizo !== i.inspector ? `<br><span class="text-xs text-gray-500">Realizó: ${esc(i.realizo)}</span>` : ''}`;
             const avisos = [];
             if (!captura) avisos.push('Solo lectura: no eres el inspector de esta verificación.');
             if (cerrada) avisos.push('La verificación está cerrada; solo un gerente puede cambiar el estatus o reabrirla en Inspecciones.');
@@ -689,6 +801,12 @@
             $('ed-motivo-wrap').classList.toggle('hidden', i.estatus !== 'cancelada');
             abrir('modal-editar');
         }
+
+        $('ed-docs').addEventListener('click', async (e) => {
+            const b = e.target.closest('[data-doc]');
+            if (!b || !editando) return;
+            try { window.open(await DB.urlArchivo(editando[b.dataset.doc]), '_blank', 'noopener'); } catch (err) { toast(err.message, 'error'); }
+        });
 
         $('ed-estatus').addEventListener('change', () => $('ed-motivo-wrap').classList.toggle('hidden', $('ed-estatus').value !== 'cancelada'));
 
@@ -764,6 +882,15 @@
             $('view-month').classList.toggle('hidden', v !== 'mes');
             cargar();
         }
+        $('sel-modulo').addEventListener('click', (e) => {
+            const b = e.target.closest('[data-modulo]');
+            if (!b) return;
+            modulo = b.dataset.modulo;
+            $('sel-modulo').querySelectorAll('[data-modulo]').forEach((x) => {
+                x.className = x === b ? 'px-3 py-1.5 text-xs font-bold rounded-lg bg-dark-700 text-brand-yellow' : 'px-3 py-1.5 text-xs font-medium rounded-lg text-gray-400 hover:text-white';
+            });
+            cargar();
+        });
         $('btn-view-week').addEventListener('click', () => cambiarVista('semana'));
         $('btn-view-month').addEventListener('click', () => cambiarVista('mes'));
         $('nav-hoy').addEventListener('click', () => { ancla = new Date(); cargar(); });
@@ -787,6 +914,7 @@
             .then(async (db) => {
                 DB = db;
                 const usuarios = await DB.listar('sudi_usuarios', { select: 'id, nombre_completo, es_inspector', filtros: { activo: true }, orden: 'nombre_completo' }).catch(() => []);
+                usuariosPorId = Object.fromEntries(usuarios.map((u) => [u.id, u]));
                 inspectores = usuarios.filter((u) => u.es_inspector);
                 if (!inspectores.length) inspectores = usuarios;
                 inspectores.forEach((u, n) => { colorDe[u.id] = n % COLORES.length; });

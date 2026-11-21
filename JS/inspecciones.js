@@ -763,15 +763,6 @@
     function pintarDocumentos() {
         const i = actual;
         const puede = puedeCapturar(i);
-        const fila = (campo, titulo, icono) => `
-            <div class="flex flex-wrap items-center justify-between gap-3 bg-dark-900 border border-dark-700 rounded-xl px-5 py-4">
-                <div class="flex items-center gap-3"><i class="ph ${icono} text-2xl text-brand-yellow"></i>
-                    <div><p class="text-white font-semibold">${titulo}</p><p class="text-xs text-gray-500">${i[campo] ? esc(i[campo].split('/').pop().replace(/^\d+_/, '')) : 'Sin archivo'}</p></div></div>
-                <div class="flex gap-2">
-                    ${i[campo] ? `<button type="button" data-ver="${campo}" class="${BTN2}"><i class="ph ph-eye"></i> Ver</button>` : ''}
-                    ${puede ? `<label class="${BTN2} cursor-pointer"><i class="ph ph-upload-simple"></i> ${i[campo] ? 'Reemplazar' : 'Subir'}<input type="file" data-subir="${campo}" accept="application/pdf,image/*" class="hidden"></label>` : ''}
-                </div>
-            </div>`;
         document.querySelector('[data-panel="documentos"]').innerHTML = `
             <div class="space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-3 bg-dark-900 border border-brand-yellow/30 rounded-xl px-5 py-4">
@@ -782,14 +773,12 @@
                         <button type="button" data-formato="dictamen" class="${BTNY}"><i class="ph ph-file-pdf"></i> Dictamen FT-01-03</button>
                     </div>
                 </div>
-                ${fila('dictamen_archivo', 'Dictamen', 'ph-file-pdf')}
-                ${fila('orden_servicio_archivo', 'Orden de servicio', 'ph-file-text')}
                 <div class="flex flex-wrap items-center justify-between gap-3 bg-dark-900 border border-dark-700 rounded-xl px-5 py-4">
                     <div class="flex items-center gap-3"><i class="ph ph-envelope-simple text-2xl text-brand-yellow"></i>
                         <div><p class="text-white font-semibold">Enviar correo al cliente</p><p class="text-xs text-gray-500">${esc(i.cliente_correo || 'El cliente no tiene correo en el catálogo')}${i.correo_enviado_en ? ` · enviado ${new Date(i.correo_enviado_en).toLocaleDateString('es-MX')}` : ''}</p></div></div>
                     <button type="button" id="doc-correo" class="${BTN2}"><i class="ph ph-paper-plane-tilt"></i> Abrir correo</button>
                 </div>
-                <p class="text-[11px] text-gray-500">El correo se abre en tu programa de correo con los datos listos; adjunta el dictamen descargado. SUDI registra la fecha de envío.</p>
+                <p class="text-[11px] text-gray-500">El correo se abre en tu programa de correo con los datos listos; adjunta el dictamen descargado con «Descargar PDF». SUDI registra la fecha de envío.</p>
             </div>`;
         const panel = document.querySelector('[data-panel="documentos"]');
         panel.querySelectorAll('[data-formato]').forEach((b) => b.addEventListener('click', () => {
@@ -798,16 +787,6 @@
             w.document.write('<p style="font-family:sans-serif;padding:20px">Generando documento...</p>');
             cargarFormatos().then(() => SUDIFormatos.abrir(b.dataset.formato, actual.id, w))
                 .catch((err) => { w.close(); toast(err.message, 'error'); });
-        }));
-        panel.querySelectorAll('[data-ver]').forEach((b) => b.addEventListener('click', async () => {
-            try { window.open(await DB.urlArchivo(actual[b.dataset.ver]), '_blank', 'noopener'); } catch (err) { toast(err.message, 'error'); }
-        }));
-        panel.querySelectorAll('[data-subir]').forEach((inp) => inp.addEventListener('change', async () => {
-            const f = inp.files[0]; if (!f) return;
-            try {
-                const ruta = await DB.subirArchivo(`scfi/inspecciones/${actual.id}/documentos`, f);
-                await actualizar({ [inp.dataset.subir]: ruta }, 'Archivo guardado.');
-            } catch (err) { toast(err.message, 'error'); }
         }));
         $('doc-correo').addEventListener('click', () => {
             const asunto = `Dictamen ${i.folio} · ${i.razon_social || ''}`;

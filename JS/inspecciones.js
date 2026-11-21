@@ -748,6 +748,18 @@
     }
 
     // ---- Documentos ----
+    // Carga JS/formatos-scfi.js solo cuando se necesita (misma carpeta que este archivo).
+    const RUTA_FORMATOS = (document.currentScript?.src || '').replace(/inspecciones\.js(\?.*)?$/, 'formatos-scfi.js');
+    function cargarFormatos() {
+        if (window.SUDIFormatos) return Promise.resolve();
+        return new Promise((ok, mal) => {
+            const sc = document.createElement('script');
+            sc.src = `${RUTA_FORMATOS || '../JS/formatos-scfi.js'}?v=${Date.now()}`;
+            sc.onload = ok; sc.onerror = () => mal(new Error('No se encontró JS/formatos-scfi.js. Súbelo al repositorio.'));
+            document.head.appendChild(sc);
+        });
+    }
+
     function pintarDocumentos() {
         const i = actual;
         const puede = puedeCapturar(i);
@@ -762,6 +774,14 @@
             </div>`;
         document.querySelector('[data-panel="documentos"]').innerHTML = `
             <div class="space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-dark-900 border border-brand-yellow/30 rounded-xl px-5 py-4">
+                    <div class="flex items-center gap-3"><i class="ph ph-printer text-2xl text-brand-yellow"></i>
+                        <div><p class="text-white font-semibold">Generar formatos</p><p class="text-xs text-gray-500">Se abren en otra pestaña listos para imprimir o guardar en PDF</p></div></div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" data-formato="solicitud" class="${BTN2}"><i class="ph ph-file-text"></i> Solicitud FT-01-01-2</button>
+                        <button type="button" data-formato="dictamen" class="${BTNY}"><i class="ph ph-file-pdf"></i> Dictamen FT-01-03</button>
+                    </div>
+                </div>
                 ${fila('dictamen_archivo', 'Dictamen', 'ph-file-pdf')}
                 ${fila('orden_servicio_archivo', 'Orden de servicio', 'ph-file-text')}
                 <div class="flex flex-wrap items-center justify-between gap-3 bg-dark-900 border border-dark-700 rounded-xl px-5 py-4">
@@ -772,6 +792,13 @@
                 <p class="text-[11px] text-gray-500">El correo se abre en tu programa de correo con los datos listos; adjunta el dictamen descargado. SUDI registra la fecha de envío.</p>
             </div>`;
         const panel = document.querySelector('[data-panel="documentos"]');
+        panel.querySelectorAll('[data-formato]').forEach((b) => b.addEventListener('click', () => {
+            const w = window.open('', '_blank');
+            if (!w) { toast('El navegador bloqueó la ventana. Permite ventanas emergentes para SUDI.', 'error'); return; }
+            w.document.write('<p style="font-family:sans-serif;padding:20px">Generando documento...</p>');
+            cargarFormatos().then(() => SUDIFormatos.abrir(b.dataset.formato, actual.id, w))
+                .catch((err) => { w.close(); toast(err.message, 'error'); });
+        }));
         panel.querySelectorAll('[data-ver]').forEach((b) => b.addEventListener('click', async () => {
             try { window.open(await DB.urlArchivo(actual[b.dataset.ver]), '_blank', 'noopener'); } catch (err) { toast(err.message, 'error'); }
         }));

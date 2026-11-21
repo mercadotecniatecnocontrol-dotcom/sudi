@@ -49,11 +49,17 @@
             uno(sb.from('sudi_usuarios').select('*').in('id', [i.inspector_id, i.realizo_id].filter(Boolean).length ? [i.inspector_id, i.realizo_id].filter(Boolean) : ['00000000-0000-0000-0000-000000000000'])),
             uno(sb.from('sudi_scfi_equipos').select('*').eq('activo', true)),
         ]);
+        // Dispensarios de la estación (aprobación DGN y gastos mín/máx) para la inspección visual
+        const disps = i.estacion_id ? await sb.from('sudi_estacion_dispensarios').select('*').eq('estacion_id', i.estacion_id).eq('activo', true).then((r) => r.data || []) : [];
+        const normS = (t) => String(t ?? '').toUpperCase().replace(/\s+/g, '');
+        const dispDe = (x) => disps.find((dd) => normS(dd.serie) && normS(dd.serie) === normS(x.serie)) || null;
+        const aprob = (dd) => { if (!dd?.numero_aprobacion) return ''; const n = String(dd.numero_aprobacion); return dd.anio_aprobacion && !n.includes(String(dd.anio_aprobacion)) ? `${n}/${dd.anio_aprobacion}` : n; };
         const porId = Object.fromEntries((holos || []).map((h) => [h.id, h]));
         const fmtF = (tipo, f) => (f === null || f === undefined || f === '' ? '' : (window.SUDIHolo ? SUDIHolo.fmtFolio(tipo, f) : String(f)));
         const flexTipo = i.tipo === 'inicial' ? 'inicial' : 'flexograma';
         const lados = (inst || []).map((x) => ({
             ...x,
+            aprobacion_dgn: aprob(dispDe(x)), gasto_min: dispDe(x)?.gasto_min ?? null, gasto_max: dispDe(x)?.gasto_max ?? null,
             flexograma: fmtF(flexTipo, porId[x.holograma_id]?.folio),
             distintivo: fmtF('distintivo', porId[x.distintivo_id]?.folio),
             precinto: fmtF('precinto', porId[x.precinto_id]?.folio),
@@ -290,11 +296,13 @@
         const disp = {};
         lados.forEach((l) => { const k = `${l.marca}|${l.modelo}|${l.serie}`; (disp[k] = disp[k] || { ...l, todos: [] }).todos.push(l); });
         const marca = (ok) => [ok ? 'X' : '', ok ? '' : 'X'];
+        const faltaDisp = [];
         const visual = Object.values(disp).map((x) => {
             const ok = x.todos.every((l) => l.resultado !== 'rechaza');
             const [si, no] = marca(ok);
             const pts = ['Condiciones que generen desperfectos (9.2)', 'Preparación del Sistema y corrida de ambientación (7.2.4) y (7.2.4.2)', 'Nivelación de la medida volumétrica 7.2.4.1', 'Leyendas información importante para el consumidor. (9.2)', 'Tipo de producto a despachar en forma clara y precisa. (9.2)', 'Dispositivos computador debe marcar ceros (9.2.1)', 'Caratula indicadora (9.2.2 y 5.3.2.3.)', 'Mecanismo de ajuste (9.2.3 y 5.3.3)', 'Mangueras de descarga(9.2.4.1)'];
             const gmin = x.gasto_min ?? '', gmax = x.gasto_max ?? '';
+            if (!x.aprobacion_dgn || gmin === '' || gmax === '') faltaDisp.push(x.serie || 'sin serie');
             return `<div class="met" style="margin-top:6px"><p style="margin:2px 0"><b>Dispensario</b><br>Marca: ${v(x.marca)} &nbsp; Modelo: ${v(x.modelo)} &nbsp; No.: ${v(x.serie)}</p>
                 <table style="width:100%"><tr><td style="width:48%;vertical-align:top;border:0;padding:0">
                     <table><tr><th>VERFICACIÓN VISUAL<br>Puntos a Inspeccionar de la NOM-005-SCFI-2017</th><th>Cumple</th><th>No cumple</th></tr>
@@ -308,6 +316,7 @@
                 </td></tr></table></div>`;
         });
         for (let k = 0; k < visual.length; k += 2) paginas.push(`${k === 0 ? '<p class="c bold" style="margin:8px 0 2px">INSPECCIÓN VISUAL CONFORME AL PUNTO 9.2 Y 9.3.2 DE LA NOM-005-SCFI-2017</p>' : ''}${visual.slice(k, k + 2).join('')}`);
+        if (faltaDisp.length) avisos.push(`Dispensario(s) sin aprobación DGN o gastos mín/máx (Catálogos → Clientes → Estaciones → Dispensarios): ${faltaDisp.join(', ')}.`);
         if (!visual.length) paginas.push('<p class="c bold">INSPECCIÓN VISUAL CONFORME AL PUNTO 9.2 Y 9.3.2 DE LA NOM-005-SCFI-2017</p><p class="c vac">Sin dispensarios capturados.</p>');
 
         // Hoja final: observaciones, equipo patrón, firmas y fórmulas

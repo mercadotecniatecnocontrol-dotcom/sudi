@@ -202,20 +202,20 @@
             <div class="flex flex-col md:flex-row gap-2 fade-in">
                 <div class="relative flex-1">
                     <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-gray-400 text-lg"></i>
-                    <input id="f-texto" class="fil pl-10" placeholder="Buscar equipo o verificador...">
+                    <input id="f-texto" class="fil pl-10" placeholder="Buscar equipo, verificador, ID interna o serie...">
                 </div>
                 <select id="f-estado" class="fil md:w-56"><option value="">Todas las calibraciones</option><option value="vencida">Con calibración vencida</option><option value="porvencer">Por vencer (30 días)</option></select>
                 <select id="f-activo" class="fil md:w-40"><option value="1">Activos</option><option value="0">Inactivos</option><option value="">Todos</option></select>
             </div>
             <div id="lista" class="space-y-4"></div>
-            <p class="text-[11px] text-gray-500">Vigencia considerada: 12 meses desde la fecha de calibración. Ámbar = vence en 30 días o menos; rojo = vencida.</p>
+            <p class="text-[11px] text-gray-500">Vigencia: la capturada en cada instrumento (12 meses si no se indica). Ámbar = vence en 30 días o menos; rojo = vencida.</p>
         </div>
     </main>
 
     <!-- Modal: Equipo -->
     <div id="modal-equipo" data-modal="" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4">
         <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] flex flex-col">
+        <div class="modal-panel relative bg-dark-800 border border-dark-700 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700">
                 <h3 class="text-white font-bold text-xl flex items-center gap-2"><i class="ph ph-wrench text-brand-yellow"></i> <span id="e-titulo">Nuevo equipo</span></h3>
                 <button data-modal-close="" class="text-gray-500 hover:text-white"><i class="ph ph-x text-xl"></i></button>
@@ -253,7 +253,7 @@
     </style>
 
     <script src="../JS/app.js?v=639250641835541270" defer=""></script>
-    <!-- Equipos SCFI: sudi_scfi_equipos (SQL 0014). instrumentos = { clave: { fecha, serie, certificado } } -->
+    <!-- Equipos SCFI: sudi_scfi_equipos (SQL 0014). instrumentos = { clave: { id_interna, marca, modelo, serie, informe, fecha, vigencia_meses, laboratorio, division, valor_certificado, kc, nominal_ml, emt, emt_inicial, repetibilidad, certificado(=informe, compat. reportes) } } -->
     <script defer="">
         document.addEventListener('DOMContentLoaded', () => {
             'use strict';
@@ -263,30 +263,42 @@
             const toast = (m, t = 'success') => App.toast(m, t);
             const MES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
             const INST = [['volumetrico', 'Volumétrica', 'ph-beaker'], ['termometro', 'Termómetro', 'ph-thermometer'], ['crono', 'Crono', 'ph-timer'], ['mesa', 'Mesa', 'ph-table'], ['embudo', 'Embudo', 'ph-funnel']];
-            const VIGENCIA_DIAS = 365, AVISO_DIAS = 30;
+            // [clave, etiqueta, tipo]  tipo: t = texto (mayúsculas), d = fecha, n = número
+            const CAMPOS = [
+                ['id_interna', 'ID interna', 't'], ['marca', 'Marca', 't'], ['modelo', 'Modelo', 't'], ['serie', 'No. de serie', 't'],
+                ['informe', 'No. de informe', 't'], ['fecha', 'Fecha de calibración', 'd'], ['vigencia_meses', 'Vigencia (meses)', 'n'], ['laboratorio', 'Laboratorio', 't'],
+                ['division', 'División (div)', 'n'], ['valor_certificado', 'Valor certificado', 'n'], ['kc', 'KC', 'n'], ['nominal_ml', 'Nominal (mL)', 'n'],
+                ['emt', 'EMT', 'n'], ['emt_inicial', 'EMT inicial', 'n'], ['repetibilidad', 'Repetibilidad', 'n'],
+            ];
+            const VIGENCIA_MESES = 12, AVISO_DIAS = 30;
+            const vacio = () => Object.fromEntries(CAMPOS.map(([k, , t]) => [k, k === 'vigencia_meses' ? VIGENCIA_MESES : (t === 'n' ? null : '')]));
 
             let DB = null, editor = false, equipos = [], usuarios = {}, editando = null, sel = {};
 
-            const fechaCorta = (f) => { if (!f) return '—'; const [a, m, d] = f.split('-'); return `${Number(d)} ${MES[Number(m) - 1]} ${a}`; };
-            function vence(f) {
-                if (!f) return null;
-                const v = new Date(`${f}T12:00:00`); v.setDate(v.getDate() + VIGENCIA_DIAS);
-                return Math.ceil((v - new Date()) / 86400000);
+            const fechaCorta = (f) => { if (!f) return '—'; const [a, m, d] = String(f).slice(0, 10).split('-'); return `${Number(d)} ${MES[Number(m) - 1]} ${a}`; };
+            const meses = (d) => (Number(d?.vigencia_meses) > 0 ? Number(d.vigencia_meses) : VIGENCIA_MESES);
+            function fechaVence(d) {
+                if (!d?.fecha) return null;
+                const v = new Date(`${String(d.fecha).slice(0, 10)}T12:00:00`);
+                v.setMonth(v.getMonth() + meses(d));
+                return v;
             }
-            function estadoInst(f) {
-                const d = vence(f);
-                if (d === null) return ['text-gray-500', 'Sin fecha'];
-                if (d < 0) return ['text-red-400', `Vencida hace ${-d} día(s)`];
-                if (d <= AVISO_DIAS) return ['text-amber-400', `Vence en ${d} día(s)`];
-                return ['text-sky-300', `Vigente · ${d} días`];
+            function vence(d) { const v = fechaVence(d); return v ? Math.ceil((v - new Date()) / 86400000) : null; }
+            function estadoInst(d) {
+                const n = vence(d);
+                if (n === null) return ['text-gray-500', 'Sin fecha'];
+                if (n < 0) return ['text-red-400', `Vencida hace ${-n} día(s)`];
+                if (n <= AVISO_DIAS) return ['text-amber-400', `Vence en ${n} día(s)`];
+                return ['text-sky-300', `Vigente · ${n} días`];
             }
             const incluidos = (e) => INST.filter(([k]) => e.instrumentos?.[k]);
             const peor = (e) => {
-                const ds = incluidos(e).map(([k]) => vence(e.instrumentos[k].fecha)).filter((d) => d !== null);
+                const ds = incluidos(e).map(([k]) => vence(e.instrumentos[k])).filter((d) => d !== null);
                 if (ds.some((d) => d < 0)) return 'vencida';
                 if (ds.some((d) => d <= AVISO_DIAS)) return 'porvencer';
                 return 'ok';
             };
+            const textoBusqueda = (e) => `${e.nombre} ${usuarios[e.verificador_id]?.nombre_completo || ''} ${incluidos(e).map(([k]) => { const d = e.instrumentos[k]; return `${d.id_interna || ''} ${d.serie || ''} ${d.informe || d.certificado || ''}`; }).join(' ')}`;
 
             async function cargar() {
                 try {
@@ -306,6 +318,15 @@
                 }
             }
 
+            function detalleInst(d) {
+                const par = (l, v) => (v === null || v === undefined || v === '' ? '' : `<span class="text-gray-500">${l}</span> <span class="text-gray-300">${esc(v)}</span>`);
+                return [
+                    par('ID', d.id_interna), par('S/N', d.serie), par('Inf.', d.informe || d.certificado),
+                    par('Marca', [d.marca, d.modelo].filter(Boolean).join(' ')), par('Lab.', d.laboratorio),
+                    par('Div', d.division), par('Nom.', d.nominal_ml != null && d.nominal_ml !== '' ? `${d.nominal_ml} mL` : ''), par('EMT', d.emt),
+                ].filter(Boolean).map((x) => `<p class="text-[10px] truncate">${x}</p>`).join('');
+            }
+
             function pintar() {
                 const vivos = equipos.filter((e) => e.activo !== false);
                 const k = (t, n, ic, c) => `<div class="bg-dark-800 border border-dark-700 rounded-2xl p-4"><p class="text-[11px] uppercase tracking-wider text-gray-500 flex items-center gap-1.5"><i class="ph ${ic} ${c}"></i> ${t}</p><p class="text-2xl font-bold text-white mt-1">${n}</p></div>`;
@@ -317,7 +338,7 @@
                 const term = norm($('f-texto').value), st = $('f-estado').value, act = $('f-activo').value;
                 const lista = equipos.filter((e) => (act === '' || String(Number(e.activo !== false)) === act)
                     && (!st || peor(e) === st)
-                    && (!term || norm(`${e.nombre} ${usuarios[e.verificador_id]?.nombre_completo}`).includes(term)));
+                    && (!term || norm(textoBusqueda(e)).includes(term)));
 
                 $('lista').innerHTML = lista.length ? lista.map((e, i) => {
                     const inc = incluidos(e);
@@ -336,12 +357,14 @@
                         </div>
                         ${inc.length ? `<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">${inc.map(([key, n, ic]) => {
                             const d = e.instrumentos[key];
-                            const [c, t] = estadoInst(d.fecha);
-                            return `<div class="bg-dark-900/60 border border-dark-700 rounded-xl p-3">
+                            const [c, t] = estadoInst(d);
+                            const v = fechaVence(d);
+                            return `<div class="bg-dark-900/60 border border-dark-700 rounded-xl p-3 min-w-0">
                                 <p class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold flex items-center gap-1"><i class="ph ${ic}"></i> ${n}</p>
                                 <p class="font-bold mt-1 ${c}">${fechaCorta(d.fecha)}</p>
                                 <p class="text-[10px] ${c} opacity-80">${t}</p>
-                                ${d.serie || d.certificado ? `<p class="text-[10px] text-gray-500 mt-1 truncate" title="${esc(`${d.serie || ''} ${d.certificado || ''}`)}">${esc([d.serie && `S/N ${d.serie}`, d.certificado && `Cert. ${d.certificado}`].filter(Boolean).join(' · '))}</p>` : ''}
+                                ${v ? `<p class="text-[10px] text-gray-500">Vence ${fechaCorta(v.toISOString())} · ${meses(d)} m</p>` : ''}
+                                <div class="mt-1.5 space-y-0.5">${detalleInst(d)}</div>
                             </div>`;
                         }).join('')}</div>` : '<p class="text-sm text-gray-500">Sin instrumentos registrados.</p>'}
                     </div>`;
@@ -349,22 +372,31 @@
             }
 
             // ---------------- Modal ----------------
+            function campoHtml(d, [k, l, t]) {
+                const v = d[k] ?? '';
+                if (t === 'd') return `<div><label class="lbl">${l}</label><input data-k="${k}" data-t="d" type="date" value="${esc(String(v).slice(0, 10))}" class="inp"></div>`;
+                if (t === 'n') return `<div><label class="lbl">${l}</label><input data-k="${k}" data-t="n" type="number" step="any" ${k === 'vigencia_meses' ? 'min="1" max="120"' : ''} value="${esc(v)}" class="inp"></div>`;
+                return `<div><label class="lbl">${l}</label><input data-k="${k}" data-t="t" value="${esc(v)}" class="inp uppercase" autocomplete="off"></div>`;
+            }
             function pintarInst() {
                 $('e-chips').innerHTML = INST.map(([k, n, ic]) => `<button type="button" data-inst="${k}" class="chip-i ${sel[k] ? 'on' : ''}"><i class="ph ${ic}"></i> ${n}</button>`).join('');
                 const on = INST.filter(([k]) => sel[k]);
                 $('e-inst').innerHTML = on.length ? on.map(([k, n, ic]) => `
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 items-end bg-dark-900/50 border border-dark-700 rounded-xl p-3" data-fila="${k}">
-                        <p class="text-sm font-semibold text-white flex items-center gap-1.5 sm:pb-3"><i class="ph ${ic} text-brand-yellow"></i> ${n}</p>
-                        <div><label class="lbl">Fecha de calibración</label><input data-k="fecha" type="date" value="${esc(sel[k].fecha || '')}" class="inp"></div>
-                        <div><label class="lbl">No. de serie</label><input data-k="serie" value="${esc(sel[k].serie || '')}" class="inp uppercase"></div>
-                        <div><label class="lbl">Certificado</label><input data-k="certificado" value="${esc(sel[k].certificado || '')}" class="inp uppercase"></div>
+                    <div class="bg-dark-900/50 border border-dark-700 rounded-xl p-4" data-fila="${k}">
+                        <p class="text-sm font-semibold text-white flex items-center gap-1.5 mb-3"><i class="ph ${ic} text-brand-yellow"></i> ${n}</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${CAMPOS.map((c) => campoHtml(sel[k], c)).join('')}</div>
                     </div>`).join('') : '<p class="text-xs text-gray-500">Marca arriba los instrumentos que trae el equipo.</p>';
             }
             function leerInst() {
                 document.querySelectorAll('#e-inst [data-fila]').forEach((f) => {
                     const k = f.dataset.fila;
-                    f.querySelectorAll('[data-k]').forEach((inp) => { sel[k][inp.dataset.k] = inp.value.trim().toUpperCase() || ''; });
-                    sel[k].fecha = f.querySelector('[data-k="fecha"]').value || '';
+                    f.querySelectorAll('[data-k]').forEach((inp) => {
+                        const v = inp.value.trim();
+                        if (inp.dataset.t === 'n') sel[k][inp.dataset.k] = v === '' ? null : Number(v);
+                        else if (inp.dataset.t === 'd') sel[k][inp.dataset.k] = v;
+                        else sel[k][inp.dataset.k] = v.replace(/\s+/g, ' ').toUpperCase();
+                    });
+                    sel[k].certificado = sel[k].informe || ''; // compatibilidad con Reporte de equipos
                 });
             }
             $('e-chips').addEventListener('click', (ev) => {
@@ -372,7 +404,7 @@
                 if (!b) return;
                 leerInst();
                 const k = b.dataset.inst;
-                if (sel[k]) delete sel[k]; else sel[k] = { fecha: '', serie: '', certificado: '' };
+                if (sel[k]) delete sel[k]; else sel[k] = vacio();
                 pintarInst();
             });
 
@@ -382,10 +414,38 @@
                 $('e-nombre').value = e?.nombre || '';
                 $('e-verificador').value = e?.verificador_id || '';
                 $('e-tiempo').value = e?.tiempo_manguera_min ?? '';
-                sel = e ? JSON.parse(JSON.stringify(e.instrumentos || {})) : Object.fromEntries(INST.slice(0, 3).map(([k]) => [k, { fecha: '', serie: '', certificado: '' }]));
+                if (e) {
+                    sel = {};
+                    Object.entries(e.instrumentos || {}).forEach(([k, d]) => {
+                        const base = vacio();
+                        sel[k] = { ...base, ...d };
+                        if (!sel[k].informe && d?.certificado) sel[k].informe = d.certificado; // datos anteriores
+                        if (!(Number(sel[k].vigencia_meses) > 0)) sel[k].vigencia_meses = VIGENCIA_MESES;
+                    });
+                } else sel = Object.fromEntries(INST.slice(0, 3).map(([k]) => [k, vacio()]));
                 ['e-nombre', 'e-verificador'].forEach((id) => $(id).classList.remove('err'));
                 pintarInst();
                 App.openModal('modal-equipo');
+            }
+
+            function validarInst() {
+                for (const [k, n] of INST) {
+                    const d = sel[k];
+                    if (!d) continue;
+                    if (d.vigencia_meses != null && !(d.vigencia_meses >= 1 && d.vigencia_meses <= 120)) return `${n}: la vigencia debe ser de 1 a 120 meses.`;
+                }
+                // ID interna no se repite (en este equipo ni en otros)
+                const usados = {};
+                equipos.filter((x) => x.id !== editando?.id).forEach((x) => Object.values(x.instrumentos || {}).forEach((d) => { if (d?.id_interna) usados[norm(d.id_interna)] = x.nombre; }));
+                const propios = {};
+                for (const [k, n] of INST) {
+                    const id = norm(sel[k]?.id_interna);
+                    if (!id) continue;
+                    if (usados[id]) return `${n}: la ID interna ${sel[k].id_interna} ya está en el equipo ${usados[id]}.`;
+                    if (propios[id]) return `${n}: la ID interna ${sel[k].id_interna} está repetida en este equipo.`;
+                    propios[id] = true;
+                }
+                return '';
             }
 
             function guardar() {
@@ -395,6 +455,8 @@
                 [['e-nombre', !nombre], ['e-verificador', !verif]].forEach(([id, mal]) => $(id).classList.toggle('err', mal));
                 if (!nombre || !verif) { toast('Nombre y verificador son obligatorios.', 'error'); return; }
                 if (equipos.some((x) => x.id !== editando?.id && norm(x.nombre) === norm(nombre))) { $('e-nombre').classList.add('err'); toast('Ya existe un equipo con ese nombre.', 'warning'); return; }
+                const errInst = validarInst();
+                if (errInst) { toast(errInst, 'warning'); return; }
                 const t = $('e-tiempo').value;
                 const fila = { nombre, verificador_id: verif, tiempo_manguera_min: t === '' ? null : Number(t), instrumentos: sel };
                 App.withLoading($('e-guardar'), {

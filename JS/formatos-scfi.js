@@ -104,16 +104,40 @@
         .firma { border-top: 1px solid #222; padding-top: 3px; text-align: center; font-size: 9px; }
         .aviso { background: #fff7d6; border: 1px solid #e5c100; padding: 6px 10px; margin-bottom: 8px; font-family: sans-serif; font-size: 11px; }
         @media print { .no-print { display: none !important; } }
+        body.exportando { background: #fff; }
+        body.exportando .no-print { display: none !important; }
+        body.exportando .hoja { padding: 0; max-width: 216mm; }
+        body.exportando .page { box-shadow: none; margin: 0; padding: 8mm 10mm 0; height: 277mm; min-height: 0; overflow: hidden; }
+        body.exportando .page .pie { left: 10mm; right: 10mm; bottom: 8mm; }
         .barra { position: sticky; top: 0; background: #0F111A; color: #fff; padding: 10px 14px; font-family: sans-serif; display: flex; gap: 10px; align-items: center; justify-content: space-between; z-index: 5; }
-        .barra button { background: #EAB308; border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .barra button { margin-left: 6px; background: #EAB308; border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
         .hoja { max-width: 216mm; margin: 0 auto; background: #fff; padding: 6mm; }
         @media screen { body { background: #e5e7eb; } .page { background: #fff; margin-bottom: 8mm; padding: 8mm 10mm 22mm; box-shadow: 0 2px 8px rgba(0,0,0,.15); } .page .pie { left: 10mm; right: 10mm; bottom: 6mm; } }
     `;
 
-    function documento(titulo, cuerpo, avisos = []) {
+    function documento(titulo, cuerpo, avisos = [], archivo = 'documento') {
         return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${esc(titulo)}</title><style>${CSS}</style></head><body>
-            <div class="barra no-print"><span>${esc(titulo)}</span><button onclick="window.print()">Imprimir / Guardar PDF</button></div>
+            <div class="barra no-print"><span>${esc(titulo)}</span><span><button id="btn-pdf" onclick="descargarPDF()">Descargar PDF</button><button onclick="window.print()" style="background:#32384e;color:#fff">Imprimir</button></span></div>
             <div class="hoja">${avisos.length ? `<div class="aviso no-print"><b>Revisa antes de imprimir:</b><br>${avisos.map(esc).join('<br>')}</div>` : ''}${cuerpo}</div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+            <script>
+                function descargarPDF() {
+                    var b = document.getElementById('btn-pdf');
+                    if (!window.html2pdf) { alert('No cargó el generador de PDF (revisa tu conexión). Usa Imprimir → Guardar como PDF.'); return; }
+                    b.disabled = true; b.textContent = 'Generando...';
+                    document.body.classList.add('exportando');
+                    window.scrollTo(0, 0);
+                    html2pdf().set({
+                        margin: 0, filename: ${JSON.stringify(archivo + '.pdf')},
+                        image: { type: 'jpeg', quality: 0.95 },
+                        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                        jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+                        pagebreak: { mode: ['css'] },
+                    }).from(document.querySelector('.hoja')).save()
+                        .catch(function (e) { alert('No se pudo generar el PDF: ' + e.message); })
+                        .then(function () { document.body.classList.remove('exportando'); b.disabled = false; b.textContent = 'Descargar PDF'; });
+                }
+            </script>
         </body></html>`;
     }
     const logos = () => `<div class="logos"><img src="${LOGO.JOMAR}" alt="JOMAR"><img src="${LOGO.EMA}" alt="ema"><img src="${LOGO.UVIM}" alt="UVIM" style="height:60px"></div>`;
@@ -185,7 +209,7 @@
             </table>
             <p style="margin:2px 0">FT-01-01-2</p>
         </div>`;
-        return documento(`Solicitud ${i.folio}`, cuerpo, avisos);
+        return documento(`Solicitud ${i.folio}`, cuerpo, avisos, `Solicitud_numero_${i.folio}`);
     }
 
     // ---------------------------------------------------------------
@@ -307,7 +331,7 @@
 
         const total = paginas.length;
         const cuerpo = paginas.map((c, n) => `<div class="page">${encabezado(d, n + 1, total)}${c}${pieDict()}</div>`).join('');
-        return documento(`Dictamen ${i.folio}`, cuerpo, avisos);
+        return documento(`Dictamen ${i.folio}`, cuerpo, avisos, `Dictamen_${i.folio}`);
     }
 
     // ---------------------------------------------------------------

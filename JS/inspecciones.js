@@ -18,6 +18,17 @@
     const fmtFechaLarga = (v) => { if (!v) return '—'; const [a, m, d] = String(v).slice(0, 10).split('-'); return `${Number(d)} de ${MESES[Number(m) - 1]} del ${a}`; };
     const hoy = () => new Date().toISOString().slice(0, 10);
     const hhmm = (t) => (t ? String(t).slice(0, 5) : '');
+    const fmtMoney = (n) => Number(n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const IVA = 0.16;
+    // Minutos entre inicio (fecha+hora) y término (fecha+hora). Si no hay fecha de término se toma la de inicio.
+    function minutosEntre(fi, hi, ff, hf) {
+        if (!fi || !hi || !hf) return null;
+        const a = new Date(`${String(fi).slice(0, 10)}T${hhmm(hi)}:00`);
+        const b = new Date(`${String(ff || fi).slice(0, 10)}T${hhmm(hf)}:00`);
+        const m = Math.round((b - a) / 60000);
+        return Number.isFinite(m) ? m : null;
+    }
+    const fmtDuracion = (m) => (m == null ? '—' : m < 0 ? 'Término antes del inicio' : `${Math.floor(m / 60)} h ${m % 60} min`);
     const fmtFolio = (tipo, f) => (window.SUDIHolo ? SUDIHolo.fmtFolio(tipo, f) : String(f ?? ''));
     const leerFolio = (t) => { const d = String(t ?? '').replace(/\D/g, ''); return d ? Number(d) : null; };
 
@@ -362,9 +373,21 @@
         if (nombre === 'comentarios') pintarComentarios();
     }
 
+    // Columnas del SQL 0018 que la vista sudi_v_scfi_insp_lista no trae: se leen de la tabla y se combinan.
+    let avisoSql0018 = false;
+    async function conExtras(data) {
+        const { data: x, error } = await DB.sb.from('sudi_scfi_inspecciones').select('fecha_termino, tiempo_total_min').eq('id', data.id).single();
+        if (error) {
+            if (!avisoSql0018 && DB.esAdmin()) { avisoSql0018 = true; toast('Falta correr el SQL 0018 (fecha de término y tiempo total).', 'warning'); }
+            return data;
+        }
+        return { ...data, ...x };
+    }
+
     async function recargarActual() {
-        const { data, error } = await DB.sb.from('sudi_v_scfi_insp_lista').select('*').eq('id', actual.id).single();
+        const { data: d0, error } = await DB.sb.from('sudi_v_scfi_insp_lista').select('*').eq('id', actual.id).single();
         if (error) throw new Error(DB.mensajeError(error));
+        const data = await conExtras(d0);
         actual = data;
         const i = filas.findIndex((f) => f.id === data.id);
         if (i >= 0) { filas[i] = data; const el = document.querySelector(`#insp-grid [data-idx="${i}"]`); if (el) el.outerHTML = tarjeta(data, i); }
@@ -372,8 +395,9 @@
 
     async function abrirDetalle(id) {
         try {
-            const { data, error } = await DB.sb.from('sudi_v_scfi_insp_lista').select('*').eq('id', id).single();
+            const { data: d0, error } = await DB.sb.from('sudi_v_scfi_insp_lista').select('*').eq('id', id).single();
             if (error) throw new Error(DB.mensajeError(error));
+            const data = await conExtras(d0);
             actual = data;
             lados = null;
             document.querySelector('#modal-insp-detalle [data-titulo]').textContent = `${data.folio} · ${data.razon_social || ''}`;
@@ -408,49 +432,76 @@
     // ---- General ----
     function pintarGeneral() {
         const i = actual;
-        const ed = DB.puedeEditar() && !i.cerrada ? '' : 'disabled';
+        const admin = DB.puedeEditar() ? '' : 'disabled';          // editable aun con la verificación cerrada
+        const ed = DB.puedeEditar() && !i.cerrada ? '' : 'disabled'; // se bloquea al cerrar
         const caja = (k, v) => `<div class="bg-dark-900 border border-dark-700 rounded-lg px-4 py-2.5"><p class="text-[11px] text-gray-500">${k}</p><p class="text-sm text-white">${v}</p></div>`;
+        const instrumentos = Number(i.mangueras_calc ?? i.mangueras ?? 0) || 0;
+        const total = instrumentos * Number(i.precio_por_manguera || 0) + Number(i.viaticos || 0);
         document.querySelector('[data-panel="general"]').innerHTML = `
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
                 ${caja('Folio', `<span class="font-mono font-bold">${esc(i.folio)}</span>${i.alto_flujo ? ' <span class="text-purple-400 text-xs">ALTO FLUJO</span>' : ''}`)}
                 ${caja('Cliente', esc(i.razon_social || '—'))}
                 ${caja('Estación', `${esc(i.permiso || '—')}<br><span class="text-xs text-gray-400">${esc(i.estacion_nombre || '')} ${i.estacion_municipio ? '· ' + esc(i.estacion_municipio) : ''}</span>`)}
-                ${caja('Importe', `$${fmtNum((i.mangueras_calc || 0) * (i.precio_por_manguera || 0))}`)}
+                ${caja('Total c/IVA', `<span class="font-bold">$${fmtMoney(total)}</span><br><span class="text-[11px] text-gray-400">${fmtNum(instrumentos)} instr. × $${fmtMoney(i.precio_por_manguera)} + viáticos $${fmtMoney(i.viaticos)}<br>Subtotal $${fmtMoney(total / (1 + IVA))} · IVA $${fmtMoney(total - total / (1 + IVA))}</span>`)}
             </div>
             <form id="gen-form" class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div><label class="${LB}">Verificador SUDI</label><select id="g-inspector" ${ed} class="${IN}">${opcionesUsuarios('—')}</select></div>
                 <div><label class="${LB}">¿Quién realizó el trabajo?</label><select id="g-realizo" ${ed} class="${IN}">${opcionesUsuarios('—')}</select></div>
                 <div><label class="${LB}">Tipo</label><select id="g-tipo" ${ed} class="${IN}">${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
-                <div><label class="${LB}">Fecha de inspección</label><input id="g-fecha" type="date" ${ed} class="${IN}"></div>
-                <div><label class="${LB}">Mangueras</label><input id="g-mangueras" type="number" min="0" ${ed} class="${IN}"></div>
-                <div><label class="${LB}">Precio por manguera</label><input id="g-precio" type="number" step="0.01" ${ed} class="${IN}"></div>
-                <div><label class="${LB}">Viáticos</label><input id="g-viaticos" type="number" step="0.01" ${ed} class="${IN}"></div>
-                <div><label class="${LB}">Estatus</label><select id="g-estatus" ${DB.puedeEditar() ? '' : 'disabled'} class="${IN}">${Object.entries(ESTATUS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select></div>
-                <div><label class="${LB}">Facturación</label><select id="g-facturacion" ${DB.puedeEditar() ? '' : 'disabled'} class="${IN}"><option value="no_facturado">No facturado</option><option value="facturado">Facturado</option></select></div>
-                <div><label class="${LB}">Factura</label><input id="g-factura" ${DB.puedeEditar() ? '' : 'disabled'} class="${IN}"></div>
-                <div class="md:col-span-2" id="g-motivo-wrap"><label class="${LB}">Motivo de cancelación</label><input id="g-motivo" ${DB.puedeEditar() ? '' : 'disabled'} class="${IN}"></div>
+                <div><label class="${LB}">Instrumentos (mangueras)</label><input id="g-mangueras" type="number" min="0" ${ed} class="${IN}"></div>
+
+                <div><label class="${LB}">Costo por instrumento c/IVA</label><input id="g-precio" type="number" min="0" step="0.01" ${ed} class="${IN}"></div>
+                <div><label class="${LB}">Viáticos</label><input id="g-viaticos" type="number" min="0" step="0.01" ${ed} class="${IN}"></div>
+                <div><label class="${LB}">Estatus</label><select id="g-estatus" ${admin} class="${IN}">${Object.entries(ESTATUS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select></div>
+                <div class="md:col-span-1" id="g-motivo-wrap"><label class="${LB}">Motivo de cancelación</label><input id="g-motivo" ${admin} class="${IN}"></div>
+
+                <div><label class="${LB}">Fecha de inicio</label><input id="g-fecha" type="date" ${ed} class="${IN}"></div>
+                <div><label class="${LB}">Hora de inicio</label><input id="g-hinicio" type="time" ${ed} class="${IN}"></div>
+                <div><label class="${LB}">Fecha de término</label><input id="g-ftermino" type="date" ${ed} class="${IN}"></div>
+                <div><label class="${LB}">Hora de término</label><input id="g-hfin" type="time" ${ed} class="${IN}"></div>
+
+                <div><label class="${LB}">Tiempo total</label><div id="g-total" class="px-3 py-2 text-sm bg-dark-900/50 border border-dark-700 rounded-lg text-white">—</div></div>
+                <div><label class="${LB}">Facturación</label><select id="g-facturacion" ${admin} class="${IN}"><option value="no_facturado">No facturado</option><option value="facturado">Facturado</option></select></div>
+                <div><label class="${LB}">Factura</label><input id="g-factura" ${admin} class="${IN}"></div>
+                <div class="flex items-end"><label class="flex items-center gap-2 text-sm text-gray-300 pb-2"><input id="g-entregado" type="checkbox" ${admin} class="accent-yellow-500 w-4 h-4"> Dictamen entregado</label></div>
+
                 <div class="col-span-2 md:col-span-4"><label class="${LB}">Observaciones</label><textarea id="g-obs" rows="2" ${ed} class="${IN}"></textarea></div>
                 ${DB.puedeEditar() ? `<div class="col-span-2 md:col-span-4 flex justify-end"><button type="submit" class="${BTNY}"><i class="ph ph-floppy-disk"></i> Guardar</button></div>` : ''}
             </form>`;
         $('g-inspector').value = i.inspector_id || ''; $('g-realizo').value = i.realizo_id || '';
         $('g-tipo').value = i.tipo; $('g-fecha').value = i.fecha_inspeccion || '';
+        $('g-hinicio').value = hhmm(i.hora_inicio); $('g-ftermino').value = i.fecha_termino || ''; $('g-hfin').value = hhmm(i.hora_fin);
         $('g-mangueras').value = i.mangueras ?? ''; $('g-precio').value = i.precio_por_manguera ?? ''; $('g-viaticos').value = i.viaticos ?? '';
         $('g-estatus').value = i.estatus; $('g-facturacion').value = i.facturacion; $('g-factura').value = i.factura || '';
+        $('g-entregado').checked = !!i.dictamen_entregado;
         $('g-motivo').value = i.cancelada_motivo || ''; $('g-obs').value = i.observaciones || '';
         const motivo = () => $('g-motivo-wrap').classList.toggle('hidden', $('g-estatus').value !== 'cancelada');
         motivo(); $('g-estatus').addEventListener('change', motivo);
+        const minutos = () => minutosEntre($('g-fecha').value, $('g-hinicio').value, $('g-ftermino').value, $('g-hfin').value);
+        const pintarTotal = () => { const m = minutos(); $('g-total').textContent = fmtDuracion(m); $('g-total').classList.toggle('text-red-400', m != null && m < 0); };
+        pintarTotal();
+        ['g-fecha', 'g-hinicio', 'g-ftermino', 'g-hfin'].forEach((id) => $(id).addEventListener('input', pintarTotal));
         $('gen-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const num = (id) => ($(id).value === '' ? null : Number($(id).value));
             const cambios = {
                 estatus: $('g-estatus').value, facturacion: $('g-facturacion').value, factura: $('g-factura').value.trim() || null,
-                cancelada_motivo: $('g-motivo').value.trim() || null,
+                cancelada_motivo: $('g-motivo').value.trim() || null, dictamen_entregado: $('g-entregado').checked,
             };
-            if (!i.cerrada) Object.assign(cambios, {
-                inspector_id: $('g-inspector').value || null, realizo_id: $('g-realizo').value || null, tipo: $('g-tipo').value,
-                fecha_inspeccion: $('g-fecha').value || null, mangueras: num('g-mangueras'), precio_por_manguera: num('g-precio'),
-                viaticos: num('g-viaticos'), observaciones: $('g-obs').value.trim() || null,
-            });
+            if (cambios.facturacion === 'facturado' && !cambios.factura) { toast('Captura el número de factura.', 'warning'); $('g-factura').focus(); return; }
+            if (!i.cerrada) {
+                const m = minutos();
+                if (m != null && m < 0) { toast('La fecha/hora de término es anterior al inicio.', 'error'); return; }
+                if ($('g-ftermino').value && $('g-fecha').value && $('g-ftermino').value < $('g-fecha').value) { toast('La fecha de término es anterior a la de inicio.', 'error'); return; }
+                Object.assign(cambios, {
+                    inspector_id: $('g-inspector').value || null, realizo_id: $('g-realizo').value || null, tipo: $('g-tipo').value,
+                    fecha_inspeccion: $('g-fecha').value || null, hora_inicio: $('g-hinicio').value || null,
+                    fecha_termino: $('g-ftermino').value || null, hora_fin: $('g-hfin').value || null, tiempo_total_min: m,
+                    mangueras: num('g-mangueras'), precio_por_manguera: num('g-precio'),
+                    viaticos: num('g-viaticos'), observaciones: $('g-obs').value.trim() || null,
+                });
+                if (cambios.estatus === 'programada' && cambios.hora_inicio) cambios.estatus = 'en_proceso';
+            }
             actualizar(cambios, 'Verificación guardada.');
         });
     }
@@ -613,7 +664,7 @@
             <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
                 ${caja('Mangueras', fmtNum(i.mangueras_calc))}
                 ${caja('Tiempo según la norma', `${fmtNum(i.tiempo_norma_min)} min`)}
-                ${caja('Tiempo realizado', i.min_realizado == null ? '—' : `${fmtNum(i.min_realizado)} min`)}
+                ${caja('Tiempo realizado', i.tiempo_total_min != null ? `${fmtNum(i.tiempo_total_min)} min` : i.min_realizado == null ? '—' : `${fmtNum(i.min_realizado)} min`)}
                 ${caja('Diferencia', i.diferencia_min == null ? '—' : `${i.diferencia_min > 0 ? '+' : ''}${fmtNum(i.diferencia_min)} min`)}
                 ${caja('Horario', i.calificacion || '—', i.calificacion === 'BIEN' ? 'text-emerald-400' : i.calificacion === 'MAL' ? 'text-red-400' : 'text-gray-400')}
             </div>
@@ -629,8 +680,10 @@
             </form>`;
         $('bit-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            const m = minutosEntre(actual.fecha_inspeccion, $('b-inicio').value, actual.fecha_termino, $('b-fin').value);
+            if (m != null && m < 0) { toast('La hora final es anterior a la de inicio (revisa la fecha de término en General).', 'error'); return; }
             actualizar({
-                hora_inicio: $('b-inicio').value || null, hora_fin: $('b-fin').value || null,
+                hora_inicio: $('b-inicio').value || null, hora_fin: $('b-fin').value || null, tiempo_total_min: m,
                 dictamen_entregado: $('b-fisico').checked, evidencia_fuera_tiempo: $('b-tarde').checked,
                 cambios: $('b-cambios').value.trim() || null, observaciones: $('b-notas').value.trim() || null,
                 estatus: actual.estatus === 'programada' && $('b-inicio').value ? 'en_proceso' : actual.estatus,

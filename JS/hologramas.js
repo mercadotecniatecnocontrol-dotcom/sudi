@@ -143,7 +143,10 @@
         raiz.innerHTML = `
             <div class="mb-6 fade-in flex flex-wrap items-center justify-between gap-4">
                 <h2 class="text-xl text-gray-300 font-medium"><span id="holo-titulo"></span> con <span id="holo-total" class="text-white font-bold">…</span> registros</h2>
-                ${selectorSerie(tipo, (t) => { tipo = t; pagina = 1; filtroEstado = ''; marcarSerie(tipo); recargarTodo(); })}
+                <div class="flex items-center gap-3">
+                    ${selectorSerie(tipo, (t) => { tipo = t; pagina = 1; filtroEstado = ''; marcarSerie(tipo); recargarTodo(); })}
+                    <a href="buscar.html" class="${BTN} bg-dark-800 border border-dark-700 text-gray-300 hover:text-brand-yellow hover:border-brand-yellow/50"><i class="ph ph-magnifying-glass-plus"></i> Búsqueda avanzada</a>
+                </div>
             </div>
             <div id="holo-chips" class="flex flex-wrap gap-2 mb-6"></div>
             <div id="holo-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3"></div>
@@ -236,11 +239,13 @@
             if (!t) return null;
             const dig = t.replace(/\D/g, '');
             if (dig && /^[uU]?[\d\s-]+$/.test(t)) return { folio: dig };
+            if (/^di[-\s]/i.test(t) || /[a-z]{2,}-\d/i.test(t)) return { dictamen: t.replace(/[%,()]/g, '') };
             return { ids: await idsPorNombre(t.replace(/[%,()]/g, ' ')) };
         }
         function aplicarBusqueda(q, fb) {
             if (!fb) return q;
             if (fb.folio) return q.like('folio_txt', `%${fb.folio}%`);
+            if (fb.dictamen) return q.ilike('dictamen_ref', `%${fb.dictamen}%`);
             return fb.ids.length ? q.in('inspector_id', fb.ids) : q.eq('id', '00000000-0000-0000-0000-000000000000');
         }
 
@@ -948,12 +953,174 @@
         })();
     }
 
-    window.SUDIHolo = { catalogo, asignar, compras, fmtFolio, leerFolio, TIPOS, ESTADOS };
+    // ===============================================================
+    // 4. BÚSQUEDA INDIVIDUAL: buscar.html
+    //    Por folio, persona, estatus y dictamen en los 4 tipos a la vez.
+    // ===============================================================
+    function buscar({ mount = '#holo-app' } = {}) {
+        const raiz = document.querySelector(mount);
+        const POR_PAGINA = 100;
+        const COLS = 'id, tipo, folio, estado, inspector_id, asignado_en, usado_en, dictamen_ref, fecha_dictamen, notas, inspector:sudi_usuarios(nombre_completo)';
+        let DB = null, pagina = 1, total = 0, filas = [], usos = {};
+
+        raiz.innerHTML = `
+            <form id="bus-form" class="bg-dark-800 border border-dark-700 rounded-2xl p-5 mb-6 grid grid-cols-2 md:grid-cols-6 gap-3 items-end">
+                <div><label class="${LB}">Tipo</label><select id="bus-tipo" class="${IN}"><option value="">Todos</option>${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}">${v.titulo}</option>`).join('')}</select></div>
+                <div><label class="${LB}">Folio</label><input id="bus-folio" class="${IN} font-mono" placeholder="U2026… o 10087"></div>
+                <div><label class="${LB}">Persona</label><select id="bus-persona" class="${IN}"><option value="">Todas</option><option value="__sin">Sin persona (almacén)</option></select></div>
+                <div><label class="${LB}">Estatus</label><select id="bus-estado" class="${IN}"><option value="">Todos</option>${Object.entries(ESTADOS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('')}</select></div>
+                <div><label class="${LB}">Dictamen / verificación</label><input id="bus-dictamen" class="${IN} font-mono" placeholder="DI-CAL-26-01-832"></div>
+                <div class="flex gap-2">
+                    <button type="submit" class="${BTN} bg-brand-yellow text-dark-900 hover:bg-yellow-400 flex-1 justify-center"><i class="ph ph-magnifying-glass"></i> Buscar</button>
+                    <button type="button" id="bus-limpiar" class="${BTN} bg-dark-900 border border-dark-700 text-gray-300 hover:text-white" title="Limpiar"><i class="ph ph-eraser"></i></button>
+                </div>
+            </form>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <p id="bus-resumen" class="text-sm text-gray-400"></p>
+                <button type="button" id="bus-csv" class="${BTN} bg-dark-800 border border-dark-700 text-gray-300 hover:text-white"><i class="ph ph-file-csv"></i> Exportar resultados</button>
+            </div>
+            <div class="bg-dark-800 border border-dark-700 rounded-2xl overflow-x-auto">
+                <table class="w-full text-sm min-w-[1000px]">
+                    <thead class="bg-dark-900 text-gray-400 uppercase text-[10px] tracking-wider"><tr>
+                        ${['Tipo', 'Folio', 'Estatus', 'Persona', 'Asignado', 'Usado', 'Dictamen', 'Verificación (lado)', 'Notas'].map((h) => `<th class="py-3 px-4 text-left font-semibold">${h}</th>`).join('')}
+                    </tr></thead>
+                    <tbody id="bus-tbody"><tr><td colspan="9" class="py-14 text-center text-gray-500">Escribe al menos un filtro y presiona Buscar.</td></tr></tbody>
+                </table>
+            </div>
+            <div class="flex items-center justify-center gap-2 mt-6">
+                <button type="button" id="bus-prev" class="${BTN} bg-dark-800 border border-dark-700 text-gray-300 hover:bg-dark-700"><i class="ph ph-caret-left"></i></button>
+                <span id="bus-pagina" class="text-sm text-gray-400 px-3"></span>
+                <button type="button" id="bus-next" class="${BTN} bg-dark-800 border border-dark-700 text-gray-300 hover:bg-dark-700"><i class="ph ph-caret-right"></i></button>
+            </div>`;
+
+        const f = () => ({
+            tipo: $('bus-tipo').value, folio: String($('bus-folio').value).replace(/\D/g, ''),
+            persona: $('bus-persona').value, estado: $('bus-estado').value,
+            dictamen: $('bus-dictamen').value.trim().replace(/[%,()]/g, ''),
+        });
+        const hayFiltro = (x) => x.tipo || x.folio || x.persona || x.estado || x.dictamen;
+
+        // Folios usados en verificaciones cuyo folio coincide (aunque el folio no tenga dictamen_ref capturado)
+        async function idsPorVerificacion(texto) {
+            const { data: insp, error } = await DB.sb.from('sudi_scfi_inspecciones').select('id').ilike('folio', `%${texto}%`).limit(50);
+            if (error || !insp?.length) return [];
+            const { data: inst } = await DB.sb.from('sudi_scfi_instrumentos').select('holograma_id, distintivo_id, precinto_id').in('inspeccion_id', insp.map((x) => x.id)).limit(500);
+            return [...new Set((inst || []).flatMap((x) => [x.holograma_id, x.distintivo_id, x.precinto_id]).filter(Boolean))];
+        }
+
+        async function construir(x, conteo) {
+            const ids = x.dictamen ? await idsPorVerificacion(x.dictamen) : [];
+            let q = DB.sb.from('sudi_scfi_hologramas').select(COLS, conteo ? { count: 'exact' } : undefined);
+            if (x.tipo) q = q.eq('tipo', x.tipo);
+            if (x.folio) q = q.like('folio_txt', `%${x.folio}%`);
+            if (x.estado) q = q.eq('estado', x.estado);
+            if (x.persona === '__sin') q = q.is('inspector_id', null);
+            else if (x.persona) q = q.eq('inspector_id', x.persona);
+            if (x.dictamen) q = ids.length ? q.or(`dictamen_ref.ilike.%${x.dictamen}%,id.in.(${ids.join(',')})`) : q.ilike('dictamen_ref', `%${x.dictamen}%`);
+            return q;
+        }
+
+        // En qué verificación y lado se usó cada folio de la página
+        async function cargarUsos(lista) {
+            usos = {};
+            const ids = lista.map((h) => h.id);
+            if (!ids.length) return;
+            const l = ids.join(',');
+            const { data: inst } = await DB.sb.from('sudi_scfi_instrumentos')
+                .select('holograma_id, distintivo_id, precinto_id, lado, inspeccion_id')
+                .or(`holograma_id.in.(${l}),distintivo_id.in.(${l}),precinto_id.in.(${l})`).limit(1000);
+            if (!inst?.length) return;
+            const { data: insp } = await DB.sb.from('sudi_scfi_inspecciones').select('id, folio').in('id', [...new Set(inst.map((x) => x.inspeccion_id))]);
+            const folioDe = Object.fromEntries((insp || []).map((x) => [x.id, x.folio]));
+            inst.forEach((x) => [x.holograma_id, x.distintivo_id, x.precinto_id].forEach((hid) => {
+                if (hid && ids.includes(hid)) (usos[hid] = usos[hid] || []).push({ folio: folioDe[x.inspeccion_id], lado: x.lado });
+            }));
+        }
+
+        async function cargar() {
+            const x = f();
+            const tb = $('bus-tbody');
+            if (!hayFiltro(x)) { tb.innerHTML = '<tr><td colspan="9" class="py-14 text-center text-gray-500">Escribe al menos un filtro y presiona Buscar.</td></tr>'; $('bus-resumen').textContent = ''; $('bus-pagina').textContent = ''; return; }
+            tb.innerHTML = '<tr><td colspan="9" class="py-14 text-center text-gray-500"><i class="ph ph-spinner animate-spin"></i> Buscando...</td></tr>';
+            try {
+                const q = await construir(x, true);
+                const desde = (pagina - 1) * POR_PAGINA;
+                const { data, error, count } = await q.order('tipo').order('folio').range(desde, desde + POR_PAGINA - 1);
+                if (error) throw new Error(DB.mensajeError(error));
+                filas = data; total = count || 0;
+                await cargarUsos(filas);
+                const paginas = Math.max(1, Math.ceil(total / POR_PAGINA));
+                $('bus-resumen').innerHTML = `<b class="text-white">${fmtNum(total)}</b> folio(s) encontrados`;
+                $('bus-pagina').textContent = `Pág. ${pagina} de ${paginas}`;
+                $('bus-prev').disabled = pagina <= 1; $('bus-next').disabled = pagina >= paginas;
+                tb.innerHTML = filas.length ? filas.map((h) => {
+                    const e = ESTADOS[h.estado] || ESTADOS.disponible;
+                    const u = usos[h.id] || [];
+                    const ver = (folio) => `<a href="../inspecciones.html?folio=${encodeURIComponent(folio)}" class="text-blue-400 hover:underline font-mono">${esc(folio)}</a>`;
+                    return `<tr class="border-t border-dark-700 hover:bg-dark-700/30">
+                        <td class="py-2.5 px-4 text-gray-300 whitespace-nowrap"><i class="ph ${TIPOS[h.tipo]?.icono || 'ph-tag'} text-brand-yellow"></i> ${esc(TIPOS[h.tipo]?.titulo || h.tipo)}</td>
+                        <td class="py-2.5 px-4 font-mono font-bold text-white whitespace-nowrap">${esc(fmtFolio(h.tipo, h.folio))}</td>
+                        <td class="py-2.5 px-4"><span class="px-2 py-0.5 rounded-md border text-[11px] font-semibold ${e.chip}">${e.label}</span></td>
+                        <td class="py-2.5 px-4 text-gray-300">${esc(h.inspector?.nombre_completo || (h.estado === 'disponible' ? 'En almacén' : '—'))}</td>
+                        <td class="py-2.5 px-4 text-gray-400 whitespace-nowrap">${fmtFecha(h.asignado_en)}</td>
+                        <td class="py-2.5 px-4 text-gray-400 whitespace-nowrap">${fmtFecha(h.usado_en)}</td>
+                        <td class="py-2.5 px-4 whitespace-nowrap">${h.dictamen_ref ? ver(h.dictamen_ref) : '<span class="text-gray-600">—</span>'}${h.fecha_dictamen ? `<span class="block text-[10px] text-gray-500">${fmtFecha(h.fecha_dictamen)}</span>` : ''}</td>
+                        <td class="py-2.5 px-4 whitespace-nowrap">${u.length ? u.map((x2) => `${x2.folio ? ver(x2.folio) : '—'} <span class="text-gray-500">· ${esc(x2.lado || '')}</span>`).join('<br>') : '<span class="text-gray-600">—</span>'}</td>
+                        <td class="py-2.5 px-4 text-gray-400 text-xs max-w-[220px] truncate" title="${esc(h.notas || '')}">${esc(h.notas || '')}</td>
+                    </tr>`;
+                }).join('') : '<tr><td colspan="9" class="py-14 text-center text-gray-500">No se encontraron folios con esos filtros.</td></tr>';
+            } catch (err) {
+                tb.innerHTML = `<tr><td colspan="9" class="py-10 text-center text-red-400">${esc(err.message)}</td></tr>`;
+            }
+        }
+
+        $('bus-form').addEventListener('submit', (ev) => { ev.preventDefault(); pagina = 1; cargar(); });
+        $('bus-limpiar').addEventListener('click', () => { $('bus-form').reset(); pagina = 1; cargar(); });
+        $('bus-prev').addEventListener('click', () => { if (pagina > 1) { pagina--; cargar(); } });
+        $('bus-next').addEventListener('click', () => { pagina++; cargar(); });
+        $('bus-csv').addEventListener('click', async (ev) => {
+            const x = f();
+            if (!hayFiltro(x)) { toast('Primero haz una búsqueda.', 'warning'); return; }
+            const b = ev.currentTarget; b.disabled = true;
+            try {
+                const todos = [];
+                for (let d = 0; d < 20000; d += 1000) {
+                    const q = await construir(x, false);
+                    const { data, error } = await q.order('tipo').order('folio').range(d, d + 999);
+                    if (error) throw new Error(DB.mensajeError(error));
+                    todos.push(...data);
+                    if (data.length < 1000) break;
+                }
+                if (!todos.length) { toast('No hay resultados para exportar.', 'warning'); return; }
+                descargarCSV(`busqueda_folios_${hoy()}.csv`,
+                    ['Tipo', 'Folio', 'Estatus', 'Persona', 'Asignado', 'Usado', 'Dictamen', 'Fecha dictamen', 'Notas'],
+                    todos.map((h) => [TIPOS[h.tipo]?.titulo || h.tipo, fmtFolio(h.tipo, h.folio), ESTADOS[h.estado]?.label || h.estado,
+                        h.inspector?.nombre_completo || '', h.asignado_en ? String(h.asignado_en).slice(0, 10) : '', h.usado_en ? String(h.usado_en).slice(0, 10) : '',
+                        h.dictamen_ref || '', h.fecha_dictamen || '', h.notas || '']));
+            } catch (err) { toast(err.message, 'error'); } finally { b.disabled = false; }
+        });
+
+        (async () => {
+            try { DB = await App.db(); } catch (err) { $('bus-tbody').innerHTML = `<tr><td colspan="9" class="py-10 text-center text-red-400">${esc(err.message)}</td></tr>`; return; }
+            try {
+                const us = await DB.listar('sudi_usuarios', { select: 'id, nombre_completo', orden: 'nombre_completo' });
+                $('bus-persona').insertAdjacentHTML('beforeend', us.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join(''));
+            } catch (_) { /* sin lista de personas */ }
+            // Búsqueda directa: buscar.html?folio=10087  o  ?dictamen=DI-CAL-26-01-832
+            const qs = new URLSearchParams(location.search);
+            if (qs.get('folio')) $('bus-folio').value = qs.get('folio');
+            if (qs.get('dictamen')) $('bus-dictamen').value = qs.get('dictamen');
+            if (qs.get('folio') || qs.get('dictamen')) cargar();
+        })();
+    }
+
+    window.SUDIHolo = { catalogo, asignar, compras, buscar, fmtFolio, leerFolio, TIPOS, ESTADOS };
 
     // Arranque automático: <script src="../../JS/hologramas.js" data-pantalla="catalogo|asignar" data-tipo="distintivo" defer>
     // (corre antes de DOMContentLoaded para que app.js inicialice los modales)
     const yo = document.currentScript;
     if (yo?.dataset.pantalla === 'compras') compras();
+    else if (yo?.dataset.pantalla === 'buscar') buscar();
     else if (yo?.dataset.pantalla && TIPOS[yo.dataset.tipo]) {
         (yo.dataset.pantalla === 'asignar' ? asignar : catalogo)({ tipo: yo.dataset.tipo });
     }

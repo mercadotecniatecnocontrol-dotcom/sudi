@@ -356,7 +356,7 @@
         const rol = p?.perfil;
         const edita = ['administrador', 'gerente'].includes(rol);
         const admin = rol === 'administrador';
-        const gestor = String(p?.correo || '').toLowerCase() === GESTOR_USUARIOS;
+        const gestor = String(p?.correo || '').toLowerCase() === GESTOR_USUARIOS || p?.gestor_usuarios === true;
         return [
             ['SCFI · Verificaciones', edita ? 'Crear, editar, cerrar y reabrir verificaciones' : 'Capturar solo las verificaciones donde eres inspector o realizaste', true],
             ['SCFI · Consecutivos de folio', 'Ajustar el consecutivo de folios de dictamen', admin],

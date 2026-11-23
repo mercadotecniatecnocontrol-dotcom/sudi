@@ -16,6 +16,35 @@
         tecnico_verificador: 'Técnico Verificador',
     };
 
+    // ------------------------------------------------------------------
+    // Roles con accesos limitados (tabla sudi_roles, SQL 0020)
+    // permisos = { modulo: 'ninguno' | 'ver' | 'editar' }. El rol solo LIMITA:
+    // el perfil (administrador / gerente / técnico) sigue siendo el máximo que se puede hacer.
+    // ------------------------------------------------------------------
+    const GESTOR_PRINCIPAL = 'i.ruiz@jomarverifica.com.mx';
+    const MODULOS = [
+        { clave: 'scfi_clientes', nombre: 'SCFI · Clientes', ruta: /\/scfi\/clientes\.html$/i },
+        { clave: 'scfi_equipos', nombre: 'SCFI · Equipos', ruta: /\/scfi\/equipos\.html$/i },
+        { clave: 'scfi_inspecciones', nombre: 'SCFI · Inspecciones', ruta: /\/scfi\/inspecciones\.html$/i },
+        { clave: 'scfi_hologramas', nombre: 'SCFI · Hologramas y precintos', ruta: /\/scfi\/hologramas\//i },
+        { clave: 'scfi_catalogos', nombre: 'SCFI · Productos y marcas', ruta: /\/scfi\/catalogo_scfi\//i },
+        { clave: 'asea_clientes', nombre: 'ASEA · Clientes', ruta: /\/asea\/clientes_asea\.html$/i },
+        { clave: 'asea_ordenes', nombre: 'ASEA · Órdenes de servicio', ruta: /\/asea\/orden_servicio\.html$/i },
+        { clave: 'asea_inspecciones', nombre: 'ASEA · Inspecciones', ruta: /\/asea\/inspecciones_asea\.html$/i },
+        { clave: 'asea_otros', nombre: 'ASEA · Gerentes, documentos y catálogos', ruta: /\/asea\/(gerentes|documentos|petrolifero|catalogos_asea)\.html$/i },
+        { clave: 'reportes_scfi', nombre: 'Reportes SCFI', ruta: /\/reportes\/scfi\//i },
+        { clave: 'reportes_asea', nombre: 'Reportes ASEA', ruta: /\/reportes\/asea\//i },
+        { clave: 'calendario', nombre: 'Agenda', ruta: /\/calendario\.html$/i },
+        { clave: 'catalogos', nombre: 'Catálogos · Clientes y matriz', ruta: /\/(catalogos\/)?(clientes|matriz_clientes)\.html$/i },
+    ];
+    // Páginas de entrada de cada sección: se pueden abrir si el rol tiene acceso a algún módulo de la sección
+    const SECCIONES = [
+        { ruta: /\/scfi\/dashboard\.html$/i, prefijo: 'scfi_' },
+        { ruta: /\/asea\/dash_asea\.html$/i, prefijo: 'asea_' },
+        { ruta: /\/reportes\/dash_reporte\.html$/i, prefijo: 'reportes_' },
+    ];
+    let rol = null;
+
     // Raíz del sitio, calculada desde la ubicación de este archivo (JS/ está un nivel abajo)
     const thisScript = document.currentScript || document.querySelector('script[src*="supabase-client.js"]');
     const ROOT = new URL('../', thisScript ? thisScript.src : window.location.href).href;
@@ -83,6 +112,44 @@
         });
     }
 
+    // ------------------------------------------------------------------
+    // Permisos por módulo
+    // ------------------------------------------------------------------
+    const perfilEdita = () => ['administrador', 'gerente'].includes(perfil?.perfil);
+    const esGestor = () => {
+        const correo = String(perfil?.correo || '').toLowerCase();
+        return correo === GESTOR_PRINCIPAL || perfil?.gestor_usuarios === true;
+    };
+    function moduloDe(ruta) {
+        return MODULOS.find((m) => m.ruta.test(ruta))?.clave || null;
+    }
+    // 'ninguno' | 'ver' | 'editar'
+    function permiso(modulo) {
+        if (!modulo) return 'editar';
+        if (!rol) return perfilEdita() ? 'editar' : 'ver';
+        const p = rol.permisos?.[modulo] || 'ninguno';
+        if (p === 'editar' && !perfilEdita()) return 'ver';
+        return p;
+    }
+    function bloqueada(ruta) {
+        if (/\/catalogos\/usuarios\.html$/i.test(ruta)) return !esGestor();
+        if (!rol) return false;
+        const sec = SECCIONES.find((x) => x.ruta.test(ruta));
+        if (sec) return !MODULOS.some((m) => m.clave.startsWith(sec.prefijo) && permiso(m.clave) !== 'ninguno');
+        const mod = moduloDe(ruta);
+        return mod ? permiso(mod) === 'ninguno' : false;
+    }
+    // Oculta enlaces del menú hacia módulos sin acceso
+    function ocultarEnlaces() {
+        document.querySelectorAll('a[href]').forEach((a) => {
+            const href = a.getAttribute('href');
+            if (!href || /^(#|javascript:|mailto:|https?:)/i.test(href) || /login\.html/i.test(href)) return;
+            let ruta;
+            try { ruta = new URL(href, window.location.href).pathname; } catch (_) { return; }
+            if (bloqueada(ruta)) a.style.display = 'none';
+        });
+    }
+
     // "Mantener la sesión" desmarcado → la sesión muere al cerrar el navegador
     function sesionExpiradaPorNavegador() {
         try {
@@ -125,6 +192,24 @@
         }
 
         perfil = data;
+        // Rol con accesos limitados (si la tabla aún no existe, se sigue solo con el perfil)
+        if (perfil.rol_id) {
+            const r = await sb.from('sudi_roles').select('*').eq('id', perfil.rol_id).maybeSingle();
+            rol = r.data && r.data.activo !== false ? r.data : null;
+        }
+        if (bloqueada(window.location.pathname)) {
+            const pintarBloqueo = () => {
+                document.body.innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0F111A;color:#d1d5db;font-family:Inter,sans-serif;padding:24px;text-align:center">
+                    <div><p style="font-size:44px;margin:0">🔒</p><h1 style="color:#fff;font-size:22px;margin:8px 0">Sin acceso a esta sección</h1>
+                    <p style="max-width:420px;margin:0 auto 18px">Tu rol no incluye este módulo. Si lo necesitas, pide acceso a la administradora de usuarios.</p>
+                    <a href="${ROOT}index.html" style="background:#EAB308;color:#0F111A;padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none">Ir al menú principal</a></div></div>`;
+            };
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pintarBloqueo, { once: true });
+            else pintarBloqueo();
+            return new Promise(() => {}); // la página no carga datos
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ocultarEnlaces, { once: true });
+        else ocultarEnlaces();
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => pintarPerfil(perfil), { once: true });
         } else {
@@ -262,8 +347,13 @@
         ROOT,
         get sb() { return sb; },
         get perfil() { return perfil; },
-        puedeEditar: () => ['administrador', 'gerente'].includes(perfil?.perfil),
+        get rol() { return rol; },
+        MODULOS: MODULOS.map(({ clave, nombre }) => ({ clave, nombre })),
+        // Sin argumento: el módulo de la página actual
+        puedeEditar: (modulo) => perfilEdita() && permiso(modulo || moduloDe(window.location.pathname)) === 'editar',
+        permiso: (modulo) => permiso(modulo || moduloDe(window.location.pathname)),
         esAdmin: () => perfil?.perfil === 'administrador',
+        esGestor,
         cliente,
         listar,
         obtener,

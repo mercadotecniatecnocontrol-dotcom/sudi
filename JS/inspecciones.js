@@ -527,6 +527,7 @@
         ]);
         const porId = Object.fromEntries(holos.map((h) => [h.id, h]));
         lados = inst.map((x) => ({
+            id: x.id, pruebas: x.pruebas || null,
             manguera_id: x.manguera_id, dispensario: x.dispensario ?? '', lado: x.lado || '', combustible: x.combustible || '',
             marca: x.marca || '', modelo: x.modelo || '', serie: x.serie || '', resultado: x.resultado || 'aprueba',
             flexograma: porId[x.holograma_id]?.folio ?? '', distintivo: porId[x.distintivo_id]?.folio ?? '', precinto: porId[x.precinto_id]?.folio ?? '',
@@ -558,9 +559,9 @@
             <datalist id="dl-dist">${foliosInsp.distintivo.slice(0, 500).map((f) => `<option value="${fmtFolio('distintivo', f)}">`).join('')}</datalist>
             <datalist id="dl-prec">${foliosInsp.precinto.slice(0, 500).map((f) => `<option value="${fmtFolio('precinto', f)}">`).join('')}</datalist>
             <div class="overflow-x-auto border border-dark-700 rounded-xl">
-                <table class="w-full text-left min-w-[1100px]">
+                <table class="w-full text-left min-w-[1200px]">
                     <thead class="bg-dark-900 text-[11px] uppercase text-gray-400"><tr>
-                        ${['#', 'Disp.', 'Lado', 'Combustible', 'Marca', 'Modelo', 'Serie', 'Flexograma', 'Distintivo', 'Precinto', 'Resultado', ''].map((h) => `<th class="px-2 py-2 font-semibold">${h}</th>`).join('')}
+                        ${['#', 'Disp.', 'Lado', 'Combustible', 'Marca', 'Modelo', 'Serie', 'Flexograma', 'Distintivo', 'Precinto', 'Resultado', 'Corridas', ''].map((h) => `<th class="px-2 py-2 font-semibold">${h}</th>`).join('')}
                     </tr></thead>
                     <tbody>
                         ${lados.length ? lados.map((l, n) => `
@@ -576,18 +577,50 @@
                             <td class="px-1 w-28"><input ${dis} data-k="distintivo" list="dl-dist" value="${l.distintivo !== '' ? esc(fmtFolio('distintivo', l.distintivo)) : ''}" class="${cel} font-mono"></td>
                             <td class="px-1 w-32"><input ${dis} data-k="precinto" list="dl-prec" value="${l.precinto !== '' ? esc(fmtFolio('precinto', l.precinto)) : ''}" class="${cel} font-mono"></td>
                             <td class="px-1 w-28"><select ${dis} data-k="resultado" class="${cel}"><option value="aprueba" ${l.resultado !== 'rechaza' ? 'selected' : ''}>Aprueba</option><option value="rechaza" ${l.resultado === 'rechaza' ? 'selected' : ''}>Rechaza</option></select></td>
+                            <td class="px-1 w-24">${botonCorridas(l, n)}</td>
                             <td class="px-1 w-8">${ro ? '' : `<button type="button" data-quitar="${n}" class="text-gray-500 hover:text-red-400" title="Quitar"><i class="ph ph-trash"></i></button>`}</td>
-                        </tr>`).join('') : '<tr><td colspan="12" class="py-8 text-center text-sm text-gray-500">Sin lados capturados. Usa "Cargar de la estación" o "Agregar lado".</td></tr>'}
+                        </tr>`).join('') : '<tr><td colspan="13" class="py-8 text-center text-sm text-gray-500">Sin lados capturados. Usa "Cargar de la estación" o "Agregar lado".</td></tr>'}
                     </tbody>
                 </table>
             </div>
-            <p class="text-[11px] text-gray-500 mt-3">Al guardar, los folios quedan como <b>usados</b> con este dictamen (${esc(actual.folio)}) y ligados a su manguera. Si quitas un lado, sus folios regresan al inspector.</p>`;
+            <p class="text-[11px] text-gray-500 mt-3">Al guardar, los folios quedan como <b>usados</b> con este dictamen (${esc(actual.folio)}) y ligados a su manguera. Si quitas un lado, sus folios regresan al inspector. Las corridas se capturan por lado ya guardado.</p>`;
+        panel.querySelectorAll('[data-corridas]').forEach((b) => b.addEventListener('click', () => abrirCorridas(Number(b.dataset.corridas), ro)));
         if (ro) return;
         $('l-agregar').addEventListener('click', () => { leerLados(); lados.push({ lado: siguienteLado(), resultado: 'aprueba', flexograma: '', distintivo: '', precinto: '', dispensario: '', combustible: '', marca: '', modelo: '', serie: '' }); pintarLados(); });
         $('l-cargar').addEventListener('click', cargarDeEstacion);
         $('l-llenar').addEventListener('click', llenarFolios);
         $('l-guardar').addEventListener('click', guardarLados);
         panel.querySelectorAll('[data-quitar]').forEach((b) => b.addEventListener('click', () => { leerLados(); lados.splice(Number(b.dataset.quitar), 1); pintarLados(); }));
+    }
+
+    // ---- Corridas metrológicas por lado (JS/corridas-scfi.js, SQL 0021) ----
+    function botonCorridas(l, n) {
+        const p = l.pruebas;
+        const malo = p && (p.cumple_emt === false || p.cumple_rep === false);
+        const cls = !l.id ? 'text-gray-600 cursor-not-allowed' : !p ? 'text-gray-300 hover:text-brand-yellow' : malo ? 'text-red-400 hover:text-red-300' : 'text-emerald-400 hover:text-emerald-300';
+        const txt = !p ? 'Capturar' : malo ? 'No cumple' : 'Capturadas';
+        return `<button type="button" data-corridas="${n}" class="text-xs font-semibold inline-flex items-center gap-1 ${cls}" title="${l.id ? '3 gastos × 3 corridas' : 'Guarda los lados primero'}"><i class="ph ${p ? 'ph-check-circle' : 'ph-flask'}"></i> ${txt}</button>`;
+    }
+
+    const RUTA_CORRIDAS = (document.currentScript?.src || '').replace(/inspecciones\.js(\?.*)?$/, 'corridas-scfi.js');
+    function cargarCorridas() {
+        if (window.SUDICorridas) return Promise.resolve();
+        return new Promise((ok, mal) => {
+            const sc = document.createElement('script');
+            sc.src = `${RUTA_CORRIDAS || '../JS/corridas-scfi.js'}?v=${Date.now()}`;
+            sc.onload = ok; sc.onerror = () => mal(new Error('No se encontró JS/corridas-scfi.js. Súbelo al repositorio.'));
+            document.head.appendChild(sc);
+        });
+    }
+
+    async function abrirCorridas(n, ro) {
+        const l = lados[n];
+        if (!l?.id) { toast('Primero da "Guardar lados"; después captura las corridas.', 'warning'); return; }
+        if (!ro) leerLados();
+        try {
+            await cargarCorridas();
+            SUDICorridas.abrir({ DB, inspeccion: actual, lado: l, soloLectura: ro, onGuardado: () => pintarLados() });
+        } catch (err) { toast(err.message, 'error'); }
     }
 
     function siguienteLado() {
@@ -645,8 +678,17 @@
         if (malos.length) { toast(`Revisa el lado de las filas ${malos.join(', ')} (A, B, C…).`, 'error'); return; }
         const btn = $('l-guardar');
         btn.disabled = true;
+        // Respaldo de corridas por disp|lado por si el guardado de lados recrea los registros
+        const clave = (x) => `${String(x.dispensario ?? '').trim()}|${String(x.lado || '').toUpperCase()}`;
+        const respaldo = Object.fromEntries(lados.filter((l) => l.pruebas).map((l) => [clave(l), l.pruebas]));
         try {
-            const r = await DB.rpc('sudi_scfi_guardar_lados', { p_inspeccion: actual.id, p_items: lados });
+            const items = lados.map(({ pruebas, id, ...resto }) => resto); // mismo payload que antes del SQL 0021
+            const r = await DB.rpc('sudi_scfi_guardar_lados', { p_inspeccion: actual.id, p_items: items });
+            if (Object.keys(respaldo).length) {
+                const nuevos = await DB.listar('sudi_scfi_instrumentos', { filtros: { inspeccion_id: actual.id } });
+                await Promise.all(nuevos.filter((x) => !x.pruebas && respaldo[clave(x)])
+                    .map((x) => DB.rpc('sudi_scfi_guardar_pruebas', { p_instrumento: String(x.id), p_pruebas: respaldo[clave(x)] }).catch(() => null)));
+            }
             lados = null;
             await recargarActual();
             pintarEtapas();

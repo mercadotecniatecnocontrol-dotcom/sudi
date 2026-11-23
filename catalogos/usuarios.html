@@ -118,6 +118,10 @@
                         </div>
                         <input type="text" id="usuarios-search" class="block w-full pl-10 pr-3 py-2.5 border border-dark-600 rounded-xl bg-dark-800 text-white placeholder-gray-400 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-colors" placeholder="Buscar usuario...">
                     </div>
+                    <!-- Botón Roles -->
+                    <button id="btn-roles" type="button" class="hidden bg-dark-800 border border-dark-600 text-gray-200 px-5 py-2.5 rounded-xl text-sm font-bold hover:border-brand-yellow hover:text-brand-yellow transition-all flex items-center gap-2 whitespace-nowrap shrink-0">
+                        <i class="ph ph-shield-check text-lg"></i> Roles
+                    </button>
                     <!-- Botón Añadir Usuario -->
                     <button id="btn-nuevo-usuario" type="button" class="hidden bg-brand-yellow text-dark-900 px-5 py-2.5 rounded-xl text-sm font-bold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:bg-yellow-400 transition-all flex items-center gap-2 whitespace-nowrap shrink-0">
                         <i class="ph ph-plus-circle text-lg"></i> Añadir Usuario
@@ -126,7 +130,7 @@
             </header>
 
             <div class="flex-1 overflow-x-auto overflow-y-auto bg-dark-900 p-8 custom-scrollbar relative">
-                <div class="bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl p-6 fade-in min-w-[900px]">
+                <div class="bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl p-6 fade-in min-w-[1150px]">
                     <table class="w-full text-left text-sm text-gray-300">
                         <thead class="bg-dark-900 text-gray-400 uppercase text-[10px] tracking-wider">
                             <tr>
@@ -136,13 +140,15 @@
                                 <th class="py-4 px-4 font-semibold">Género</th>
                                 <th class="py-4 px-4 font-semibold text-center">Inspector</th>
                                 <th class="py-4 px-4 font-semibold text-center">Firma verificador</th>
+                                <th class="py-4 px-4 font-semibold">Rol (accesos)</th>
+                                <th class="py-4 px-4 font-semibold text-center">Admin. usuarios</th>
                                 <th class="py-4 px-4 font-semibold">Estado</th>
                                 <th class="py-4 px-4 font-semibold rounded-tr-xl text-right">Acciones</th>
                                 
                             </tr>
                         </thead>
                         <tbody id="usuarios-tbody">
-                            <tr class="no-clickable empty-state-row"><td colspan="6" class="py-10 text-center text-gray-500">Cargando usuarios…</td></tr>
+                            <tr class="no-clickable empty-state-row"><td colspan="10" class="py-10 text-center text-gray-500">Cargando usuarios…</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -188,6 +194,11 @@
                     </select>
                 </div>
 
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">Rol (accesos):</label>
+                    <select id="u-rol" class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-gray-300 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all appearance-none cursor-pointer"></select>
+                    <p class="text-xs text-gray-500 mt-1">El rol limita qué módulos ve y edita. Sin rol, el acceso es el de su perfil.</p>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <label class="flex items-center gap-3 bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 cursor-pointer">
                         <input id="u-inspector" type="checkbox" class="accent-yellow-500 w-5 h-5">
@@ -244,13 +255,35 @@
         </div>
     </div>
 
+    <!-- Modal Roles -->
+    <div id="modal-roles" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-start md:items-center justify-center p-4">
+        <div class="relative bg-dark-800 border border-dark-700 rounded-3xl shadow-2xl w-full max-w-5xl p-6 md:p-8 my-8">
+            <button type="button" data-cerrar-roles class="absolute top-6 right-6 text-gray-500 hover:text-white bg-dark-900 p-2 rounded-full border border-dark-600"><i class="ph ph-x text-xl"></i></button>
+            <div class="mb-6 pr-12">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2"><i class="ph ph-shield-check text-brand-yellow"></i> Roles y accesos</h2>
+                <p class="text-gray-400 text-sm mt-1">Cada rol define qué módulos puede ver o editar un usuario. El rol solo limita: un técnico nunca podrá editar aunque su rol diga "Editar".</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div>
+                    <button type="button" id="rol-nuevo" class="w-full mb-3 py-2.5 rounded-xl border border-dashed border-dark-600 text-gray-300 hover:text-brand-yellow hover:border-brand-yellow flex items-center justify-center gap-2 font-semibold text-sm"><i class="ph ph-plus-circle"></i> Nuevo rol</button>
+                    <div id="roles-lista" class="space-y-2"></div>
+                </div>
+                <div class="lg:col-span-2 bg-dark-900 border border-dark-700 rounded-2xl p-5" id="rol-editor">
+                    <p class="text-sm text-gray-500 text-center py-10">Elige un rol o crea uno nuevo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Usuarios en Supabase: tabla "sudi_usuarios" + cuentas de Auth.
          Alta, listado, activar/desactivar y contraseña vía funciones sudi_* (ver sudi_usuarios_alta.sql).
-         Solo i.ruiz@jomarverifica.com.mx puede gestionar usuarios. -->
+         Gestionan usuarios: i.ruiz@jomarverifica.com.mx y quien tenga "Admin. usuarios" (sudi_usuarios.gestor_usuarios, SQL 0020). -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             'use strict';
-            const GESTOR = 'i.ruiz@jomarverifica.com.mx';
+            const NIVELES = { ninguno: 'Sin acceso', ver: 'Ver', editar: 'Editar' };
+            let roles = [];
+            let rolEditando = null;
             const PERFILES = { administrador: 'Administrador', gerente: 'Gerente', tecnico_verificador: 'Técnico Verificador' };
             const GENEROS = { m: 'Masculino', f: 'Femenino', o: 'Otro' };
             const $ = (id) => document.getElementById(id);
@@ -266,8 +299,10 @@
             let miAuthId = null;
             let extra = {};   // es_inspector / firma_verificador de sudi_usuarios, por auth_id y por correo
 
-            const filaMensaje = (txt) => `<tr class="no-clickable empty-state-row"><td colspan="8" class="py-10 text-center text-gray-500">${txt}</td></tr>`;
-            const abrir = () => { form.reset(); modal.classList.remove('hidden'); setTimeout(() => $('u-correo').focus(), 50); };
+            const filaMensaje = (txt) => `<tr class="no-clickable empty-state-row"><td colspan="10" class="py-10 text-center text-gray-500">${txt}</td></tr>`;
+            const opcionesRol = (sel) => '<option value="">Sin rol (según perfil)</option>' + roles.filter((r) => r.activo !== false || r.id === sel)
+                .map((r) => `<option value="${esc(r.id)}" ${r.id === sel ? 'selected' : ''}>${esc(r.nombre)}${r.activo === false ? ' (inactivo)' : ''}</option>`).join('');
+            const abrir = () => { form.reset(); $('u-rol').innerHTML = opcionesRol(''); modal.classList.remove('hidden'); setTimeout(() => $('u-correo').focus(), 50); };
             const cerrar = () => modal.classList.add('hidden');
 
             modal.addEventListener('click', (e) => { if (e.target === modal) cerrar(); });
@@ -305,6 +340,10 @@
                         <td class="py-4 px-4 text-center">${casilla('es_inspector', Boolean(x.es_inspector), 'Es inspector')}</td>
                         <td class="py-4 px-4 text-center">${casilla('firma_verificador', Boolean(x.firma_verificador), 'Firma como verificador')}</td>
                         <td class="py-4 px-4">
+                            <select data-accion-rol data-id="${esc(u.auth_id)}" data-nombre="${esc(nombre)}" class="bg-dark-900 border border-dark-600 rounded-lg px-2 py-1.5 text-xs text-gray-200 focus:outline-none focus:border-brand-yellow max-w-[180px]">${opcionesRol(x.rol_id || '')}</select>
+                        </td>
+                        <td class="py-4 px-4 text-center">${esYo ? '<span class="text-[10px] text-gray-500">tú</span>' : casilla('gestor_usuarios', Boolean(x.gestor_usuarios), 'Puede crear usuarios y roles')}</td>
+                        <td class="py-4 px-4">
                             <span class="px-2 py-1 rounded text-xs border font-semibold ${activo ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}">${activo ? 'Activo' : 'Inactivo'}</span>
                         </td>
                         <td class="py-4 px-4 text-right whitespace-nowrap">
@@ -319,10 +358,13 @@
 
             async function cargar() {
                 try {
-                    const [lista, filas] = await Promise.all([
+                    const [lista, filas, rs] = await Promise.all([
                         DB.rpc('sudi_listar_usuarios'),
                         DB.listar('sudi_usuarios').catch(() => []),
+                        DB.listar('sudi_roles', { orden: 'nombre' }).catch(() => null),
                     ]);
+                    if (rs === null) toast('Falta correr el SQL 0020 (roles).', 'warning');
+                    roles = rs || [];
                     extra = {};
                     filas.forEach((f) => {
                         if (f.auth_id) extra[f.auth_id] = f;
@@ -354,10 +396,15 @@
                 btnGuardar.classList.add('opacity-60');
                 try {
                     const r = await DB.rpc('sudi_crear_usuario', datos);
+                    const rolNuevo = $('u-rol').value;
                     const ins = $('u-inspector').checked, fir = $('u-firma').checked;
                     if (ins || fir) {
                         const authId = r?.auth_id || (await DB.rpc('sudi_listar_usuarios')).find((u) => String(u.correo || u.email_auth || '').toLowerCase() === datos.p_correo)?.auth_id;
                         if (authId) await DB.rpc('sudi_marcar_verificador', { p_auth_id: authId, p_es_inspector: true, p_firma: fir });
+                    }
+                    if (rolNuevo) {
+                        const authId = r?.auth_id || (await DB.rpc('sudi_listar_usuarios')).find((u) => String(u.correo || u.email_auth || '').toLowerCase() === datos.p_correo)?.auth_id;
+                        if (authId) await DB.rpc('sudi_asignar_rol', { p_auth_id: authId, p_rol_id: rolNuevo });
                     }
                     toast(r?.cuenta_existente
                         ? 'Usuario agregado. Ya tenía cuenta: entra con su contraseña actual.'
@@ -383,6 +430,11 @@
                         if (!confirm(`¿${activar ? 'Activar' : 'Desactivar'} a ${nombre}?`)) return;
                         await DB.rpc('sudi_activar_usuario', { p_auth_id: id, p_activo: activar });
                         toast(activar ? 'Usuario activado.' : 'Usuario desactivado.');
+                    } else if (accion === 'marca' && btn.dataset.campo === 'gestor_usuarios') {
+                        const on = btn.dataset.valor === '1';
+                        if (!confirm(on ? `¿Dar a ${nombre} permiso para crear usuarios y roles?` : `¿Quitar a ${nombre} el permiso de administrar usuarios?`)) return;
+                        await DB.rpc('sudi_marcar_gestor', { p_auth_id: id, p_valor: on });
+                        toast(on ? `${nombre} ya puede administrar usuarios.` : `${nombre} ya no administra usuarios.`);
                     } else if (accion === 'marca') {
                         const on = btn.dataset.valor === '1';
                         const campo = btn.dataset.campo;
@@ -403,6 +455,101 @@
                 }
             }, true);
 
+            tbody.addEventListener('change', async (e) => {
+                const sel = e.target.closest('[data-accion-rol]');
+                if (!sel) return;
+                try {
+                    await DB.rpc('sudi_asignar_rol', { p_auth_id: sel.dataset.id, p_rol_id: sel.value || null });
+                    toast(`${sel.dataset.nombre}: ${sel.value ? `rol ${roles.find((r) => r.id === sel.value)?.nombre || ''}` : 'sin rol (acceso según perfil)'}.`);
+                } catch (err) { toast(err.message, 'error'); }
+                await cargar();
+            });
+
+            // ---------------- Roles ----------------
+            const modalRoles = $('modal-roles');
+            const cerrarRoles = () => modalRoles.classList.add('hidden');
+            modalRoles.addEventListener('click', (e) => { if (e.target === modalRoles || e.target.closest('[data-cerrar-roles]')) cerrarRoles(); });
+            $('btn-roles').addEventListener('click', () => { rolEditando = null; pintarRoles(); pintarEditor(); modalRoles.classList.remove('hidden'); });
+            $('rol-nuevo').addEventListener('click', () => {
+                rolEditando = { id: null, nombre: '', descripcion: '', activo: true, permisos: Object.fromEntries(DB.MODULOS.map((m) => [m.clave, 'ver'])) };
+                pintarRoles(); pintarEditor();
+            });
+            function pintarRoles() {
+                const usados = {};
+                Object.values(extra).forEach((f) => { if (f.rol_id) usados[f.rol_id] = (usados[f.rol_id] || new Set()).add(f.auth_id || f.correo); });
+                $('roles-lista').innerHTML = roles.length ? roles.map((r) => `
+                    <button type="button" data-rol="${esc(r.id)}" class="w-full text-left px-4 py-3 rounded-xl border transition-colors ${rolEditando?.id === r.id ? 'border-brand-yellow bg-brand-yellow/10' : 'border-dark-600 bg-dark-900 hover:border-dark-500'} ${r.activo === false ? 'opacity-50' : ''}">
+                        <p class="text-white font-semibold text-sm">${esc(r.nombre)}</p>
+                        <p class="text-[11px] text-gray-500">${usados[r.id]?.size || 0} usuario(s) · ${Object.values(r.permisos || {}).filter((v) => v !== 'ninguno').length} módulo(s)</p>
+                    </button>`).join('') : '<p class="text-xs text-gray-500 text-center py-4">Aún no hay roles.</p>';
+            }
+            $('roles-lista').addEventListener('click', (e) => {
+                const b = e.target.closest('[data-rol]');
+                if (!b) return;
+                const r = roles.find((x) => x.id === b.dataset.rol);
+                rolEditando = JSON.parse(JSON.stringify(r));
+                pintarRoles(); pintarEditor();
+            });
+            function pintarEditor() {
+                const ed = $('rol-editor');
+                if (!rolEditando) { ed.innerHTML = '<p class="text-sm text-gray-500 text-center py-10">Elige un rol o crea uno nuevo.</p>'; return; }
+                const r = rolEditando;
+                const IN = 'w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-brand-yellow';
+                ed.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div><label class="block text-xs text-gray-400 mb-1">Nombre del rol *</label><input id="rol-nombre" class="${IN}" value="${esc(r.nombre)}" placeholder="Ej. Facturación"></div>
+                        <div><label class="block text-xs text-gray-400 mb-1">Descripción</label><input id="rol-desc" class="${IN}" value="${esc(r.descripcion || '')}" placeholder="Para qué es este rol"></div>
+                    </div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <p class="text-xs uppercase tracking-wider text-gray-400 font-semibold">Accesos por módulo</p>
+                        <div class="flex gap-1 text-[11px]">${Object.entries(NIVELES).map(([k, l]) => `<button type="button" data-todos="${k}" class="px-2 py-1 rounded-md border border-dark-600 text-gray-400 hover:text-white">Todo: ${l}</button>`).join('')}</div>
+                    </div>
+                    <div class="border border-dark-700 rounded-xl divide-y divide-dark-700 mb-4">
+                        ${DB.MODULOS.map((m) => `<div class="flex items-center justify-between gap-3 px-4 py-2">
+                            <span class="text-sm text-gray-200">${esc(m.nombre)}</span>
+                            <div class="flex gap-1" data-mod="${m.clave}">${Object.entries(NIVELES).map(([k, l]) => {
+                                const on = (r.permisos?.[m.clave] || 'ninguno') === k;
+                                const color = k === 'editar' ? 'emerald' : k === 'ver' ? 'sky' : 'red';
+                                return `<button type="button" data-nivel="${k}" class="px-2.5 py-1 rounded-md text-xs font-semibold border ${on ? `bg-${color}-500/15 border-${color}-500/40 text-${color}-400` : 'border-dark-600 text-gray-500 hover:text-gray-300'}">${l}</button>`;
+                            }).join('')}</div></div>`).join('')}
+                    </div>
+                    <p class="text-[11px] text-gray-500 mb-4">"Administración de usuarios" no es parte del rol: se da con la casilla <b>Admin. usuarios</b> en la tabla.</p>
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <label class="flex items-center gap-2 text-sm text-gray-300"><input id="rol-activo" type="checkbox" class="accent-yellow-500 w-4 h-4" ${r.activo !== false ? 'checked' : ''}> Activo</label>
+                        <div class="flex gap-2">
+                            ${r.id ? '<button type="button" id="rol-borrar" class="px-4 py-2 rounded-xl text-sm text-red-400 hover:bg-red-500/10">Eliminar</button>' : ''}
+                            <button type="button" id="rol-guardar" class="px-5 py-2 rounded-xl text-sm font-bold bg-brand-yellow text-dark-900 hover:bg-yellow-400 flex items-center gap-2"><i class="ph ph-floppy-disk"></i> Guardar rol</button>
+                        </div>
+                    </div>`;
+            }
+            $('rol-editor').addEventListener('click', async (e) => {
+                const r = rolEditando;
+                if (!r) return;
+                const leer = () => { r.nombre = $('rol-nombre').value.trim(); r.descripcion = $('rol-desc').value.trim(); r.activo = $('rol-activo').checked; };
+                const nivel = e.target.closest('[data-nivel]');
+                const todos = e.target.closest('[data-todos]');
+                if (nivel) { leer(); r.permisos[nivel.closest('[data-mod]').dataset.mod] = nivel.dataset.nivel; pintarEditor(); return; }
+                if (todos) { leer(); DB.MODULOS.forEach((m) => { r.permisos[m.clave] = todos.dataset.todos; }); pintarEditor(); return; }
+                if (e.target.closest('#rol-guardar')) {
+                    leer();
+                    if (!r.nombre) { toast('Ponle nombre al rol.', 'error'); return; }
+                    if (roles.some((x) => x.id !== r.id && x.nombre.trim().toLowerCase() === r.nombre.toLowerCase())) { toast('Ya existe un rol con ese nombre.', 'warning'); return; }
+                    if (!Object.values(r.permisos).some((v) => v !== 'ninguno')) { toast('El rol debe tener acceso al menos a un módulo.', 'warning'); return; }
+                    const fila = { nombre: r.nombre, descripcion: r.descripcion || null, activo: r.activo, permisos: r.permisos, updated_at: new Date().toISOString() };
+                    try {
+                        const g = r.id ? await DB.actualizar('sudi_roles', r.id, fila) : await DB.crear('sudi_roles', fila);
+                        toast('Rol guardado.');
+                        rolEditando = JSON.parse(JSON.stringify(g));
+                        await cargar(); pintarRoles(); pintarEditor();
+                    } catch (err) { toast(err.message, 'error'); }
+                }
+                if (e.target.closest('#rol-borrar')) {
+                    const n = Object.values(extra).filter((f) => f.rol_id === r.id).length;
+                    if (!confirm(n ? `${r.nombre} está asignado a usuarios. Si lo eliminas, esos usuarios quedan sin rol (acceso según su perfil). ¿Eliminar?` : `¿Eliminar el rol ${r.nombre}?`)) return;
+                    try { await DB.eliminar('sudi_roles', r.id); toast('Rol eliminado.'); rolEditando = null; await cargar(); pintarRoles(); pintarEditor(); } catch (err) { toast(err.message, 'error'); }
+                }
+            });
+
             if (window.App?.initSearch) App.initSearch($('usuarios-search'), '#usuarios-tbody tr:not(.empty-state-row)');
 
             (window.App?.db ? App.db() : Promise.reject(new Error('No cargó JS/app.js')))
@@ -410,12 +557,12 @@
                     DB = db;
                     const { data: { session } } = await DB.sb.auth.getSession();
                     miAuthId = session?.user?.id || null;
-                    const correo = (session?.user?.email || '').toLowerCase();
-                    if (correo !== GESTOR) {
-                        tbody.innerHTML = filaMensaje('<i class="ph ph-lock text-2xl block mb-2"></i>Solo la administradora de usuarios puede ver y crear usuarios.');
+                    if (!DB.esGestor()) {
+                        tbody.innerHTML = filaMensaje('<i class="ph ph-lock text-2xl block mb-2"></i>Solo las administradoras de usuarios pueden ver y crear usuarios.');
                         return;
                     }
                     btnNuevo.classList.remove('hidden');
+                    $('btn-roles').classList.remove('hidden');
                     await cargar();
                 })
                 .catch((err) => { tbody.innerHTML = filaMensaje(esc(err.message)); });

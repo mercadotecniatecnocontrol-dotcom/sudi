@@ -20,19 +20,23 @@
     const r = (x, d) => (x === null ? null : Number(x.toFixed(d)));
     const f = (x, d = 1) => (x === null || x === undefined ? '—' : Number(x).toLocaleString('es-MX', { minimumFractionDigits: d, maximumFractionDigits: d }));
 
-    // Instrumento patrón (medida volumétrica) del verificador que realizó; si no, del que firma.
+    // Equipo patrón: el elegido en General; si no hay, el del verificador que realizó; si no, el del que firma.
     async function patron(DB, insp) {
         const { data, error } = await DB.sb.from('sudi_scfi_equipos').select('*').eq('activo', true);
         if (error) throw new Error(DB.mensajeError ? DB.mensajeError(error) : error.message);
-        const eq = (data || []).find((e) => e.verificador_id === insp.realizo_id) || (data || []).find((e) => e.verificador_id === insp.inspector_id) || null;
+        const eq = (insp.equipo_id && (data || []).find((e) => e.id === insp.equipo_id)) || (data || []).find((e) => e.verificador_id === insp.realizo_id) || (data || []).find((e) => e.verificador_id === insp.inspector_id) || null;
         const vol = eq?.instrumentos?.volumetrico || null;
         if (!vol) return null;
         let v20 = num(vol.valor_certificado) ?? num(vol.nominal_ml);
         if (v20 !== null && v20 < 1000) v20 *= 1000;          // capturado en litros → mL
         let kc = num(vol.kc) ?? 10;                             // mL por división (escala de 10 mL)
         if (kc < 1) kc *= 1000;                                 // capturado en L/div → mL/div
-        const emt = num(insp.tipo === 'inicial' ? (vol.emt_inicial ?? vol.emt) : vol.emt);
-        return { serie: vol.id_interna || vol.serie || '', v20, kc, emt, repetibilidad: num(vol.repetibilidad) };
+        // Límites: los del equipo; si no están capturados, los de la NOM con Vn = nominal (L)
+        const vn = (num(vol.nominal_ml) ?? v20 ?? 20000) / 1000;
+        const emtEq = num(insp.tipo === 'inicial' ? (num(vol.emt_inicial) ?? vol.emt) : vol.emt);
+        const emt = emtEq ?? (insp.tipo === 'inicial' ? 10 + 2 * vn : 20 + 4 * vn);
+        const repetibilidad = num(vol.repetibilidad) ?? 20 + 2 * vn;
+        return { nombre: eq.nombre || '', serie: vol.id_interna || vol.serie || '', v20, kc, emt: r(emt, 1), repetibilidad: r(repetibilidad, 1) };
     }
 
     function calcular(entrada, pat) {
@@ -72,7 +76,7 @@
         if (!lado?.id) { App.toast('Primero da "Guardar lados"; después captura las corridas.', 'warning'); return; }
         let pat = null, avisoPat = '';
         try { pat = await patron(DB, inspeccion); } catch (err) { avisoPat = err.message; }
-        if (!pat) avisoPat ||= 'El verificador no tiene medida volumétrica activa en SCFI → Equipos: se puede capturar, pero no calcular Vcmv ni errores (falla de captura en Equipos, no de la app).';
+        if (!pat) avisoPat ||= 'No hay equipo patrón con Medida Volumétrica: elígelo en la pestaña General → "Equipo patrón" y guarda. Mientras, se puede capturar pero no calcular Vcmv ni errores.';
         else if (pat.v20 === null) avisoPat = 'La medida volumétrica no tiene "Valor certificado" ni "Nominal (mL)" en SCFI → Equipos: no se puede calcular Vcmv.';
         const p0 = lado.pruebas || {};
         const ent = {};
@@ -85,7 +89,7 @@
             <div class="bg-dark-800 border border-dark-700 rounded-2xl w-full max-w-4xl my-4">
                 <div class="flex items-center justify-between px-5 py-4 border-b border-dark-700">
                     <div><p class="text-white font-bold">Corridas · Lado ${esc(lado.lado)} · ${esc(lado.combustible || '')}</p>
-                        <p class="text-[11px] text-gray-400">Disp. ${esc(lado.dispensario || '—')} · ${esc(lado.marca || '')} ${esc(lado.modelo || '')} · Serie ${esc(lado.serie || '—')}${pat ? ` · MV ${esc(pat.serie)} · V20 ${f(pat.v20, 1)} mL · Kc ${f(pat.kc, 2)} mL/div` : ''}</p></div>
+                        <p class="text-[11px] text-gray-400">Disp. ${esc(lado.dispensario || '—')} · ${esc(lado.marca || '')} ${esc(lado.modelo || '')} · Serie ${esc(lado.serie || '—')}${pat ? ` · Equipo ${esc(pat.nombre)} · MV ${esc(pat.serie)} · V20 ${f(pat.v20, 1)} mL · Kc ${f(pat.kc, 2)} mL/div` : ''}</p></div>
                     <button type="button" data-c-cerrar class="text-gray-400 hover:text-white text-xl"><i class="ph ph-x"></i></button>
                 </div>
                 <div class="p-5 space-y-4">

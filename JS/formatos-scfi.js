@@ -66,8 +66,8 @@
         }));
         const us = Object.fromEntries((usuarios || []).map((u) => [u.id, u]));
         const inspector = us[i.inspector_id] || us[i.realizo_id] || null;
-        // Equipo patrón: el del verificador que realizó el trabajo; si no tiene, el del verificador que firma.
-        const equipo = (equipos || []).find((e) => e.verificador_id === i.realizo_id) || (equipos || []).find((e) => e.verificador_id === i.inspector_id) || null;
+        // Equipo patrón: el elegido en General; si no hay, el del verificador que realizó; si no, el del que firma.
+        const equipo = (i.equipo_id && (equipos || []).find((e) => e.id === i.equipo_id)) || (equipos || []).find((e) => e.verificador_id === i.realizo_id) || (equipos || []).find((e) => e.verificador_id === i.inspector_id) || null;
         return { i, est: est || {}, cli: cli || {}, lados, inspector, equipo };
     }
 
@@ -232,6 +232,11 @@
     const pieDict = () => `<div class="pie"><div>FT-01-03-3<br><br><span class="azul">Teléfono: ${TEL_PIE}</span></div><div style="max-width:55%">El presente documento no se reproducirá sin omitir nada, sin la aprobación de la unidad de Inspección y el Cliente.<br><br><span class="azul" style="float:right">${MAIL_UI}</span></div></div>`;
 
     function instPatron(eq, clave) { return eq?.instrumentos?.[clave] || null; }
+    // Límites de la NOM cuando el equipo no los trae capturados (Vn en litros; ver Observaciones de la hoja 3).
+    const vnL = (vol) => { const n = Number(vol?.nominal_ml || vol?.valor_certificado || 20000); return (n >= 1000 ? n / 1000 : n) || 20; };
+    const emtNom = (tipo, vol) => (tipo === 'inicial' ? 10 + 2 * vnL(vol) : 20 + 4 * vnL(vol));
+    const repNom = (vol) => 20 + 2 * vnL(vol);
+    const vacio = (x) => x === null || x === undefined || x === '';
 
     // Bloque de pruebas metrológicas por lado. Usa x.pruebas si existe; si no, celdas en blanco.
     function bloqueMetrologico(d, l) {
@@ -240,8 +245,9 @@
         const p = l.pruebas || {};
         const G = [['max', 'Gasto Máximo'], ['med', 'Gasto Medio'], ['min', 'Gasto Mínimo']];
         const celdas = (arr, n) => Array.from({ length: n }, (_, k) => `<td>${arr && arr[k] !== undefined && arr[k] !== null && arr[k] !== '' ? esc(arr[k]) : '<span class="vac">·</span>'}</td>`).join('');
-        const emt = d.i.tipo === 'inicial' ? vol?.emt_inicial : vol?.emt;
-        const rep = vol?.repetibilidad;
+        const emtEq = d.i.tipo === 'inicial' ? (vacio(vol?.emt_inicial) ? vol?.emt : vol.emt_inicial) : vol?.emt;
+        const emt = !vacio(p.emt) ? p.emt : !vacio(emtEq) ? emtEq : emtNom(d.i.tipo, vol);
+        const rep = !vacio(p.repetibilidad) ? p.repetibilidad : !vacio(vol?.repetibilidad) ? vol.repetibilidad : repNom(vol);
         const ev = (x, lim) => (x === null || x === undefined || x === '' || lim === null || lim === undefined ? '' : (Math.abs(Number(x)) <= Number(lim) ? 'Cumple' : 'No cumple'));
         return `<table class="met">
             <tr><td class="hd" colspan="25">Marca: <b>${v(l.marca)}</b> &nbsp; Modelo: <b>${v(l.modelo)}</b> &nbsp; Serie: <b>${v(l.serie)}</b></td></tr>
@@ -257,7 +263,8 @@
         const { i, est, lados, equipo } = d;
         const avisos = [];
         if (!lados.length) avisos.push('La verificación no tiene lados capturados.');
-        if (!equipo) avisos.push('El verificador no tiene equipo patrón activo en SCFI → Equipos.');
+        if (!equipo) avisos.push('No hay equipo patrón: elígelo en la pestaña General → "Equipo patrón" (o asigna un equipo activo al verificador en SCFI → Equipos).');
+        else if (!instPatron(equipo, 'volumetrico')) avisos.push(`El equipo "${equipo.nombre || ''}" no tiene Medida Volumétrica capturada en SCFI → Equipos.`);
         if (!lados.some((l) => l.pruebas)) avisos.push('Aún no hay captura de corridas (Lc, tiempos, temperaturas): las tablas de pruebas salen en blanco.');
         if (!i.hora_inicio || !i.hora_fin) avisos.push('Faltan hora de inicio o de término.');
         if (!visitado(d)) avisos.push('La estación no tiene encargado capturado (nombre del visitado).');

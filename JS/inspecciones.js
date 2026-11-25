@@ -61,6 +61,7 @@
     let filtros = { estatus: '', inspector: '', desde: '', hasta: '', texto: '' };
     let inspectores = [];
     let verificadores = [];         // con firma autorizada (sudi_usuarios.firma_verificador)
+    let equipos = [];               // equipos patrón activos (sudi_scfi_equipos)
     let actual = null;              // inspección abierta (fila de la vista)
     let lados = [];                 // lados en edición
     let foliosInsp = { flexograma: [], inicial: [], distintivo: [], precinto: [] };
@@ -376,7 +377,7 @@
     // Columnas del SQL 0018 que la vista sudi_v_scfi_insp_lista no trae: se leen de la tabla y se combinan.
     let avisoSql0018 = false;
     async function conExtras(data) {
-        const { data: x, error } = await DB.sb.from('sudi_scfi_inspecciones').select('fecha_termino, tiempo_total_min').eq('id', data.id).single();
+        const { data: x, error } = await DB.sb.from('sudi_scfi_inspecciones').select('fecha_termino, tiempo_total_min, equipo_id').eq('id', data.id).single();
         if (error) {
             if (!avisoSql0018 && DB.esAdmin()) { avisoSql0018 = true; toast('Falta correr el SQL 0018 (fecha de término y tiempo total).', 'warning'); }
             return data;
@@ -448,6 +449,7 @@
                 <div><label class="${LB}">Verificador SUDI</label><select id="g-inspector" ${ed} class="${IN}">${opcionesUsuarios('—')}</select></div>
                 <div><label class="${LB}">¿Quién realizó el trabajo?</label><select id="g-realizo" ${ed} class="${IN}">${opcionesUsuarios('—')}</select></div>
                 <div><label class="${LB}">Tipo</label><select id="g-tipo" ${ed} class="${IN}">${Object.entries(TIPOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+                <div><label class="${LB}">Equipo patrón</label><select id="g-equipo" ${ed} class="${IN}">${opcionesEquipos()}</select><p id="g-equipo-info" class="text-[11px] mt-1"></p></div>
                 <div><label class="${LB}">Instrumentos (mangueras)</label><input id="g-mangueras" type="number" min="0" ${ed} class="${IN}"></div>
 
                 <div><label class="${LB}">Costo por instrumento c/IVA</label><input id="g-precio" type="number" min="0" step="0.01" ${ed} class="${IN}"></div>
@@ -474,6 +476,16 @@
         $('g-mangueras').value = i.mangueras ?? ''; $('g-precio').value = i.precio_por_manguera ?? ''; $('g-viaticos').value = i.viaticos ?? '';
         $('g-estatus').value = i.estatus; $('g-facturacion').value = i.facturacion; $('g-factura').value = i.factura || '';
         $('g-entregado').checked = !!i.dictamen_entregado;
+        $('g-equipo').value = equipos.some((e) => e.id === i.equipo_id) ? i.equipo_id : '';
+        const infoEquipo = () => {
+            const e = equipoEfectivo($('g-equipo').value, $('g-realizo').value, $('g-inspector').value);
+            const mv = e?.instrumentos?.volumetrico;
+            $('g-equipo-info').innerHTML = !e ? '<span class="text-amber-400">Sin equipo: las corridas no se pueden calcular.</span>'
+                : !mv ? `<span class="text-amber-400">${esc(e.nombre)} no tiene Medida Volumétrica.</span>`
+                : `<span class="text-gray-400">Se usará: ${esc(e.nombre)} · MV ${esc(mv.id_interna || mv.serie || '')}</span>`;
+        };
+        infoEquipo();
+        ['g-equipo', 'g-realizo', 'g-inspector'].forEach((id) => $(id).addEventListener('change', infoEquipo));
         $('g-motivo').value = i.cancelada_motivo || ''; $('g-obs').value = i.observaciones || '';
         const motivo = () => $('g-motivo-wrap').classList.toggle('hidden', $('g-estatus').value !== 'cancelada');
         motivo(); $('g-estatus').addEventListener('change', motivo);
@@ -495,6 +507,7 @@
                 if ($('g-ftermino').value && $('g-fecha').value && $('g-ftermino').value < $('g-fecha').value) { toast('La fecha de término es anterior a la de inicio.', 'error'); return; }
                 Object.assign(cambios, {
                     inspector_id: $('g-inspector').value || null, realizo_id: $('g-realizo').value || null, tipo: $('g-tipo').value,
+                    equipo_id: $('g-equipo').value || null,
                     fecha_inspeccion: $('g-fecha').value || null, hora_inicio: $('g-hinicio').value || null,
                     fecha_termino: $('g-ftermino').value || null, hora_fin: $('g-hfin').value || null, tiempo_total_min: m,
                     mangueras: num('g-mangueras'), precio_por_manguera: num('g-precio'),
@@ -504,6 +517,17 @@
             }
             actualizar(cambios, 'Verificación guardada.');
         });
+    }
+
+    // ---- Equipo patrón ----
+    function opcionesEquipos() {
+        return '<option value="">Automático (el del verificador)</option>' + equipos.map((e) => {
+            const mv = e.instrumentos?.volumetrico;
+            return `<option value="${e.id}">${esc(e.nombre || 'Equipo')}${mv ? ` · MV ${esc(mv.id_interna || mv.serie || '')}` : ' · sin MV'}</option>`;
+        }).join('');
+    }
+    function equipoEfectivo(elegido, realizo, inspector) {
+        return (elegido && equipos.find((e) => e.id === elegido)) || equipos.find((e) => e.verificador_id === realizo) || equipos.find((e) => e.verificador_id === inspector) || null;
     }
 
     // ---- Lados y hologramas ----
@@ -951,6 +975,7 @@
             verificadores = inspectores;
             if (DB.esAdmin()) toast('Aún no hay verificadores marcados con firma; por ahora se muestran todos los inspectores.', 'warning');
         }
+        equipos = await DB.listar('sudi_scfi_equipos', { filtros: { activo: true }, orden: 'nombre' }).catch(() => []);
         $('f-inspector').innerHTML = '<option value="">Todos los inspectores</option>' + inspectores.map((u) => `<option value="${u.id}">${esc(u.nombre_completo)}</option>`).join('');
         await cargar();
         // Abrir directo: inspecciones.html?folio=DI-CAL-26-03-701
